@@ -6,6 +6,7 @@ use App\Models\Categoria;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Pagination\Paginator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -26,6 +27,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Paginator::useBootstrap();
         Schema::defaultStringLength(191);
         $categoria_servicios_all = Categoria::where(['categoria_tipo_id' => 1,'active' => 1])->get();
         $categoria_productos_all = Categoria::where(['categoria_tipo_id' => 2,'active' => 1])->get();
