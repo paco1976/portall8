@@ -240,3 +240,9 @@ Route::get('/condiciones',function(){return view('condiciones');});
 Route::get('/comunidad',function(){return view('comunidad');});
 
 //a partir de acá voy a hacer el panel de referentes
+
+
+
+/** Rutas para WhatsApp Api */
+Route::get('/whatsapp', [App\Http\Controllers\WhatsappController::class, 'handleWebhook']);
+Route::post('/whatsapp', [App\Http\Controllers\WhatsappController::class, 'handleResponse']);
