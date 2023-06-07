@@ -51,13 +51,8 @@ class RegisterController extends Controller
     {
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
-            'last_name' => ['required', 'string', 'max:255'],
-            'dni' => ['required', 'string', 'max:255'],
-            'avatar' => ['required','image','max:2048'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'user_type' => ['required'],
-            'user_cfp' => ['required'],
         ]);
     }
 
@@ -69,38 +64,10 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        /*
         return User::create([
             'name' => $data['name'],
-            'last_name' => $data['last_name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
-        */
-        $user = User::create([
-            'name' => $data['name'],
-            'last_name' => $data['last_name'],
-            'dni' => $data['dni'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-            'type_id' => $data['user_type'],
-            'cfp_id' => $data['user_cfp'],
-        ]);
-
-        $user->hash = md5($user->id);
-        $user->save();
-        
-        
-        //creo la carpeta con el numero de id
-        $resultado = Storage::disk('avatares')->makeDirectory($user->id, 0777);
-        //subo el archivo y guardo el path
-        $path = Storage::disk('avatares')->putFILE($user->id, request()->file('avatar'));
-        //actualizo el path del avatar
-        $user->avatar = $path;
-        //guardo el path del avatar
-        $user->save(['avatar']);
-        //dd($user->avatar);
-        return  $user;
-
     }
 }

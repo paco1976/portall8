@@ -42,9 +42,9 @@
     <!-- Theme Custom CSS -->
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
 
+
     <!-- Head Libs -->
     <script src="{{ asset('vendor/modernizr/modernizr.js') }}"></script>
-
 
 
     <!-- Fonts -->
@@ -52,7 +52,6 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet"> -->
 
     <!-- Styles -->
-
 </head>
 
 <div class="body">
@@ -303,6 +302,7 @@
 			'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 			})(window,document,'script','dataLayer','GTM-NDX4K44');</script>
 	<!-- End Google Tag Manager -->
+
 	</body>
 
 

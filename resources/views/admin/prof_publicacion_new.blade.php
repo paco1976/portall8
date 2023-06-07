@@ -73,7 +73,7 @@
                         			{{ method_field('PUT') }}
 									@csrf
 										<div class="form-group">
-											<h3 class="col-md-9" align="center">Nueva Publicación</h3>
+											<h3 class="col-md-9" aligne="center">Nueva Publicación</h3>
 										</div>
                                             <div class="form-group">
                                                 <label class="col-md-3 control-label">Título Principal</label>
