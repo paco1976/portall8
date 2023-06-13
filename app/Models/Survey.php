@@ -9,7 +9,7 @@ class Survey extends Model
     protected $fillable = [
         'user_id',
         'client_name',
-        'client_phone_number',
+        'client_cellphone',
         'client_email',
         'contacted',
         'service_provided',
