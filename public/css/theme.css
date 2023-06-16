@@ -2934,8 +2934,13 @@ html.boxed body.sticky-menu-active #header {
 	font-size: medium;
 }
 
+#zones {
+	margin-left: 1em;
+}
+
 #zones h2 {
 	margin-bottom: 0.8em;
+	font-size: 1.9em;
 }
 
 .zones-list{

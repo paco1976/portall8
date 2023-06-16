@@ -260,8 +260,8 @@
 	<div class="container">
 		<div class="row">
 				<div id="zones">
+				<h2><i class="bi bi-geo-alt"></i> Zona de cobertura</h2>
 					<p class="zones-list">
-						<h2>Barrios en los que trabajo</h2>
 						@foreach($zonas as $zona)
 						{{ $zona->name }}@if(!$loop->last),@endif
 						@endforeach

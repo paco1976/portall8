@@ -12,7 +12,7 @@
 
     <div class="form-group">
       <label for="client_cellphone">Celular *</label>
-      <input type="text" class="form-control" name="client_cellphone" id="cellphone" value="{{ old('client_cellphone') }}" required>
+      <input type="text" class="form-control" name="client_cellphone" id="cellphone" value="{{ old('client_cellphone') }}" pattern="[0-9]{10}" required>
       <div class="invalid-feedback" id="client_cellphone_error"></div>
     </div>
 
@@ -56,6 +56,7 @@
       let clientName = $('#name').val().trim();
       let clientCellphone = $('#cellphone').val().trim();
       let termsChecked = $('#terms').is(':checked');
+      let validCellphoneRegex = /^[0-9]{10}$/;
 
       let hasErrors = false;
 
@@ -66,7 +67,13 @@
       }
 
       if (clientCellphone === '') {
+        // Error message for empty input
         $('#client_cellphone_error').text('Por favor, completar número de celular, por ejemplo: 1156677889');
+        $('#cellphone').addClass('is-invalid');
+        hasErrors = true;
+      } else if (!validCellphoneRegex.test(clientCellphone)) {
+        // Error message for invalid format
+        $('#client_cellphone_error').text('Por favor, ingresar un número de celular válido (10 dígitos).');
         $('#cellphone').addClass('is-invalid');
         hasErrors = true;
       }
