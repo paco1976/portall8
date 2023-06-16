@@ -3246,25 +3246,3 @@ ul.history li .featured-box .box-content {
 .parallax + .google-map {
 	margin-top: -70px;
 }
-
-.description-profesional{
-	border-top: 1px dotted #DDD;
-	margin: 0;
-	padding: 15px 0;
-	display: block;
-	font-size: medium;
-}
-
-.zones-list{
-	font-size: 1.2em;
-	line-height: 1.5em;
-}
-
-.contact-btn{
-	margin-bottom: 50px;
-	margin-top: 10px;
-}
-
-.contact-info{
-	display: none;
-}
