@@ -8,14 +8,16 @@
 
 			<div role="main" class="main">
 
-
 				<section class="page-top">
 					<div class="container">
 						<div class="row">
 							<div class="col-md-12">
-								<ul class="breadcrumb">
+							<ul class="breadcrumb">
 									<li><a href="#">Inicio</a></li>
-									<li class="active">Panel de Control</li>
+									<li><a href="{{ route('perfil') }}">Panel de Control</a></li>
+									<li><a href="{{ route('admin_loan') }}">Prestamos</a></li>
+									<li class="active">Nuevo</li>
+
 								</ul>
 							</div>
 						</div>
@@ -26,27 +28,14 @@
 						</div>
 					</div>
 				</section>
-				<div class="alert alert-primary alert-dismissible fade show" role="alert">
-						@if (Session::has('message'))
-							<p style="text-aligne:center">{{ Session::get('message') }}</p>
-						@endif
-						@if (Session::has('error'))
-							<p style="text-aligne:center">{{ Session::get('error') }}</p>
-						@endif
-					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<!-- <div class="tab-pane active col-md-12 mx-auto "  >
-					<div class="row">
-						@if (Session::has('message'))
-							<p style="text-aligne:center">{{ Session::get('message') }}</p>
-						@endif
-						@if (Session::has('error'))
-						<p style="text-aligne:center">{{ Session::get('error') }}</p>
-						@endif
-				</div>	 -->
-
+				@if (Session::has('message'))
+                        <div class="alert alert-success" style="display:flex; flex-direction:row; justify-content:space-between">
+                            <p >{{ Session::get('message') }}</p>
+							<button type="button" style="float:right; border-radius: 2px;" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span>
+							</button>
+                        </div>									
+                        @endif	
+				
 				<div class="container">
 					<div class="row">
 							<div class="col-md-6" style="display:block;justify-content:center">
@@ -60,13 +49,13 @@
 										<div class="tab-pane active">
 											<h2 class="short"><strong>Registro </strong></h2>
 												
-												@if ($tool_selectd)
-												<form  method="post" action="{{ route('admin_loan_save') }}"  id="save">	
+											@if ($tool_selectd)
+											<form  method="post" action="{{ route('admin_loan_save') }}"  id="save">	
 													@csrf										
 													<div class="form-group row">
 													<div class="col-md-12">
-														<label for="tool" class="col-md-8 col-form-label text-md-right">
-															<h5>Herramienta Seleccionada: {{$tool_selectd->name}}</h5>	
+														<label for="tool" class="col-md-12 col-form-label text-md-right">
+															<h5>Herramienta Seleccionada: {{ $tool_selectd->name }}  IDE {{ $tool_selectd->id }}</h5>	
 														</label>
 													</div>
 													<div class="col-sm-9 mt-2">
@@ -103,9 +92,9 @@
 														</button>
 													</div>
 													</div>
-												</form>
+											</form>
 											@else
-											<form  method="GET" action="{{ route('admin_loan_dates') }}" id="dates" >											
+											<form  method="post" action="{{ route('admin_loan_dates') }}" id="dates" >											
 												@csrf										
 												<div class="form-group row">
 													<div class="col-md-12">
@@ -116,7 +105,7 @@
                                            				<select class="form-control" name="tool_id"  id="tool_id" required>
                                                 			<option value="">Seleccione una opción</option>
                                                				@foreach ($tools as $tool)
-                                                        	<option value='{{ $tool->id }}'>{{ $tool->name }}IDE {{ $tool->id }}</option>
+                                                        	<option value='{{ $tool->id }}'>{{ $tool->name }}  IDE {{ $tool->id }}</option>
                                                 			@endforeach
                                            				</select>
 
@@ -125,15 +114,15 @@
                                                     		<strong>{{ $message }}</strong>
                                                			 </span>
                                             			@enderror
+														<div class="form-group row mb-0"><br>
+															<div class="col-md-12 offset-md-4">
+																
+																<button type="submit" class="btn btn-primary">
+																	Disponibilidad
+																</button>
+															</div>
+														</div>
                                         			</div>
-                                    			</div>
-												<div class="form-group row mb-0"><br>
-													<div class="col-md-12 offset-md-4">
-														<button type="submit" class="btn btn-primary">
-															Disponibilidad
-														</button>
-													</div>
-												</div>
 											</form>	
 											
 											@endif
@@ -152,7 +141,6 @@
 <script>
 	$(document).ready(function() {
 		var js_array = [<?php echo '"'.implode('","', $dates_).'"' ?>];
-		console.log(js_array)
 		var date= $("input[type='datetime'], input[type='datetime-local']").flatpickr({
 		// 	onReady: function () {
 		// 	this.jumpToDate("2025-01")
@@ -161,6 +149,7 @@
 		dateFormat: "Y-m-d",
 		mode: "range",
 		minDate: new Date(),
+		max:3,
       });
 	});
 

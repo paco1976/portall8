@@ -18,7 +18,6 @@ class CreateToolsTable extends Migration
             $table->string('name')->nullable();
             $table->string('description')->nullable();
             $table->string('nameImage')->nullable();
-            $table->bigInteger('state_id')->unsigned();
             $table->bigInteger('categoryTool_id')->unsigned();
 
             $table->foreign('categoryTool_id')->references('id')->on('categoryTools');

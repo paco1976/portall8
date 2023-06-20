@@ -19,7 +19,7 @@ class CreateLoansTable extends Migration
             $table->bigInteger('user_id')->unsigned();
             $table->datetime('dateInit')->nullable();
             $table->datetime('dateFinish')->nullable();
-            $table->boolean('approved')->default(null)->nullable();
+            // $table->boolean('approved')->default(null)->nullable();
 
             $table->foreign('tool_id')->references('id')->on('tools');
             $table->foreign('user_id')->references('id')->on('users');

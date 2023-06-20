@@ -9,7 +9,7 @@ class ToolModel extends Model
     protected $table ='tools';
 
     protected $fillable = [
-        'categoryTool_id', 'name', 'description', 'nameImage', 'state_id', 'created_at', 'updated_at' 
+        'categoryTool_id', 'name', 'description', 'nameImage', 'active', 'created_at', 'updated_at' 
     ];
 
     // public function headLoan() {//Tiene muchas

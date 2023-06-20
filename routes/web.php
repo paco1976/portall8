@@ -92,22 +92,18 @@ Route::get('/mensajes/{hash}', 'ReferenteController@mensajes')->name('mensajes')
 //panel de control del administrador general
 
 //Pañol Prestamos
-Route::get('/admin_loan','LoanController@admin_loansList' )->name('admin_loan');
+Route::get('/admin_loan','LoanController@getLoansFiltered' )->name('admin_loan');
 Route::get('/admin_loan_new','LoanController@admin_loanGetForm' )->name('admin_loan_new');
+Route::post('/admin_loan_dates','LoanController@admin_loan_dates' )->name('admin_loan_dates');
 Route::post('/admin_loan_save','LoanController@admin_loanSave' )->name('admin_loan_save');
-Route::get('/admin_loan_dates','LoanController@admin_loan_dates' )->name('admin_loan_dates');
-
-//Rutas a metodos
 Route::get('/admin_loan_enable/{loan_id}/state/{state}','LoanController@admin_loans_enable_desable' )->name('admin_loan_enable');
-Route::get('/getLoansByName','LoanController@getLoansByName' )->name('getLoansByName');
-Route::get('/getLoansByState','LoanController@getLoansByState' )->name('getLoansByState');
-Route::get('/loansByDate','LoanController@getLoansOrderByDate' )->name('loansByDate');
 
-//Herramientas del Pañol
+
+//Herramientas del Tools
 Route::get('/admin_tool','ToolController@admin_toolsList' )->name('admin_tool');
-Route::get('/admin_tool_new','ToolController@tool_new')->name('admin_tool_new'); //alta de publicación desde el admin
-
-//Rutas a metodos
+Route::get('/admin_tool_edit/{id}','ToolController@tool_edit_form')->name('admin_tool_edit'); 
+Route::get('/admin_tool_new','ToolController@tool_new_form')->name('admin_tool_new'); 
+Route::get('/admin_tool_enable/{id}','ToolController@admin_tool_enable')->name('admin_tool_enable'); 
 Route::post('/tool_save','ToolController@tool_save' )->name('tool_save');
 
 

@@ -2,9 +2,7 @@
 
 @section('main')
 
-		<div role="main" class="main">
-
-
+		<div role="main" class="main" >
 					<section class="page-top">
 						<div class="container">
 							<div class="row">
@@ -17,139 +15,88 @@
 							</div>
 							<div class="row">
 								<div class="col-md-12">
-									<h1>Prestamos</h1>
+									<h1>Herramientas</h1>
 								</div>
 
 							</div>
 						</div>
 					</section>
-
-
-
-				<div class="container">
-					<div style="display:flex;flex-direction:row" class="col-lg-12">
-						<form id="contactForm" action="{{route('getLoansByName')}}" method="get" class="row col-lg-6">
-							<div class="form-group" style="display:flex; flex-direction:row" class="col-lg-6">
-								<div>
-									<!-- <label>Buscador</label> -->
-									<input type="text" placeholder="Nombre del profesional" 
-									maxlength="100" class="form-control" name="name" id="name" required>
-								</div>
-								<button id="addToTable" type="submit" class="btn btn-secondary" >Buscar </button>
-							</div>
-						</form>
-						<form class="row" id="contactForm" action="{{route('toolsFilters')}}" method="get" class="row col-lg-6">
-							<div class="form-group" style="display:flex; flex-direction:row;" class="col-lg-6" >
-									<div>
-										<input class="form-control col-lg-6" list="browsers" 
-											placeholder="Seleccione el filtro"  name="filter" id="browser">
-										<datalist id="browsers">
-											<option value='1'>Aprobados</option>
-											<option value="Firefox">No Aprobados</option>
-											<option value="Chrome">Pendientes</option>
-											<option value="Opera">Proximos a vencer</option>
-											<option value="Safari">Vencen Hoy</option>
-										</datalist>
+					@if (Session::has('message'))
+                        <div class="alert alert-success" style="display:flex; flex-direction:row; justify-content:space-between">
+                            <p >{{ Session::get('message') }}</p>
+							<button type="button" style="float:right; border-radius: 2px;" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span>
+							</button>
+                        </div>									
+                        @endif				
+						<div class="container" style="margin:0px; padding:10px; width:100%">
+							<form  id="contactForm" action="{{route('admin_tool')}}" method="get" style="display:flex; flex-direction:row;justify-content: space-between;">
+									<div style="width:30%" >
+										<select class="form-control @error('category') is-invalid @enderror" name="categoryId"  id="categoryId" required>
+											<option value="">Seleccione una opción</option>
+											@foreach ($categories as $category)
+											<option value='{{ $category->id }}'>{{ $category->name }}</option>
+											@endforeach
+										</select>
 									</div>
-									<button id="addToTable" type="submit" class="btn btn-secondary" >Filtrar </button>
-							</div>
-						</form>
-						<!-- <label>Session</label> -->
-						<div class="row" class="col-lg-3">
-							<div>
-								@if (Session::has('message'))
-								<div class="alert alert-success">
-									<p>{{ Session::get('message') }}</p>
-								</div>
-								@endif
-								@if (Session::has('error'))
-								<div class="alert alert-danger">
-									<p>{{ Session::get('error') }}</p>
-								</div>
-								@endif
-							</div>
-							<div class="col-md-1" style="float:right">
-								<div class="mb-md">
-								
-									<a href="{{ route('admin_loan_new') }}">
-										<button id="addToTable" class="btn btn-primary">Iniciar Prestamo </button>
-									</a>
-								</div>
-							</div>
+									<div style="width:5%">
+										<button id="addToTable" type="submit" class="btn btn-secondary" >Filtrar</button>
+									</div>
+							</form>
 						</div>
-					</div>
-					
-					
-					
-					@if($loans)
-					<div class="row">
-						<div class="col-md-12">
+						<div class="row"  style=" padding:10px;">
+								<div class="col-sm-6">
+									<div class="mb-md" style="margin-top:20px">
+									
+										<a href="{{ route('admin_tool_new' ) }}" >
+											<button id="addToTable" class="btn btn-primary">Nuevo Herramienta </button>
+										</a>
+									</div>
+								</div>
+						</div>		
 						<br><br>
+						@if($tools)
+						<div  style="padding:10px;flex-wrap: wrap;display:flex;flex-direction:row; justify-content:space-arround; ">	
 
-								<tbody>
-								@foreach($loans as $loan)
+							@foreach($tools as $tool)
+									<div class="card" style="width: 25rem;margin: 10px;" >										
+										<ul class="list-group list-group-flush">
+													<li class="list-group-item" style="background-color:gainsboro;display:flex;flex-direction:row; justify-content:space-between">
+														<p class="card-text">Ide {{$tool->id}}</p>
+														<div style="display:flex; flex-direction:row">
+															<a style="text-align:center; width:100%;" href="{{ route('admin_tool_edit', ['id' => $tool->id] ) }}" class="btn btn-primary"><i class="bi bi-hand-thumbs-up-fill">Editar</i></a>					
+														</div>
+													</li>
+													<li class="list-group-item" ><h5 class="card-title">{{$tool->categoryName}}</h5></li>
+													<li class="list-group-item" ><h5 class="card-title">{{$tool->name}}</h5></li>
+													<li class="list-group-item">{{$tool->description}}</li>
+												
 
-								<div class="card" style="width: 18rem;">
-									<div class="card-img-top"></div>
-									<div class="card-body">	
-										<div class="card" style="width: 18rem;">										
-											<ul class="list-group list-group-flush">
-												<li class="list-group-item" style="display:flex;flex-direction:row; justify-content:space-between">
-													<P>PRESTAMO</P>
-													<p class="card-text">{{$loan->prestamoId}}</p>
-												</li>
-												<li class="list-group-item" style="text-align:right"><h5 class="card-title">{{$loan->herramientaNombre}}</h5></li>
-												<li class="list-group-item" style="display:flex;flex-direction:row; justify-content:space-between">
-													<P>ESTADO</P>
-													<p class="card-text">{{$loan->estado}}</p>
-												</li>
-												<li class="list-group-item">{{$loan->nombre}}</li>
-												<li class="list-group-item">{{$loan->apellido}}</li>
-											</ul>
-											<ul class="list-group list-group-flush">
-												<li class="list-group-item">{{$loan->descripcion}}</li>
-												<li class="list-group-item">Identificador: {{$loan->herramientaId}}</li>
-												<li class="list-group-item">{{$loan->inicio}}</li>
-												<li class="list-group-item">{{$loan->fin}}</li>
-												<li style="font-weight: 600;" class="list-group-item">{{$loan->aprobado == 0 ? "PRESTAMO NO APROBADO":"PRESTADA"}}</li>
-
-											</ul>
+													
+													@if($tool->active == 1)
+													<div style="display:flex; flex-direction:row">
+														<a style="text-align:center; width:100%; margin-bottom: 30px;" href="{{ route('admin_tool_enable', ['id' => $tool->id] ) }}" class="btn btn-danger"><i class="bi bi-hand-thumbs-up-fill">Deshabillitar</i></a>					
+													</div>
+													@else
+													<div style="display:flex; flex-direction:row">
+														<a style="text-align:center; width:100%; margin-bottom: 30px;" href="{{ route('admin_tool_enable', ['id' => $tool->id] ) }}" class="btn btn-success"><i class="bi bi-hand-thumbs-up-fill">Habilitar</i></a>					
+													</div>
+													@endif
+										</ul>
 										
-										</div>
-										<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-										@if($loan->aprobado)
-										<td style="text-align:center; width:100%">
-											<a href="{{ route('admin_loan_enable', ['loan_id' => $loan->prestamoId] ) }}" class="btn btn-danger">CANCELAR PRESTAMO</a>
-										</td>
-										@else
-										<td style="text-align:center;width:100%">
-											<a href="{{ route('admin_loan_enable',['loan_id' => $loan->prestamoId] ) }}" class="btn btn-success"> HABILITAR PRESTAMO </a>
-										</td>
-										@endif
 									</div>
-								</div>
-								
-								@endforeach
+							@endforeach
+							</div>
 
-
-								</tbody>
+						@else
+						<div class="row">
+							<div class="col-12 text center">
+							No hay Herramientas disponibles en CFP por el momento.
+							</div>
 						</div>
-
-					</div>
-					<div class="row">
-
-                    </div>
-
-					@else
-					<div class="row">
-                        <div class="col-12 text center">
-                        No hay prestamos a profesionales de tu CFP por el momento.
-                        </div>
-                    </div>
-					@endif
-		
-				</div>
-
+						@endif
+						</div>
 		</div>
 
 @endsection
+
+
