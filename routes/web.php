@@ -68,6 +68,7 @@ Route::get('/publicacion_delete/{hash}', 'PublicacionController@publicacion_dele
 Route::get('/homepublicaciones/{id}','PublicController@publicaciones' )->name('homepublicaciones');
 Route::get('/homeprofesional/{id}','PublicController@publicacion_profesional' )->name('homeprofesional');
 Route::put('/homeprofesional/{id}', 'PublicController@interaction_publicacion')->name('interaction_publicacion');
+Route::post('saveClientInfo', 'SurveyController@save_client_info')->name('save_client_info');
 Route::get('/homeinteraction/{hash}','PublicController@homeinteraction' )->name('homeinteraction');
 Route::put('/homeinteraction/{hash}', 'PublicController@interaction_publicacion_respuesta')->name('interaction_publicacion_respuesta');
 //ruta para el formulario de whatsapp
@@ -75,7 +76,6 @@ Route::get('/publicacion_whatsapp/{hash}','PublicController@publicacion_whatsapp
 Route::put('/publicacion_whatsapp_save', 'PublicController@publicacion_whatsapp_save')->name('publicacion_whatsapp_save');
 //buscador de publicaciones
 Route::get('/publicacion_buscar','PublicController@publicacion_buscar' )->name('publicacion_buscar');
-
 
 //panel de control de referentes
 Route::get('/profesionales','ReferenteController@profesionales' )->name('profesionales');
@@ -244,5 +244,5 @@ Route::get('/comunidad',function(){return view('comunidad');});
 
 
 /** Rutas para WhatsApp Api */
-Route::get('/whatsapp', [App\Http\Controllers\WhatsappController::class, 'handleWebhook']);
-Route::post('/whatsapp', [App\Http\Controllers\WhatsappController::class, 'handleResponse']);
+Route::get('/whatsapp', [App\Http\Controllers\SurveyController::class, 'handleWebhook']);
+Route::post('/whatsapp', [App\Http\Controllers\SurveyController::class, 'handleResponse']);

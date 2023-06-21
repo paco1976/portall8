@@ -148,7 +148,7 @@ class PublicController extends Controller
 
     }
     
-    public function publicacion_profesional($id){
+    public function publicacion_profesional($id, Request $request){
         
         //FALTA QUE SUME UN VISTO CUANDO SE ACCEDE A LA PUBLICACIÓN
 
@@ -181,14 +181,17 @@ class PublicController extends Controller
         $user_profile = $user->user_profile()->first();
         $zonas = $user->zonas()->get();
         
-
         $categoria_servicios_all = Categoria::where(['categoria_tipo_id' => 1,'active' => 1])->get();
         $categoria_productos_all = Categoria::where(['categoria_tipo_id' => 2,'active' => 1])->get();
 
         $user_type_all = User_type::all();
         $user_cfp_all = User_Cfp::all();
 
-        return view('homeprofesional', compact('categoria_servicios_all', 'categoria_productos_all',  'user_type_all','user_cfp_all', 'publicacion','categoria', 'titulo', 'user', 'user_profile', 'zonas', 'subjets'));
+        $info = $request->query('info', false);
+
+        $whatsapp_url = "https://wa.me/549". $user_profile->mobile . "?text=Hola!%20Te%20contacto%20a%20través%20de%20CEFEPERES%20y%20te%20quería%20hacer%20una%20consulta!";
+
+        return view('homeprofesional', compact('categoria_servicios_all', 'categoria_productos_all',  'user_type_all','user_cfp_all', 'publicacion','categoria', 'titulo', 'user', 'user_profile', 'zonas', 'subjets', 'info', 'whatsapp_url'));
 
     }
 

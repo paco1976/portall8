@@ -17,7 +17,7 @@ class CreateSurveysTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->string('client_name')->nullable();
-            $table->string('client_phone_number');
+            $table->string('client_cellphone');
             $table->string('client_email')->nullable();
             $table->boolean('contacted')->default(false);
             $table->boolean('service_provided')->default(false);
