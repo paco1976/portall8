@@ -44,14 +44,16 @@
 							</form>
 						</div>
 						<div class="row"  style=" padding:10px;">
-								<div class="col-sm-6">
-									<div class="mb-md" style="margin-top:20px">
-									
-										<a href="{{ route('admin_tool_new' ) }}" >
-											<button id="addToTable" class="btn btn-primary">Nuevo Herramienta </button>
+									<div class="col-sm-2" style="margin-top:20px">
+										<a href="{{ route('admin_tool_new') }}" >
+											<button id="addToTable" class="btn btn-primary">Nuevo Herramienta</button>
 										</a>
 									</div>
-								</div>
+									<div class="col-sm-2" style="margin-top:20px">
+										<a href="{{ route('admin_categoryTools') }}" >
+											<button id="addToTable" class="btn btn-secondary">Administrar Categorias</button>
+										</a>
+									</div>
 						</div>		
 						<br><br>
 						@if($tools)

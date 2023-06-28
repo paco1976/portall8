@@ -64,6 +64,8 @@ Route::get('/imagen_delete/{id}', 'PublicacionController@imagen_delete')->name('
 Route::get('/publicacion_delete/{hash}', 'PublicacionController@publicacion_delete')->name('publicacion_delete');
 
 
+
+
 //home y publicaciones sin login
 Route::get('/homepublicaciones/{id}','PublicController@publicaciones' )->name('homepublicaciones');
 Route::get('/homeprofesional/{id}','PublicController@publicacion_profesional' )->name('homeprofesional');
@@ -91,20 +93,33 @@ Route::get('/mensajes/{hash}', 'ReferenteController@mensajes')->name('mensajes')
 
 //panel de control del administrador general
 
-//Pañol Prestamos
+//Prestamos
 Route::get('/admin_loan','LoanController@getLoansFiltered' )->name('admin_loan');
-Route::get('/admin_loan_new','LoanController@admin_loanGetForm' )->name('admin_loan_new');
 Route::post('/admin_loan_dates','LoanController@admin_loan_dates' )->name('admin_loan_dates');
 Route::post('/admin_loan_save','LoanController@admin_loanSave' )->name('admin_loan_save');
 Route::get('/admin_loan_enable/{loan_id}/state/{state}','LoanController@admin_loans_enable_desable' )->name('admin_loan_enable');
 
+//Profesional y administrador
+Route::get('/loan_new','LoanController@admin_loanGetForm' )->name('loan_new');
 
-//Herramientas del Tools
+//Profesional
+Route::get('/loan','LoanController@getLoansProfesionalFiltered' )->name('loan');
+Route::get('/loan_cancel/{loan_id}','LoanController@loan_cancel' )->name('loan_cancel');
+
+
+//Herramientas 
 Route::get('/admin_tool','ToolController@admin_toolsList' )->name('admin_tool');
 Route::get('/admin_tool_edit/{id}','ToolController@tool_edit_form')->name('admin_tool_edit'); 
 Route::get('/admin_tool_new','ToolController@tool_new_form')->name('admin_tool_new'); 
 Route::get('/admin_tool_enable/{id}','ToolController@admin_tool_enable')->name('admin_tool_enable'); 
 Route::post('/tool_save','ToolController@tool_save' )->name('tool_save');
+
+//Categorias
+Route::get('/admin_categoryTool_edit/{id}','CategoryToolController@category_edit_form')->name('admin_categoryTool_edit'); 
+Route::get('/admin_categoryTool_new','CategoryToolController@categoryTool_new')->name('admin_categoryTool_new'); 
+Route::get('/admin_categoryTool_delete/{id}','CategoryToolController@categoryTool_delete' )->name('admin_categoryTool_delete');
+Route::get('/admin_categoryTools','CategoryToolController@getCategoryFiltered' )->name('admin_categoryTools');
+Route::post('/category_save','CategoryToolController@admin_catSave' )->name('category_save');
 
 
 Route::get('/admin_profesionales','AdminController@admin_profesionales' )->name('admin_profesionales');

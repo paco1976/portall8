@@ -14,7 +14,7 @@
 						</div>
 						<div class="row">
 							<div class="col-md-12">
-								<h1>Herramientas</h1>
+								<h1>Categorias</h1>
 							</div>
 						</div>
 					</div>
@@ -38,33 +38,13 @@
 									</ul>
 									<div class="tab-content">
 										<div class="tab-pane active">
-											<h2 class="short"><strong>Registre </strong>la herramienta</h2>
-											<form  method="POST" action="{{ route('tool_save') }}"  >
+											<h2 class="short"><strong>Registre la </strong>categoria</h2>
+											<form  method="POST" action="{{ route('category_save') }}"  >
 												
 												@csrf
 
-												<input style="display:none;" id="toolId" type="text"  name="toolId" 
-															value="{{ old('toolId') ?? $tool->id ?? ''}}">
-												<div class="row" >
-													<div class="form-group">
-														<div class="col-md-12">
-															<label for="categoryId" class="col-md-4 col-form-label text-md-right">Categoria</label>
-														</div>
-														<div class="col-md-12">
-															<select class="form-control @error('categoryId') is-invalid @enderror" name="categoryId"  id="categoryId" required>
-																<!-- <option value="">Seleccione una opción</option> -->
-																@foreach ($categories as $category)
-																<option value="{{ old('categoryId') ?? $category->id ?? ''}}">{{ $category->name }}</option>
-																@endforeach
-															</select>
-															@error('categoryId')
-																<span class="invalid-feedback" role="alert">
-																	<strong>{{ $message }}</strong>
-																</span>
-															@enderror
-														</div>
-													</div>
-												</div>
+												<input style="display:none;" id="id" type="text"  name="id" 
+															value="{{ old('id') ?? $cat->id ?? ''}}">
 												<div class="row" >
 													<div class="form-group">
 														<div class="col-md-12">
@@ -72,7 +52,7 @@
 														</div>
 														<div class="col-md-12">
 															<input class="form-control @error('name') is-invalid @enderror" id="name" type="text"  name="name" 
-															value="{{ old('name') ?? $tool->name ?? ''}}" required  autofocus>
+															value="{{ old('name') ?? $cat->name ?? ''}}" required  autofocus>
 															@error('name')
 																<span class="invalid-feedback" role="alert">
 																	<strong>{{ $message }}</strong>
@@ -82,24 +62,7 @@
 													</div>
 												</div>
 
-												<div class="row">
-													<div class="form-group">
-														<div class="col-md-12">
-															<label for="description" class="col-md-4 col-form-label text-md-right">Descripcion</label>
-														</div>
-
-														<div class="col-md-12">
-															<input id="description" type="text" class="form-control @error('description') is-invalid @enderror" name="description" 
-																value="{{ old('description') ?? $tool->description ?? ''}}" required autofocus>
-
-															@error('description')
-																<span class="invalid-feedback" role="alert">
-																	<strong>{{ $message }}</strong>
-																</span>
-															@enderror
-														</div>
-													</div>
-												</div>
+											
 
 												<div class="form-group row mb-0">
 													<div class="col-md-12 offset-md-4" style="display:flex; flex-direction:row">

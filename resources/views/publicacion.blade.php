@@ -22,16 +22,7 @@
 						</div>
 					</div>
 				</section>
-
-
-
-
 				<div class="container">
-
-
-
-
-
 					<div class="row">
 						<div class="col-md-9">
 							<div class="tabs">
@@ -43,14 +34,9 @@
 									<!-- "{{ route('publicacion', ['id'=> $user->id]) }}" -->
 										<a href="{{ route('publicacion') }}"><i class="fa fa-file-powerpoint-o"></i> Publicaciones</a>
 									</li>
-
-
 								</ul>
 								<div class="tab-content">
-
 									<div id="publicacion" class="tab-pane active">
-
-
 							<div class="row">
 									@if (Session::has('message'))
                                     <div class="alert alert-success">
