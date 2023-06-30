@@ -12,6 +12,7 @@ class Survey extends Model
         'client_cellphone',
         'client_email',
         'contacted',
+        'accepts_survey',
         'service_provided',
         'satisfaction',
         'descriptive_words',
