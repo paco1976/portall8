@@ -3,16 +3,17 @@
     @csrf
     <div class="form-group">
       <input type="hidden" value="{{ old('user_id', $user_id) }}" name="user_id">
+      <input type="hidden" value="{{ old('publicacion_id', $publicacion_id) }}" name="publicacion_id">
     </div>
     <div class="form-group">
       <label for="client_name">Nombre *</label>
-      <input type="text" class="form-control" name="client_name" id="name" value="{{ old('client_name') }}" required>
+      <input type="text" class="form-control" name="client_name" id="name" value="{{ old('client_name') }}" placeholder="Tu nombre" required>
       <div class="invalid-feedback" id="client_name_error"></div>
     </div>
 
     <div class="form-group">
       <label for="client_cellphone">Celular *</label>
-      <input type="text" class="form-control" name="client_cellphone" id="cellphone" value="{{ old('client_cellphone') }}" pattern="[0-9]{10}" required>
+      <input type="text" class="form-control" name="client_cellphone" id="cellphone" value="{{ old('client_cellphone') }}" pattern="[0-9]{12}" placeholder="541156677889" required>
       <div class="invalid-feedback" id="client_cellphone_error"></div>
     </div>
 
@@ -56,7 +57,7 @@
       let clientName = $('#name').val().trim();
       let clientCellphone = $('#cellphone').val().trim();
       let termsChecked = $('#terms').is(':checked');
-      let validCellphoneRegex = /^[0-9]{10}$/;
+      let validCellphoneRegex = /^[0-9]{12}$/;
 
       let hasErrors = false;
 
@@ -68,12 +69,12 @@
 
       if (clientCellphone === '') {
         // Error message for empty input
-        $('#client_cellphone_error').text('Por favor, completar número de celular, por ejemplo: 1156677889');
+        $('#client_cellphone_error').text('Por favor, completar número de celular, por ejemplo: 541156677889');
         $('#cellphone').addClass('is-invalid');
         hasErrors = true;
       } else if (!validCellphoneRegex.test(clientCellphone)) {
         // Error message for invalid format
-        $('#client_cellphone_error').text('Por favor, ingresar un número de celular válido (10 dígitos).');
+        $('#client_cellphone_error').text('Por favor, ingresar un número de celular válido con código de área (12 dígitos), por ejemplo: 541156677889');
         $('#cellphone').addClass('is-invalid');
         hasErrors = true;
       }

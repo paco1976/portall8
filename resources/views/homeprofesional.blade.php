@@ -123,7 +123,7 @@
 
 				<div id="client-form" class="contact-info">
 				<p>Completá tus datos para ver la información de contacto del profesional</p>
-				@include('clientForm', ['user_id' => $publicacion->id])
+				@include('clientForm', ['user_id' => $user->id, 'publicacion_id' => $publicacion->id])
 				</div>
 				@endif
 			</div>
