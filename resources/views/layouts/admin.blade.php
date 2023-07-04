@@ -51,7 +51,8 @@
 		<!-- Head Libs -->
         <script src="{{ asset('vendor/modernizr/modernizr.js') }}"></script>
 
-
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+  
 		<!--[if IE]>
 			<link rel="stylesheet" href="css/ie.css">
 		<![endif]-->
@@ -60,6 +61,9 @@
 			<script src="vendor/respond/respond.js"></script>
 			<script src="vendor/excanvas/excanvas.js"></script>
 		<![endif]-->
+		<meta name="csrf-token" content="{{ csrf_token() }}">
+
+		@stack('style')
 
 	</head>
 	<body>
@@ -112,13 +116,15 @@
 
 								<li class="dropdown active">
 									<a class="dropdown-toggle" href="#">
-										<i class=fa-wrench"></i> Herramientas
+										<i class="fa-wrench"></i> Herramientas
 										<i class="fa fa-angle-down"></i>
 									</a>
 									<ul class="dropdown-menu">
 
 										 <li><a href="{{ route('admin_profesionales') }}"><i class="fa fa-users"></i> Lista de profesionales</a></li>
 										 <li><a href="{{ route('admin_publicaciones') }}"><i class="fa fa-list-ul"></i> Lista de publiaciones</a></li>
+										 <li><a href="{{ route('admin_loan') }}"><i class="fa fa-list-ul"></i> Prestamos</a></li>
+										 <li><a href="{{ route('admin_tool') }}"><i class="fa fa-list-ul"></i> Herramientas</a></li>
 										 <!-- <li><a href="#"><i class="fa fa-comments"></i> Consultas</a></li> -->
 										 <li><a href="{{ route('admin_categorias') }}"><i class="fa fa-list"></i> Categorias</a></li>
 										 <li><a href="#"><i class="fa fa-list"></i> Títulos</a></li>
@@ -499,9 +505,16 @@
 		  
 		  }
 		  
+		  	$.ajaxSetup({
+				headers: {
+					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')     
+				}
+			}); 
+			
 		  </script>
 
 
+@stack('script')
 
 	</body>
 

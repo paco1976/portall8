@@ -1,0 +1,104 @@
+@extends('layouts.admin')
+
+@section('main')
+
+		<div role="main" class="main" >
+					<section class="page-top">
+						<div class="container">
+							<div class="row">
+								<div class="col-md-12">
+									<ul class="breadcrumb">
+										<li><a href="#">Inicio</a></li>
+										<li class="active">Panel de Control</li>
+									</ul>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-12">
+									<h1>Herramientas</h1>
+								</div>
+
+							</div>
+						</div>
+					</section>
+					@if (Session::has('message'))
+                        <div class="alert alert-success" style="display:flex; flex-direction:row; justify-content:space-between">
+                            <p >{{ Session::get('message') }}</p>
+							<button type="button" style="float:right; border-radius: 2px;" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span>
+							</button>
+                        </div>									
+                        @endif				
+						<div class="container" style="margin:0px; padding:10px; width:100%">
+							<form  id="contactForm" action="{{route('admin_tool')}}" method="get" style="display:flex; flex-direction:row;justify-content: space-between;">
+									<div style="width:30%" >
+										<select class="form-control @error('category') is-invalid @enderror" name="categoryId"  id="categoryId" required>
+											<option value="">Seleccione una opción</option>
+											@foreach ($categories as $category)
+											<option value='{{ $category->id }}'>{{ $category->name }}</option>
+											@endforeach
+										</select>
+									</div>
+									<div style="width:5%">
+										<button id="addToTable" type="submit" class="btn btn-secondary" >Filtrar</button>
+									</div>
+							</form>
+						</div>
+						<div class="row"  style=" padding:10px;">
+									<div class="col-sm-2" style="margin-top:20px">
+										<a href="{{ route('admin_tool_new') }}" >
+											<button id="addToTable" class="btn btn-primary">Nuevo Herramienta</button>
+										</a>
+									</div>
+									<div class="col-sm-2" style="margin-top:20px">
+										<a href="{{ route('admin_categoryTools') }}" >
+											<button id="addToTable" class="btn btn-secondary">Administrar Categorias</button>
+										</a>
+									</div>
+						</div>		
+						<br><br>
+						@if($tools)
+						<div  style="padding:10px;flex-wrap: wrap;display:flex;flex-direction:row; justify-content:space-arround; ">	
+
+							@foreach($tools as $tool)
+									<div class="card" style="width: 25rem;margin: 10px;" >										
+										<ul class="list-group list-group-flush">
+													<li class="list-group-item" style="background-color:gainsboro;display:flex;flex-direction:row; justify-content:space-between">
+														<p class="card-text">Ide {{$tool->id}}</p>
+														<div style="display:flex; flex-direction:row">
+															<a style="text-align:center; width:100%;" href="{{ route('admin_tool_edit', ['id' => $tool->id] ) }}" class="btn btn-primary"><i class="bi bi-hand-thumbs-up-fill">Editar</i></a>					
+														</div>
+													</li>
+													<li class="list-group-item" ><h5 class="card-title">{{$tool->categoryName}}</h5></li>
+													<li class="list-group-item" ><h5 class="card-title">{{$tool->name}}</h5></li>
+													<li class="list-group-item">{{$tool->description}}</li>
+												
+
+													
+													@if($tool->active == 1)
+													<div style="display:flex; flex-direction:row">
+														<a style="text-align:center; width:100%; margin-bottom: 30px;" href="{{ route('admin_tool_enable', ['id' => $tool->id] ) }}" class="btn btn-danger"><i class="bi bi-hand-thumbs-up-fill">Deshabillitar</i></a>					
+													</div>
+													@else
+													<div style="display:flex; flex-direction:row">
+														<a style="text-align:center; width:100%; margin-bottom: 30px;" href="{{ route('admin_tool_enable', ['id' => $tool->id] ) }}" class="btn btn-success"><i class="bi bi-hand-thumbs-up-fill">Habilitar</i></a>					
+													</div>
+													@endif
+										</ul>
+										
+									</div>
+							@endforeach
+							</div>
+
+						@else
+						<div class="row">
+							<div class="col-12 text center">
+							No hay Herramientas disponibles en CFP por el momento.
+							</div>
+						</div>
+						@endif
+						</div>
+		</div>
+
+@endsection
+
+

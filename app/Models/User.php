@@ -94,6 +94,11 @@ class User extends Authenticatable
         //morghToMany()
         return $this->belongsToMany('App\Models\Publicacion', 'publicacion_user');
     }
+
+    public function headPrestamo() {
+        return $this->hasmany('App\Models\Prestamo');
+    }
+
     /*
     public function sendPasswordResetNotification($token)
     {
