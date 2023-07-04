@@ -290,9 +290,20 @@ class LoanController extends Controller
     }
 
     private function greaterThanMax (Array $myArray){
-        $num_a=explode('-', $myArray[0]);
-        $num_b=explode('-', $myArray[1]);
-        if($num_a[2]-$num_b[2]<=-3){
+        
+               
+        $fecha1 = date('d-m-Y', strtotime($myArray[0]));
+        $fecha2 = date('d-m-Y', strtotime($myArray[1]));
+        $fecha1 = date_create($fecha1);
+        $fecha2 = date_create($fecha2);
+        $dif = date_diff($fecha1, $fecha2);
+        $differenceFormat = '%a';
+        $resta = $dif->format($differenceFormat);
+        //dd($resta);
+        //$num_a=explode('-', $myArray[0]);
+        //$num_b=explode('-', $myArray[1]);
+        
+        if($resta>3){
             return true;
         }
         return false;
