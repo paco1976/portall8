@@ -42,20 +42,20 @@ class ToolController extends Controller
 
         if($user->permisos->name == "Administrador"){
             $tools = $tools 
-            ->join('categoryTools AS c', 'c.id', '=', 'Tools.categoryTool_id');
+            ->join('categoryTools AS c', 'c.id', '=', 'tools.categoryTool_id');
 
             if ($request->get("categoryId")) { //Filtro de estado
                 $categoryId = $request->get("categoryId");             
-                    $tools = $tools->where('Tools.categoryTool_id', $categoryId);
+                    $tools = $tools->where('tools.categoryTool_id', $categoryId);
             }
             //dd($request->get("categoryId"));
             $tools = $tools
             ->select(
-                'Tools.id as id',
-                'Tools.name as name',
-                'Tools.description as description',
-                'Tools.active as active',
-                'Tools.categoryTool_id as category',
+                'tools.id as id',
+                'tools.name as name',
+                'tools.description as description',
+                'tools.active as active',
+                'tools.categoryTool_id as category',
                 'c.name as categoryName'
                ) 
             ->paginate(15);
