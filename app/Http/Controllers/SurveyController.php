@@ -75,7 +75,7 @@ class SurveyController extends Controller
 
         // API configuration
         // TODO: get permanent token
-        $token = 'EAAI9xHpZAJZAwBAEriscz6zV0xJzi3ZCfW0r4pR0aAMY5sQjpJvGG31r3733Yd6dqOxZCrmqaCYsMz7gULfc9qZCqZC2lQg1sdZC3YHR6ALy37rv5jXEld6sgyntqEztdKyKR2ZChZAQkoqCR7c6YDKNAPXlMQE5iMxSzvJsdhemXZCkZCFt89w1taxCl1fWQD7jndJ6e6SBiAh4AZDZD';
+        $token = 'EAAI9xHpZAJZAwBAHoRG5iZChxK6n7rsgOmjeeyBdRVamdfOD9tHMX7zcLPjfNZBablKb8ZCPCLl5Xo1NSt7NYwHYuAyhJvoUkkvQhADOSKHuiDmYZBBjWSEXFBPGMywSuJSCfBwskWgHiZBZCaKT41KIyDmZBwHlFJgYLBlVPdfRI3jeLuTjgWR9jVfOf6fhgucnpJZC89yH2SsQZDZD';
 
         // ID de nuestro teléfono. TODO: cambiarlo al hacer el cambio de número
         $phoneID = '104140462691659';
@@ -399,6 +399,8 @@ class SurveyController extends Controller
 
                 // Guarda la palabra en el tabla de survey
                 if ($survey) {
+                    $response = "¡Gracias por responder nuestra encuesta!\nPor cualquier duda o comentario que nos quieras hacer, podés escribirnos a info@cefeperes.com.ar y te contestaremos a la brevedad.";
+
                     $word = substr($message, strpos($message, "word:") + strlen("word:"));
 
                     $descriptiveWords = $survey->descriptive_words;
@@ -412,6 +414,10 @@ class SurveyController extends Controller
                     $survey->descriptive_words = $descriptiveWords;
 
                     $survey->save();
+
+                    // Envía mensaje de agradecimiento
+                    $this->sendWhatsAppMessage($survey, "text", $response, 3, $message_ID, $message, $timestamp, '', $client_phone);
+
                 }
             }
             /**
