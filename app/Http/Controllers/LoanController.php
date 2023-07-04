@@ -115,7 +115,7 @@ class LoanController extends Controller
 
             $loans = $loans
             ->select(
-                'Loans.id as loanId',
+                'loans.id as loanId',
                 'h.id as toolId',
                 'c.id as categoryToolId',
                 'c.name as categoryName',
@@ -166,9 +166,9 @@ class LoanController extends Controller
                 if($state == "pending"){
                     $loans = $loans->where('loans.state_id', 3);
                 }else if($state == "refused"){
-                    $loans = $loans->where('Loans.state_id',  2);
+                    $loans = $loans->where('loans.state_id',  2);
                 }else if($state == "approved"){
-                    $loans = $loans->where('Loans.state_id',  1);
+                    $loans = $loans->where('loans.state_id',  1);
                 }
             }
 
