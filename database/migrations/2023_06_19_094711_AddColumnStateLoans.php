@@ -14,7 +14,7 @@ class AddColumnStateLoans extends Migration
     public function up()
     {
         Schema::table('Loans', function($t) {
-            DB::statement("ALTER TABLE `Loans` add COLUMN `state_id` INT(11) UNSIGNED  NULL");
+            DB::statement("ALTER TABLE `loans` add COLUMN `state_id` INT(11) UNSIGNED  NULL");
         });
     }
 
@@ -26,7 +26,7 @@ class AddColumnStateLoans extends Migration
     public function down()
     {
         Schema::table('Loans', function($t) {
-            DB::statement("ALTER TABLE `Loans` add COLUMN `state_id` INT(11) UNSIGNED  NULL");
+            DB::statement("ALTER TABLE `loans` add COLUMN `state_id` INT(11) UNSIGNED  NULL");
         });
     }
 }

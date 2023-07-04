@@ -14,7 +14,7 @@ class AddColumnActiveTools extends Migration
     public function up()
     {
         Schema::table('Tools', function($t) {
-            DB::statement("ALTER TABLE `Tools` add column  `active` boolean null");
+            DB::statement("ALTER TABLE `tools` add column  `active` boolean null");
         });
     }
 
@@ -26,7 +26,7 @@ class AddColumnActiveTools extends Migration
     public function down()
     {
         Schema::table('Tools', function($t) {
-            DB::statement("ALTER TABLE `Tools` add column  `active` boolean null");
+            DB::statement("ALTER TABLE `tools` add column  `active` boolean null");
         });
     }
 }

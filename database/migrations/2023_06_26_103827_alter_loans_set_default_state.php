@@ -14,7 +14,7 @@ class AlterLoansSetDefaultState extends Migration
     public function up()
     {
         Schema::table('Loans', function($t) {
-            DB::statement("ALTER TABLE `Loans` alter column  `state_id` set  default 3");
+            DB::statement("ALTER TABLE `loans` alter column  `state_id` set  default 3");
 
         });
     }
@@ -27,7 +27,7 @@ class AlterLoansSetDefaultState extends Migration
     public function down()
     {
         Schema::table('Loans', function($t) {
-            DB::statement("ALTER TABLE `Loans` alter column  `state_id` set  default 3");
+            DB::statement("ALTER TABLE `loans` alter column  `state_id` set  default 3");
         });
     }
 }
