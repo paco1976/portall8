@@ -85,8 +85,8 @@ class LoanController extends Controller
         $user->avatar = Storage::disk('avatares')->url($user->avatar);
             $loans = LoanModel::query();
             $loans = $loans 
-            ->join('users AS u', 'Loans.user_id', '=', 'u.id')
-            ->join('tools AS h', 'Loans.tool_id', '=', 'h.id')
+            ->join('users AS u', 'loans.user_id', '=', 'u.id')
+            ->join('tools AS h', 'loans.tool_id', '=', 'h.id')
             ->join('categorytools AS c', 'h.categoryTool_id', '=', 'c.id');
                   
             if ($request->get("date")) { //Filtro de nombre
@@ -94,8 +94,8 @@ class LoanController extends Controller
                 $year=substr($request->get("date"),0, 4);
                 $month=substr($request->get("date"),5,9);
 
-                $loans=$loans ->whereMonth('Loans.dateInit' ,'=', $month);
-                $loans=$loans ->whereYear('Loans.dateFinish' ,'=',  $year);
+                $loans=$loans ->whereMonth('loans.dateInit' ,'=', $month);
+                $loans=$loans ->whereYear('loans.dateFinish' ,'=',  $year);
             }
             if ($request->get("name")) { //Filtro de nombre
                 $name = $request->get("name");
@@ -105,11 +105,11 @@ class LoanController extends Controller
             if ($request->get("state")) { //Filtro de estado
                 $state = $request->get("state");
                 if($state == "pending"){
-                    $loans = $loans->where('Loans.state_id', 3);
+                    $loans = $loans->where('loans.state_id', 3);
                 }else if($state == "refused"){
-                    $loans = $loans->where('Loans.state_id',  2);
+                    $loans = $loans->where('loans.state_id',  2);
                 }else if($state == "approved"){
-                    $loans = $loans->where('Loans.state_id',  1);
+                    $loans = $loans->where('loans.state_id',  1);
                 }
             }
 
@@ -123,9 +123,9 @@ class LoanController extends Controller
                 'h.description as descirption',
                 'u.name as name',
                 'u.last_name as lastName',
-                'Loans.dateInit as init',
-                'Loans.dateFinish as finish',
-                'Loans.state_id as state_id',
+                'loans.dateInit as init',
+                'loans.dateFinish as finish',
+                'loans.state_id as state_id',
                ) 
             ->paginate(15);
 
@@ -143,18 +143,18 @@ class LoanController extends Controller
         if($user->type->name == "Profesional"){       
             $loans = LoanModel::query();
             $loans = $loans 
-            ->join('tools AS h', 'Loans.tool_id', '=', 'h.id')
+            ->join('tools AS h', 'loans.tool_id', '=', 'h.id')
             ->join('categorytools AS c', 'h.categoryTool_id', '=', 'c.id');
                         
-            $loans=$loans->where('Loans.user_id', '=', $user->id);
+            $loans=$loans->where('loans.user_id', '=', $user->id);
 
             if ($request->get("date")) { //Filtro de nombre
                 $date = $request->get("date");
                 $year=substr($request->get("date"),0, 4);
                 $month=substr($request->get("date"),5,9);
 
-                $loans=$loans ->whereMonth('Loans.dateInit' ,'=', $month);
-                $loans=$loans ->whereYear('Loans.dateFinish' ,'=',  $year);
+                $loans=$loans ->whereMonth('loans.dateInit' ,'=', $month);
+                $loans=$loans ->whereYear('loans.dateFinish' ,'=',  $year);
             }
             if ($request->get("name")) { //Filtro de nombre
                 $name = $request->get("name");
@@ -164,7 +164,7 @@ class LoanController extends Controller
             if ($request->get("state")) { //Filtro de estado
                 $state = $request->get("state");
                 if($state == "pending"){
-                    $loans = $loans->where('Loans.state_id', 3);
+                    $loans = $loans->where('loans.state_id', 3);
                 }else if($state == "refused"){
                     $loans = $loans->where('Loans.state_id',  2);
                 }else if($state == "approved"){
@@ -174,15 +174,15 @@ class LoanController extends Controller
 
             $loans = $loans
             ->select(
-                'Loans.id as loanId',
+                'loans.id as loanId',
                 'h.id as toolId',
                 'c.id as categoryToolId',
                 'c.name as categoryName',
                 'h.name as toolName',
                 'h.description as descirption',
-                'Loans.dateInit as init',
-                'Loans.dateFinish as finish',
-                'Loans.state_id as state_id',
+                'loans.dateInit as init',
+                'loans.dateFinish as finish',
+                'loans.state_id as state_id',
                ) 
             ->paginate(15);
 
