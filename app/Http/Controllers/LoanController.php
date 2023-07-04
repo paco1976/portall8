@@ -87,7 +87,7 @@ class LoanController extends Controller
             $loans = $loans 
             ->join('users AS u', 'loans.user_id', '=', 'u.id')
             ->join('tools AS h', 'loans.tool_id', '=', 'h.id')
-            ->join('categorytools AS c', 'h.categoryTool_id', '=', 'c.id');
+            ->join('categoryTools AS c', 'h.categoryTool_id', '=', 'c.id');
                   
             if ($request->get("date")) { //Filtro de nombre
                 $date = $request->get("date");
@@ -144,7 +144,7 @@ class LoanController extends Controller
             $loans = LoanModel::query();
             $loans = $loans 
             ->join('tools AS h', 'loans.tool_id', '=', 'h.id')
-            ->join('categorytools AS c', 'h.categoryTool_id', '=', 'c.id');
+            ->join('categoryTools AS c', 'h.categoryTool_id', '=', 'c.id');
                         
             $loans=$loans->where('loans.user_id', '=', $user->id);
 

@@ -85,7 +85,7 @@ class ToolController extends Controller
         $tool=null;
             $tool = ToolModel::query();
             $tool = $tool 
-            ->join('categorytools AS c', 'c.id', '=', 'tools.categoryTool_id');
+            ->join('categoryTools AS c', 'c.id', '=', 'tools.categoryTool_id');
             $tool = $tool
             ->where('tools.id', '=', $id);
             $tool = $tool
