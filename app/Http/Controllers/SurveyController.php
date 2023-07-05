@@ -2,14 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Console\Commands\SendSurvey;
 use App\Events\ClientRegistered;
 use Illuminate\Http\Request;
 use App\Models\Survey;
 use App\Models\Chatbot;
-use App\Models\Publicacion;
 use App\Models\User;
-use App\Models\User_Profile;
 
 // TODO
 /** DELETE survey */
@@ -57,8 +54,6 @@ class SurveyController extends Controller
             //TODO: mandar survey después de cierta cantidad de tiempo
             event(new ClientRegistered($survey->id, $data['user_id']));
         }
-
-        $user_id = $data['user_id'];
 
         // Retorna la vista con la información de contacto
         return redirect()->route('homeprofesional', ['id' => $data['publicacion_id'], 'info' => true]);
@@ -160,42 +155,44 @@ class SurveyController extends Controller
                 // Fin del curl
                 curl_close($curl);
 
-                // Id del mensaje enviado
-                $idWA = $response['messages'][0]['id'];
-
-                $messageSent = $message;
-
-                // Si recibió el survey
-                if ($survey) {
-                    // En el step 1 quiero cambiar el campo contacted a true y reemplazar lo que se almacena como mensaje guardado.
-                    if ($step === 1) {
-                        $messageSent = 'Inicio encuesta';
-
-                        $survey->contacted = true;
-                        $survey->save();
+                if($response){
+                    // Id del mensaje enviado
+                    $idWA = $response['messages'][0]['id'];
+    
+                    $messageSent = $message;
+    
+                    // Si recibió el survey
+                    if ($survey) {
+                        // En el step 1 quiero cambiar el campo contacted a true y reemplazar lo que se almacena como mensaje guardado.
+                        if ($step === 1) {
+                            $messageSent = 'Inicio encuesta';
+    
+                            $survey->contacted = true;
+                            $survey->save();
+                        }
+                        // Guardo los datos en la tabla Chatbot
+                        Chatbot::insert([
+                            'survey_id' => $survey->id,
+                            'message_received' => $idReceived,
+                            'message_sent' => $messageSent,
+                            'id_wa' => $idWA,
+                            'phone' => $recipient_phone,
+                            'timestamp_wa' => $timestamp,
+                            'phone_id' => $client_phone
+                        ]);
+                    } else {
+                        // Para mensajes que no está asociados con un survey, los guardo igual.
+    
+                        Chatbot::insert([
+                            'survey_id' => 0,
+                            'message_received' => $messageReceived,
+                            'message_sent' => $messageSent,
+                            'id_wa' => $idWA,
+                            'phone' => $recipient_phone,
+                            'timestamp_wa' => $timestamp,
+                            'phone_id' => $client_phone
+                        ]);
                     }
-                    // Guardo los datos en la tabla Chatbot
-                    Chatbot::insert([
-                        'survey_id' => $survey->id,
-                        'message_received' => $idReceived,
-                        'message_sent' => $messageSent,
-                        'id_wa' => $idWA,
-                        'phone' => $recipient_phone,
-                        'timestamp_wa' => $timestamp,
-                        'phone_id' => $client_phone
-                    ]);
-                } else {
-                    // Para mensajes que no está asociados con un survey, los guardo igual.
-
-                    Chatbot::insert([
-                        'survey_id' => 0,
-                        'message_received' => $messageReceived,
-                        'message_sent' => $messageSent,
-                        'id_wa' => $idWA,
-                        'phone' => $recipient_phone,
-                        'timestamp_wa' => $timestamp,
-                        'phone_id' => $client_phone
-                    ]);
                 }
             }
         }
