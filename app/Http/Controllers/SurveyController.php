@@ -20,7 +20,7 @@ class SurveyController extends Controller
     public function handleWebhook(Request $request)
     {
         // Verificación del token
-        $token = 'cfpereswpwebhook';
+        $token = env('WA_WEBHOOK_TOKEN');
         $hubChallenge = $request->input('hub_challenge');
         $hubVerifyToken = $request->input('hub_verify_token');
         if ($token === $hubVerifyToken) {
@@ -70,10 +70,10 @@ class SurveyController extends Controller
 
         // API configuration
         // TODO: get permanent token
-        $token = 'EAAI9xHpZAJZAwBAHoRG5iZChxK6n7rsgOmjeeyBdRVamdfOD9tHMX7zcLPjfNZBablKb8ZCPCLl5Xo1NSt7NYwHYuAyhJvoUkkvQhADOSKHuiDmYZBBjWSEXFBPGMywSuJSCfBwskWgHiZBZCaKT41KIyDmZBwHlFJgYLBlVPdfRI3jeLuTjgWR9jVfOf6fhgucnpJZC89yH2SsQZDZD';
+        $token = env('WHATSAPP_TOKEN');
 
         // ID de nuestro teléfono. TODO: cambiarlo al hacer el cambio de número
-        $phoneID = '104140462691659';
+        $phoneID = env('PHONE_ID');
 
         // Api url
         $url = 'https://graph.facebook.com/v17.0/' . $phoneID . '/messages';
