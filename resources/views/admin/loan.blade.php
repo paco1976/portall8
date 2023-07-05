@@ -98,14 +98,14 @@
 													<li class="list-group-item">PROFESIONAL</li>
 													<li class="list-group-item">{{$loan->name}} {{$loan->lastName}}</li>
 													@if($loan->state_id == 1)
-													<a style="text-align:center; width:100%; margin-bottom: 30px;" href="{{ route('admin_loan_enable', ['loan_id' => $loan->loanId,'state' => 2] ) }}" class="btn btn-danger"><i class="bi bi-hand-thumbs-up-fill">Rechazar</i></a>					
+													<a style="text-align:center; width:100%; margin-bottom: 30px;" href="{{ route('admin_loan_enable', ['loan_id' => $loan->loanId,'state' => 2] ) }}" class="btn btn-success"><i class="bi bi-hand-thumbs-up-fill">Rechazar</i></a>					
 													@elseif($loan->state_id == 3)
 													<div style="display:flex; flex-direction:row">
 													<a style="text-align:center; width:50%; margin-bottom: 30px;" href="{{ route('admin_loan_enable', ['loan_id' => $loan->loanId,'state' => 1] ) }}" class="btn btn-success"><i class="bi bi-hand-thumbs-up-fill">Habilitar</i></a>					
 													<a style="text-align:center;width:50%; margin-bottom: 30px;" href="{{ route('admin_loan_enable',['loan_id' => $loan->loanId, 'state' => 2] ) }}" class="btn btn-danger"> Rechazar </a>													
 													</div>
-													@elseif($loan->state_id == 2)
-													<a style="text-align:center;width:100%; margin-bottom: 30px;" href="{{ route('admin_loan_enable',['loan_id' => $loan->loanId, 'state' => 1] ) }}" class="btn btn-success"> Habilitar</a>
+													@else
+													<a style="text-align:center;width:100%; margin-bottom: 30px;" href="{{ route('admin_loan_enable',['loan_id' => $loan->loanId, 'state' => 2] ) }}" class="btn btn-danger"> Rechazar</a>
 													@endif
 													
 										</ul>
