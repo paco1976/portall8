@@ -196,6 +196,7 @@ class LoanController extends Controller
            
 
     }
+    
 
     public function admin_loanGetForm(){ 
         $user = User::find(Auth::user()->id);
@@ -205,6 +206,90 @@ class LoanController extends Controller
         $tool_selectd=null;
     
         return view('loan_new', compact( 'tool_selectd','tools','user', 'dates_'));
+    }
+
+    public function admin_loanGetForm_admin(){ 
+        $user = User::find(Auth::user()->id);
+        $user->avatar = Storage::disk('avatares')->url($user->avatar);
+        $tools = ToolModel::all(); 
+        $dates_=[];
+        $tool_selectd=null;
+        return view('/admin.loan_new_admin', compact( 'tool_selectd','tools','user', 'dates_'));
+    }
+
+    public function admin_loanSave_admin(Request $request){
+
+        $dataForm = request()->validate([
+            'user' => 'required',
+            'tool_selectd' => 'required',
+            'dates' => 'required',
+        ],[
+            'user.required' => 'Debe seleccionar una herramienta',
+            'tool_selectd.required' => 'Debe seleccionar una herramienta',
+            'date.required' => 'Debe Ingresar una fecha',
+        ]);
+
+        $user = User::find(Auth::user()->id);
+        $user->avatar = Storage::disk('avatares')->url($user->avatar);
+
+        $user->permisos = $user->user_type()->first();
+        $user->cfp = $user->cfp()->first();
+
+        if($user->permisos->name == "Administrador"){
+
+            $datesRequest=$dataForm['dates'];
+
+            $datesTrue=str_contains($datesRequest, "to");
+    
+            if($datesTrue){
+    
+                    $myArray = explode('to', $datesRequest);
+                    //$maxDays=$this-> greaterThanMax($myArray);
+                    //dd($maxDays);
+                    $tool_selectd= $this->GetTool((int)$dataForm['tool_selectd']);
+    
+                    if($this-> greaterThanMax($myArray)){
+                        Session::flash('message', 'El maximo de dias para el prestamo es de 3');
+                        $dates_=$this->dateEnableByTool($tool_selectd);
+                        $tools = null;
+                        return view('/loan_new', compact('user', 'tool_selectd', 'tools', 'dates_'));   
+                    }else{
+                        if($this-> existLoans($myArray, $tool_selectd)){
+                            Session::flash('message', 'Ya existe el prestamo');
+                            return redirect()->route('loan_new');   
+                        }
+                        
+                        $loan = LoanModel::create([
+                                'user_id' => $dataForm['user'],
+                                'tool_id' => $dataForm['tool_selectd'],
+                                'dateInit' => $myArray[0],
+                                'dateFinish' => $myArray[count($myArray)-1], 
+                                'state_id' => 3,//pendiente     
+                            ]);
+    
+                       $loan->save();                    
+                        Session::flash('message', 'Ingreso exitoso');
+                        return redirect()->route('loan_new_admin');   
+                    }
+            } else{
+    
+                $loan = LoanModel::create([
+                    'user_id' => $dataForm['user'],
+                    'tool_id' => $dataForm['tool_selectd'],
+                    'dateInit' => $datesRequest,
+                    'dateFinish' => $datesRequest, 
+                    'state_id' => 3,        
+                ]);
+                $loan->save();
+    
+                Session::flash('message', 'Ingreso exitoso');
+                return redirect()->route('loan_new_admin');   
+            }
+
+            
+        }else{
+            return redirect('/');
+        }
     }
 
     public function admin_loanSave(Request $request){
@@ -310,24 +395,32 @@ class LoanController extends Controller
     }
 
     public function admin_loan_dates(Request $request){
-        //dd($request);
+
+        $user = User::find(Auth::user()->id);
+        $user->avatar = Storage::disk('avatares')->url($user->avatar);
+        $user->permisos = $user->user_type()->first();
+        $user->cfp = $user->cfp()->first();
+
         $dataForm = request()->validate([
             'tool_id' => 'required'        
         ],[
             'tool_id.required' => 'Debe seleccionar una herramienta'
         ]);
 
-        $user = User::find(Auth::user()->id);
-        $user->avatar = Storage::disk('avatares')->url($user->avatar);
-
         $tools = null;
         $tool_id = (int)$dataForm['tool_id'];
 
-        //dd($tool_id);
-
         $tool_selectd= $this->GetTool($tool_id);
         $dates_=$this->dateEnableByTool($tool_id);
-        return view('/loan_new', compact('user', 'tool_selectd', 'tools', 'dates_'));   
+        //dd($user);
+        if($user->permisos->name == "Administrador"){
+
+            $users = User::all();
+            return view('/admin.loan_new_admin', compact('user', 'tool_selectd', 'tools', 'users', 'dates_'));   
+
+        }else{
+            return view('/loan_new', compact('user', 'tool_selectd', 'tools', 'dates_'));   
+        }
     }
 
     private function GetTool($tool_id){
