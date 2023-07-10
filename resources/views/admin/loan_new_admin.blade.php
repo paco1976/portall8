@@ -98,7 +98,7 @@
 															Guardar
 														</button>
 														<button  class="btn btn-danger">
-																<a href="{{ Url('/admin_loan_new') }}" style="text-decoration:none; color:white" >Cancelar</a>
+																<a href="{{ Url('/loan_new_admin') }}" style="text-decoration:none; color:white" >Cancelar</a>
 														</button>
 													</div>
 													</div>
