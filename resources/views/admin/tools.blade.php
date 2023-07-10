@@ -87,14 +87,18 @@
 										
 									</div>
 							@endforeach
-							</div>
-
-						@else
-						<div class="row">
-							<div class="col-12 text center">
-							No hay Herramientas disponibles en CFP por el momento.
-							</div>
 						</div>
+							<div class="row">
+								<div class="col-12">
+									{{ $tools->Links() }}
+								</div>
+                   			</div>
+						@else
+							<div class="row">
+								<div class="col-12 text center">
+								No hay Herramientas disponibles en CFP por el momento.
+								</div>
+							</div>
 						@endif
 						</div>
 		</div>

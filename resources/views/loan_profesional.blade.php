@@ -61,7 +61,7 @@
 					
 						<br><br>
 						@if($loans)
-						<div  style="padding:10px;flex-wrap: wrap;display:flex;flex-direction:row; justify-content:space-between; margin: rigth 20px;">	
+						<div  style="padding:10px;flex-wrap: wrap;display:flex;flex-direction:row; justify-content:space-arround; margin: rigth 20px;">	
 
 							@foreach($loans as $loan)
 							<div class="card" style="width: 25rem;margin: 10px;" >										
@@ -100,7 +100,7 @@
 									</div>
 							@endforeach
 							</div>
-
+			
 						@else
 						<div class="row">
 							<div class="col-12 text center">
