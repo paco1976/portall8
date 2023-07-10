@@ -58,7 +58,7 @@
 								<div class="col-sm-6">
 									<div class="mb-md" style="margin-top:20px">
 									
-										<a href="{{ route('loan_new') }}">
+										<a href="{{ route('loan_new_admin') }}">
 											<button id="addToTable" class="btn btn-primary">Nuevo Prestamo </button>
 										</a>
 									</div>
@@ -67,7 +67,7 @@
 					
 						<br><br>
 						@if($loans)
-						<div  style="padding:10px;flex-wrap: wrap;display:flex;flex-direction:row; justify-content:space-between; margin: rigth 20px;">	
+						<div  style="padding:10px;flex-wrap: wrap;display:flex;flex-direction:row; justify-content:space-arround; margin: rigth 20px;">	
 
 							@foreach($loans as $loan)
 							<div class="card" style="width: 25rem;margin: 10px;" >										
@@ -95,7 +95,7 @@
 														@endif
 													</li>
 													
-													<li class="list-group-item">PROFESIONAL</li>
+													<!-- <li class="list-group-item">PROFESIONAL</li> -->
 													<li class="list-group-item">{{$loan->name}} {{$loan->lastName}}</li>
 													@if($loan->state_id == 1)
 													<a style="text-align:center; width:100%; margin-bottom: 30px;" href="{{ route('admin_loan_enable', ['loan_id' => $loan->loanId,'state' => 2] ) }}" class="btn btn-danger"><i class="bi bi-hand-thumbs-up-fill">Rechazar</i></a>					
@@ -113,7 +113,11 @@
 									</div>
 							@endforeach
 							</div>
-
+							<div class="row">
+								<div class="col-12 text center">
+								{{ $loans->Links() }}
+                        		</div>
+                    		</div>
 						@else
 						<div class="row">
 							<div class="col-12 text center">
