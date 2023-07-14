@@ -50,7 +50,7 @@
 											<h2 class="short"><strong>Registro </strong></h2>
 												
 											@if ($tool_selectd)
-											<form  method="post" action="{{ route('admin_loan_save') }}"  id="save">	
+											<form  method="post" action="{{ route('profesional_loan_save') }}"  id="save">	
 													@csrf										
 													<div class="form-group row">
 													<div class="col-md-12">
@@ -123,8 +123,7 @@
 															</div>
 														</div>
                                         			</div>
-											</form>	
-											
+											</form>												
 											@endif
 										</div>
 									</div>

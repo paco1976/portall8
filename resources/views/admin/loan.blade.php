@@ -31,7 +31,7 @@
                         </div>									
                         @endif				
 						<div class="container" style="margin:0px; padding:10px; width:100%">
-							<form  id="contactForm" action="{{route('admin_loan')}}" method="get" style="display:flex; flex-direction:row;justify-content: space-between;">
+							<form  id="loan" action="{{route('admin_loan')}}" method="get" style="display:flex; flex-direction:row;justify-content: space-between;">
 									<div style="width:30%" >
 										<input type="text" placeholder="Nombre del profesional" maxlength="100" class="form-control" name="name" id="name">
 									</div>

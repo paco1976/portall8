@@ -23,12 +23,14 @@
 					@if (Session::has('message'))
                         <div class="alert alert-success" style="display:flex; flex-direction:row; justify-content:space-between">
                             <p >{{ Session::get('message') }}</p>
-							<button type="button" style="float:right; border-radius: 2px;" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span>
+							<button type="button" style="float:right; border-radius: 2px;" data-dismiss="alert" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
 							</button>
                         </div>									
                         @endif				
 						<div class="container" style="margin:0px; padding:10px; width:100%">
-							<form  id="contactForm" action="{{route('admin_loan')}}" method="get" style="display:flex; flex-direction:row;justify-content: space-between;">
+							<form  id="contactForm" action="{{route('admin_loan')}}" method="get" 
+										style="display:flex; flex-direction:row;justify-content: space-between;">
 									<div style="width:40%" >
 												<select id="state" name="state" class="form-control">
 													<option value="">Todos los Estados</option>
@@ -52,7 +54,7 @@
 								<div class="col-sm-6">
 									<div class="mb-md" style="margin-top:20px">
 									
-										<a href="{{ route('loan_new') }}">
+										<a href="{{ route('loan_new_profesional') }}">
 											<button id="addToTable" class="btn btn-primary">Nuevo Prestamo </button>
 										</a>
 									</div>
@@ -87,10 +89,7 @@
 														@else($loan->state_id == 3)
 														<p style="font-weight: 600;" >Pendiente</p>
 														@endif
-													</li>
-													
-													<li class="list-group-item">PROFESIONAL</li>
-													<li class="list-group-item">{{$loan->name}} {{$loan->lastName}}</li>
+													</li>												
 													@if($loan->state_id == 1 || $loan->state_id == 3)
 													<a style="text-align:center; width:100%; margin-bottom: 30px;" href="{{ route('loan_cancel', ['loan_id' => $loan->loanId] ) }}" class="btn btn-success"><i class="bi bi-hand-thumbs-up-fill">Cancelar</i></a>					
 													@endif
@@ -100,7 +99,11 @@
 									</div>
 							@endforeach
 							</div>
-			
+							<div class="row">
+								<div class="col-12 text center">
+								{{ $loans->Links() }}
+                        		</div>
+                    		</div>
 						@else
 						<div class="row">
 							<div class="col-12 text center">

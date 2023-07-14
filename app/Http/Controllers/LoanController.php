@@ -252,11 +252,11 @@ class LoanController extends Controller
                         Session::flash('message', 'El maximo de dias para el prestamo es de 3');
                         $dates_=$this->dateEnableByTool($tool_selectd);
                         $tools = null;
-                        return view('/loan_new', compact('user', 'tool_selectd', 'tools', 'dates_'));   
+                        return view('/loan_new_admin', compact('user', 'tool_selectd', 'tools', 'dates_'));   
                     }else{
                         if($this-> existLoans($myArray, $tool_selectd)){
                             Session::flash('message', 'Ya existe el prestamo');
-                            return redirect()->route('loan_new');   
+                            return redirect()->route('loan_new_admin');   
                         }
                         
                         $loan = LoanModel::create([
@@ -292,7 +292,8 @@ class LoanController extends Controller
         }
     }
 
-    public function admin_loanSave(Request $request){
+    public function profesional_loanSave(Request $request){
+         //dd($request);
         $dataForm = request()->validate([
             'tool_selectd' => 'required',
             'dates' => 'required',
@@ -318,13 +319,14 @@ class LoanController extends Controller
                     Session::flash('message', 'El maximo de dias para el prestamo es de 3');
                     $dates_=$this->dateEnableByTool($tool_selectd);
                     $tools = null;
-                    return view('/loan_new', compact('user', 'tool_selectd', 'tools', 'dates_'));   
+                    return view('/loan_new_profesional', compact('user', 'tool_selectd', 'tools', 'dates_'));   
                 }else{
+                                        
                     if($this-> existLoans($myArray, $tool_selectd)){
                         Session::flash('message', 'Ya existe el prestamo');
-                        return redirect()->route('loan_new');   
+                        return redirect()->route('loan_new_profesional');   
                     }
-                    
+
                     $loan = LoanModel::create([
                             'user_id' => $user->id,
                             'tool_id' => $dataForm['tool_selectd'],
@@ -335,7 +337,7 @@ class LoanController extends Controller
 
                    $loan->save();                    
                     Session::flash('message', 'Ingreso exitoso');
-                    return redirect()->route('loan_new');   
+                    return redirect()->route('loan_new_profesional');   
                 }
         } else{
 
@@ -349,7 +351,7 @@ class LoanController extends Controller
             $loan->save();
 
             Session::flash('message', 'Ingreso exitoso');
-            return redirect()->route('loan_new');   
+            return redirect()->route('loan_new_profesional');   
         }
 
         
@@ -418,8 +420,8 @@ class LoanController extends Controller
             $users = User::all();
             return view('/admin.loan_new_admin', compact('user', 'tool_selectd', 'tools', 'users', 'dates_'));   
 
-        }else{
-            return view('/loan_new', compact('user', 'tool_selectd', 'tools', 'dates_'));   
+        }else{         
+            return view('loan_new',  compact( 'tool_selectd','tools','user', 'dates_'));   
         }
     }
 
