@@ -1,6 +1,3 @@
-
-
-
 @extends( (Auth::user()->user_type()->first()->name=='Administrador') ? 'layouts.admin' : 'layouts.panel' )
 
 @section('main')
