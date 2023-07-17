@@ -36,12 +36,30 @@ class LoanController extends Controller
         $loan = LoanModel::where('id', $loan_id)->first();
 
         if($user->permisos->name == "Administrador"){
+            if($state==4){
+                //$now = getdate();
+                $now=date("y-m-d h:i:s");
+                if($loan->dateFinish<$now){
+                    LoanModel::where('id',$loan_id)->update([
+                        'dateFinish'=>$now ,
+                        'dateClose'=>$now ,                                           
+                     ]);
+                    
+                }else{
+                    LoanModel::where('id',$loan_id)->update([
+                        'dateClose'=>$now ,                                           
+                     ]);
+                }
+            }
+
             $loan->state_id =  $state;
             $loan->save(['state_id']);
             if($state== 1 ){
                 session::flash('message', 'El prestamo esta dado de alta');
-            }else{
+            }else if ($state== 2) {
                 session::flash('message', 'El prestamo esta dado de baja');
+            }else{
+                Session::flash('message', 'El prestamo se ah cerrado');    
             }
             // $this->desableEnableTool($loan->tool_id, $state);                   
 
@@ -78,16 +96,22 @@ class LoanController extends Controller
 
     }
 
-
     public function getLoansFiltered(Request $request){
         //dd($request);
         $user = User::find(Auth::user()->id);
         $user->avatar = Storage::disk('avatares')->url($user->avatar);
+        $user->permisos = $user->user_type()->first();
+
+        
             $loans = LoanModel::query();
             $loans = $loans 
             ->join('users AS u', 'loans.user_id', '=', 'u.id')
             ->join('tools AS h', 'loans.tool_id', '=', 'h.id')
             ->join('categoryTools AS c', 'h.categoryTool_id', '=', 'c.id');
+
+            if($user->permisos->name == "Profesional"){
+                $loans=$loans->where('loans.user_id', '=', $user->id);
+            }
                   
             if ($request->get("date")) { //Filtro de nombre
                 $date = $request->get("date");
@@ -130,232 +154,123 @@ class LoanController extends Controller
             ->paginate(15);
 
 
-            return view('/admin.loan', compact('user', 'loans'));
+            return view('/loans', compact('user', 'loans'));
 
     }
     
-    //Profesionales
-    public function getLoansProfesionalFiltered(Request $request){
+    public function loanGetForm(){ 
         $user = User::find(Auth::user()->id);
         $user->avatar = Storage::disk('avatares')->url($user->avatar);
-        $user->type = $user->user_type()->first();
-        //dd($user);
-        if($user->type->name == "Profesional"){       
-            $loans = LoanModel::query();
-            $loans = $loans 
-            ->join('tools AS h', 'loans.tool_id', '=', 'h.id')
-            ->join('categoryTools AS c', 'h.categoryTool_id', '=', 'c.id');
-                        
-            $loans=$loans->where('loans.user_id', '=', $user->id);
-
-            if ($request->get("date")) { //Filtro de nombre
-                $date = $request->get("date");
-                $year=substr($request->get("date"),0, 4);
-                $month=substr($request->get("date"),5,9);
-
-                $loans=$loans ->whereMonth('loans.dateInit' ,'=', $month);
-                $loans=$loans ->whereYear('loans.dateFinish' ,'=',  $year);
-            }
-            if ($request->get("name")) { //Filtro de nombre
-                $name = $request->get("name");
-                $loans=$loans->where('u.name', 'like', "%{$name}%");
-            }
-
-            if ($request->get("state")) { //Filtro de estado
-                $state = $request->get("state");
-                if($state == "pending"){
-                    $loans = $loans->where('loans.state_id', 3);
-                }else if($state == "refused"){
-                    $loans = $loans->where('loans.state_id',  2);
-                }else if($state == "approved"){
-                    $loans = $loans->where('loans.state_id',  1);
-                }
-            }
-
-            $loans = $loans
-            ->select(
-                'loans.id as loanId',
-                'h.id as toolId',
-                'c.id as categoryToolId',
-                'c.name as categoryName',
-                'h.name as toolName',
-                'h.description as descirption',
-                'loans.dateInit as init',
-                'loans.dateFinish as finish',
-                'loans.state_id as state_id',
-               ) 
-            ->paginate(15);
-
-
-            return view('/loan_profesional', compact('user', 'loans'));
-
-        }else{
-            session::flash('message', 'No está autorizado para esta acción');
-            return redirect('/');
-        }
-           
-
-    }
-    
-
-    public function admin_loanGetForm(){ 
-        $user = User::find(Auth::user()->id);
-        $user->avatar = Storage::disk('avatares')->url($user->avatar);
-        $tools = ToolModel::all(); 
-        $dates_=[];
-        $tool_selectd=null;
-    
-        return view('loan_new', compact( 'tool_selectd','tools','user', 'dates_'));
-    }
-
-    public function admin_loanGetForm_admin(){ 
-        $user = User::find(Auth::user()->id);
-        $user->avatar = Storage::disk('avatares')->url($user->avatar);
-        $tools = ToolModel::all(); 
-        $dates_=[];
-        $tool_selectd=null;
-        return view('/admin.loan_new_admin', compact( 'tool_selectd','tools','user', 'dates_'));
-    }
-
-    public function admin_loanSave_admin(Request $request){
-
-        $dataForm = request()->validate([
-            'user' => 'required',
-            'tool_selectd' => 'required',
-            'dates' => 'required',
-        ],[
-            'user.required' => 'Debe seleccionar una herramienta',
-            'tool_selectd.required' => 'Debe seleccionar una herramienta',
-            'date.required' => 'Debe Ingresar una fecha',
-        ]);
-
-        $user = User::find(Auth::user()->id);
-        $user->avatar = Storage::disk('avatares')->url($user->avatar);
-
         $user->permisos = $user->user_type()->first();
-        $user->cfp = $user->cfp()->first();
+
+        $users= User::All();
+        $tools = ToolModel::all(); 
+        $tool_selectd=null;
+        $dates_=[];
 
         if($user->permisos->name == "Administrador"){
+            return view('/loan_new', compact('users', 'tool_selectd', 'tools', 'dates_', 'user'));   
+           }else{
+            return view('/loan_new', compact( [] , 'tool_selectd', 'tools', 'dates_', 'user'));   //null? o vacio++??
+           }
 
-            $datesRequest=$dataForm['dates'];
-
-            $datesTrue=str_contains($datesRequest, "to");
-    
-            if($datesTrue){
-    
-                    $myArray = explode('to', $datesRequest);
-                    //$maxDays=$this-> greaterThanMax($myArray);
-                    //dd($maxDays);
-                    $tool_selectd= $this->GetTool((int)$dataForm['tool_selectd']);
-    
-                    if($this-> greaterThanMax($myArray)){
-                        Session::flash('message', 'El maximo de dias para el prestamo es de 3');
-                        $dates_=$this->dateEnableByTool($tool_selectd);
-                        $tools = null;
-                        return view('/loan_new_admin', compact('user', 'tool_selectd', 'tools', 'dates_'));   
-                    }else{
-                        if($this-> existLoans($myArray, $tool_selectd)){
-                            Session::flash('message', 'Ya existe el prestamo');
-                            return redirect()->route('loan_new_admin');   
-                        }
-                        
-                        $loan = LoanModel::create([
-                                'user_id' => $dataForm['user'],
-                                'tool_id' => $dataForm['tool_selectd'],
-                                'dateInit' => $myArray[0],
-                                'dateFinish' => $myArray[count($myArray)-1], 
-                                'state_id' => 3,//pendiente     
-                            ]);
-    
-                       $loan->save();                    
-                        Session::flash('message', 'Ingreso exitoso');
-                        return redirect()->route('loan_new_admin');   
-                    }
-            } else{
-    
-                $loan = LoanModel::create([
-                    'user_id' => $dataForm['user'],
-                    'tool_id' => $dataForm['tool_selectd'],
-                    'dateInit' => $datesRequest,
-                    'dateFinish' => $datesRequest, 
-                    'state_id' => 3,        
-                ]);
-                $loan->save();
-    
-                Session::flash('message', 'Ingreso exitoso');
-                return redirect()->route('loan_new_admin');   
-            }
-
-            
-        }else{
-            return redirect('/');
-        }
     }
 
-    public function profesional_loanSave(Request $request){
-         //dd($request);
-        $dataForm = request()->validate([
-            'tool_selectd' => 'required',
-            'dates' => 'required',
-        ],[
-            'tool_selectd.required' => 'Debe seleccionar una herramienta',
-            'date.required' => 'Debe Ingresar una fecha',
-        ]);
+    public function loanSave(Request $request){
 
         $user = User::find(Auth::user()->id);
         $user->avatar = Storage::disk('avatares')->url($user->avatar);
-        $datesRequest=$dataForm['dates'];
+        $user->permisos = $user->user_type()->first();
+        $users= User::All();
 
-        $datesTrue=str_contains($datesRequest, "to");
+        $dataForm =null;
 
-        if($datesTrue){
-
-                $myArray = explode('to', $datesRequest);
-                //$maxDays=$this-> greaterThanMax($myArray);
-                //dd($maxDays);
-                $tool_selectd= $this->GetTool((int)$dataForm['tool_selectd']);
-
-                if($this-> greaterThanMax($myArray)){
-                    Session::flash('message', 'El maximo de dias para el prestamo es de 3');
-                    $dates_=$this->dateEnableByTool($tool_selectd);
-                    $tools = null;
-                    return view('/loan_new_profesional', compact('user', 'tool_selectd', 'tools', 'dates_'));   
-                }else{
-                                        
-                    if($this-> existLoans($myArray, $tool_selectd)){
-                        Session::flash('message', 'Ya existe el prestamo');
-                        return redirect()->route('loan_new_profesional');   
-                    }
-
-                    $loan = LoanModel::create([
-                            'user_id' => $user->id,
-                            'tool_id' => $dataForm['tool_selectd'],
-                            'dateInit' => $myArray[0],
-                            'dateFinish' => $myArray[count($myArray)-1], 
-                            'state_id' => 3,//pendiente     
-                        ]);
-
-                   $loan->save();                    
-                    Session::flash('message', 'Ingreso exitoso');
-                    return redirect()->route('loan_new_profesional');   
-                }
-        } else{
-
-            $loan = LoanModel::create([
-                'user_id' => $user->id,
-                'tool_id' => $dataForm['tool_selectd'],
-                'dateInit' => $datesRequest,
-                'dateFinish' => $datesRequest, 
-                'state_id' => 3,        
+        if($user->permisos->name == "Administrador"){
+            $dataForm = request()->validate([
+                'user' => 'required',
+                'tool_selectd' => 'required',
+                'dates' => 'required',
+            ],[
+                'user.required' => 'Debe seleccionar una herramienta',
+                'tool_selectd.required' => 'Debe seleccionar una herramienta',
+                'date.required' => 'Debe Ingresar una fecha',
             ]);
-            $loan->save();
 
-            Session::flash('message', 'Ingreso exitoso');
-            return redirect()->route('loan_new_profesional');   
+        }else{
+
+            $dataForm = request()->validate([
+                'tool_selectd' => 'required',
+                'dates' => 'required',
+            ],[
+                'tool_selectd.required' => 'Debe seleccionar una herramienta',
+                'date.required' => 'Debe Ingresar una fecha',
+            ]);
         }
 
-        
-    }
+       $datesRequest=$dataForm['dates'];
+
+       $datesTrue=str_contains($datesRequest, "to");
+
+       if($datesTrue){
+
+               $myArray = explode('to', $datesRequest);
+               //$maxDays=$this-> greaterThanMax($myArray);
+               //dd($maxDays);
+               $tool_selectd= $this->GetTool((int)$dataForm['tool_selectd']);
+
+               if($this-> greaterThanMax($myArray)){
+                   Session::flash('message', 'El maximo de dias para el prestamo es de 3');
+                   $dates_=$this->dateEnableByTool($tool_selectd);
+                   $tools = null;
+
+                   if($user->permisos->name == "Administrador"){
+                    return view('/loan_new', compact('users', 'tool_selectd', 'tools', 'dates_', 'user'));   
+                   }else{
+                    return view('/loan_new', compact( null, 'tool_selectd', 'tools', 'dates_', 'user'));   //null? o vacio++??
+                   }
+
+               }else{
+                                       
+                   if($this-> existLoans($myArray, $tool_selectd)){
+                       Session::flash('message', 'Ya existe el prestamo');
+                       return redirect()->route('loan_new_profesional');   
+                   }
+
+                   $loan = LoanModel::create([
+                           'user_id' => $user->id,
+                           'tool_id' => $dataForm['tool_selectd'],
+                           'dateInit' => $myArray[0],
+                           'dateFinish' => $myArray[count($myArray)-1], 
+                           'state_id' => 3,//pendiente     
+                       ]);
+
+                  $loan->save();                    
+                   Session::flash('message', 'Ingreso exitoso');
+                   
+                   if($user->permisos->name == "Administrador"){
+                    return view('/loan_new', compact('users', 'tool_selectd', 'tools', 'dates_', 'user'));   
+                   }else{
+                    return view('/loan_new', compact( null, 'tool_selectd', 'tools', 'dates_', 'user'));   //null? o vacio++??
+                   }
+
+               }
+       } else{
+
+           $loan = LoanModel::create([
+               'user_id' => $user->id,
+               'tool_id' => $dataForm['tool_selectd'],
+               'dateInit' => $datesRequest,
+               'dateFinish' => $datesRequest, 
+               'state_id' => 3,        
+           ]);
+           $loan->save();
+
+           Session::flash('message', 'Ingreso exitoso');
+           return redirect()->route('loan_new');   
+       }
+
+       
+   }
 
     private function existLoans($myArray, $tool_id){
         $dates= DB::table('loans AS p')
@@ -418,10 +333,10 @@ class LoanController extends Controller
         if($user->permisos->name == "Administrador"){
 
             $users = User::all();
-            return view('/admin.loan_new_admin', compact('user', 'tool_selectd', 'tools', 'users', 'dates_'));   
+            return view('/loan_new', compact('users', 'tool_selectd', 'tools', 'user', 'dates_'));   
 
         }else{         
-            return view('loan_new',  compact( 'tool_selectd','tools','user', 'dates_'));   
+            return view('loan_new',  compact( [],'tool_selectd','tools','user', 'dates_'));   
         }
     }
 

@@ -50,33 +50,49 @@
 											<h2 class="short"><strong>Registro </strong></h2>
 												
 											@if ($tool_selectd)
-											<form  method="post" action="{{ route('profesional_loan_save') }}"  id="save">	
-													@csrf										
+											<!-- Selecciona dias Disponibles y Guarda -->
+											<form  method="post" action="{{ route('loan_save') }}"  id="save">	
+													@csrf									
 													<div class="form-group row">
-													<div class="col-md-12">
-														<label for="tool" class="col-md-12 col-form-label text-md-right">
-															<h5>Herramienta Seleccionada: {{ $tool_selectd->name }}  IDE {{ $tool_selectd->id }}</h5>	
-														</label>
-													</div>
-													<div class="col-sm-9 mt-2">
-														<input type="hidden"  id="tool_selectd" class="form-control" name="tool_selectd" required
-														placeholder=" {{$tool_selectd->name}}" value=" {{$tool_selectd->id}}" />
-													</div> 
-														@error('user_type')
-                                                		<span class="invalid-feedback" role="alert">
-                                                    		<strong>{{ $message }}</strong>
-                                               			 </span>
-                                            			@enderror
+														<div class="col-md-12">
+															<label for="tool" class="col-md-12 col-form-label text-md-right">
+																<h5>Herramienta Seleccionada: {{ $tool_selectd->name }}  IDE {{ $tool_selectd->id }}</h5>	
+															</label>
+														</div>
+														<div class="col-sm-9 mt-2">
+															<input type="hidden"  id="tool_selectd" class="form-control" name="tool_selectd" required
+															placeholder=" {{$tool_selectd->name}}" value=" {{$tool_selectd->id}}" />
+														</div> 
+															@error('user_type')
+															<span class="invalid-feedback" role="alert">
+																<strong>{{ $message }}</strong>
+															</span>
+															@enderror
                                     				</div>
+													<!-- Inicio Elegir Usuarios, caso Admin -->							
 													<div class="form-group row">
 													<div class="col-md-12">
-														<label for="name" class="col-md-4 col-form-label text-md-right">Dias disponibles</label>
-													</div>
-													<div class="col-sm-9 mt-2">
-														<input type="datetime-local"  id="dates" class="form-control" name="dates" required 
-														placeholder=""  />
-													</div>
-														@error('user_type')
+															<label for="name" class="col-md-12 col-form-label text-md-right">Profesional</label>
+														</div>
+														<div class="col-md-12">
+															<select class="form-control" name="user"  id="user" required>
+																<option value="">Seleccione</option>
+																@foreach ($users as $user)
+																<option value='{{ $user->id }}'>{{ $user->name }}</option>
+																@endforeach
+															</select>
+														</div>													
+													</div>	
+													<!-- Fin Elegir Usuarios, caso Admin -->	
+													<div class="form-group row">
+														<div class="col-md-12">
+															<label for="name" class="col-md-12 col-form-label text-md-right">Dias</label>
+														</div>
+														<div class="col-sm-9 mt-2">
+															<input type="datetime-local"  id="dates" class="form-control input-lg @error('password') is-invalid @enderror"  name="dates" autofocus required 
+															 />
+														</div>
+														@error('dates')
                                                 		<span class="invalid-feedback" role="alert">
                                                     		<strong>{{ $message }}</strong>
                                                			 </span>
@@ -88,19 +104,18 @@
 															Guardar
 														</button>
 														<button  class="btn btn-danger">
-																<a href="{{ Url('/admin_loan_new') }}" style="text-decoration:none; color:white" >Cancelar</a>
+																<a href="{{ Url('/loan_new_admin') }}" style="text-decoration:none; color:white" >Cancelar</a>
 														</button>
 													</div>
 													</div>
 											</form>
 											@else
 											<form  method="post" action="{{ route('admin_loan_dates') }}" id="dates" >											
-												@csrf										
+												@csrf																							
 												<div class="form-group row">
 													<div class="col-md-12">
 														<label for="tool_id" class="col-md-4 col-form-label text-md-right">Herramienta</label>
 													</div>
-
                                         			<div class="col-md-12">
                                            				<select class="form-control" name="tool_id"  id="tool_id" required>
                                                 			<option value="">Seleccione una opción</option>
@@ -122,8 +137,9 @@
 																</button>
 															</div>
 														</div>
-                                        			</div>
-											</form>												
+                                        		</div>
+											</form>	
+											
 											@endif
 										</div>
 									</div>
