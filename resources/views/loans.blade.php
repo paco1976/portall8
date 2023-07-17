@@ -1,7 +1,10 @@
 
 
+@if(Auth::user()->user_type()->first()->name=='Administrador')
 @extends('layouts.admin')
-
+@else
+@endif
+@extends('layouts.panel')
 @section('main')
 
 		<div role="main" class="main" >
@@ -116,7 +119,7 @@
 														@endif
 													@else
 														@if($loan->state_id == 1 || $loan->state_id == 3)
-														<a style="text-align:center; width:100%; margin-bottom: 30px;" href="{{ route('loan_cancel', ['loan_id' => $loan->loanId] ) }}" class="btn btn-success"><i class="bi bi-hand-thumbs-up-fill">Cancelar</i></a>					
+														<a style="text-align:center; width:100%; margin-bottom: 30px;" href="{{ route('admin_loan_enable', ['loan_id' => $loan->loanId, 'state' => 4] ) }}" class="btn btn-success"><i class="bi bi-hand-thumbs-up-fill">Cancelar</i></a>					
 														@endif
 													@endif
 
