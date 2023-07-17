@@ -1,4 +1,4 @@
-@extends( (Auth::user()->user_type()->first()->name=='Administrador') ? 'layouts.admin' : 'layouts.panel' )
+@extends('layouts.home')
 
 @push('style')
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">

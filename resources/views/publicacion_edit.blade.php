@@ -1,4 +1,4 @@
-@extends('layouts.panel')
+@extends('layouts.home')
 
 @section('main')
 			<div role="main" class="main">
