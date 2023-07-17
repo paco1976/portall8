@@ -1,17 +1,9 @@
-
-
-@if(Auth::user()->user_type()->first()->name=='Administrador')
-@extends('layouts.admin')
-@else
-@extends('layouts.panel')
-@endif
+@extends( (Auth::user()->user_type()->first()->name=='Administrador') ? 'layouts.admin' : 'layouts.panel' )
 
 @section('main')
 
-		<div role="main" class="main" >
-
-
-					<section class="page-top">
+	<div role="main" class="main" >
+		<section class="page-top">
 						<div class="container">
 							<div class="row">
 								<div class="col-md-12">
@@ -28,15 +20,15 @@
 
 							</div>
 						</div>
-					</section>
-					@if (Session::has('message'))
-                        <div class="alert alert-success" style="display:flex; flex-direction:row; justify-content:space-between">
-                            <p >{{ Session::get('message') }}</p>
-							<button type="button" style="float:right; border-radius: 2px;" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span>
-							</button>
-                        </div>									
-                        @endif				
-						<div class="container" style="margin:0px; padding:10px; width:100%">
+		</section>
+		@if (Session::has('message'))
+            <div class="alert alert-success" style="display:flex; flex-direction:row; justify-content:space-between">
+                <p >{{ Session::get('message') }}</p>
+				<button type="button" style="float:right; border-radius: 2px;" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span>
+				</button>
+            </div>									
+            @endif				
+			<div class="container" style="margin:0px; padding:10px; width:100%">
 							<form  id="contactForm" action="{{route('loans')}}" method="get" style="display:flex; flex-direction:row;justify-content: space-between;">
 									<div style="width:30%" >
 										<input type="text" placeholder="Nombre del profesional" maxlength="100" class="form-control" name="name" id="name">
@@ -59,8 +51,8 @@
 									</div>
 
 							</form>
-						</div>
-						<div class="row"  style=" padding:10px;">
+			</div>
+			<div class="row"  style=" padding:10px;">
 								<div class="col-sm-6">
 									<div class="mb-md" style="margin-top:20px">
 									
@@ -70,12 +62,12 @@
 
 									</div>
 								</div>
-						</div>
-						
-						<!-- Si es admin -->
-						<br><br>
-						@if($loans)
-						<div  style="padding:10px;flex-wrap: wrap;display:flex;flex-direction:row; justify-content:space-arround; margin: rigth 20px;">	
+			</div>
+			
+			<!-- Si es admin -->
+			<br><br>
+			@if($loans)
+			<div  style="padding:10px;flex-wrap: wrap;display:flex;flex-direction:row; justify-content:space-arround; margin: rigth 20px;">	
 
 							@foreach($loans as $loan)
 							<div class="card" style="width: 25rem;margin: 10px;" >										
@@ -109,14 +101,13 @@
 													@if(Auth::user()->user_type()->first()->name=='Administrador')
 														<li class="list-group-item">{{$loan->name}} {{$loan->lastName}}</li>
 														@if($loan->state_id == 1)
-														<a style="text-align:center; width:100%; margin-bottom: 30px;" href="{{ route('admin_loan_enable', ['loan_id' => $loan->loanId,'state' => 4] ) }}" class="btn btn-primary"><i class="bi bi-hand-thumbs-up-fill">Finalizar</i></a>					
+														<a style="text-align:center; width:100%; margin-bottom: 30px;" href="{{ route('admin_loan_enable', ['loan_id' => $loan->loanId,'state' => 4] ) }}" class="btn btn-primary">Finalizar</a>					
 														@elseif($loan->state_id == 3)
 														<div style="display:flex; flex-direction:row">
-														<a style="text-align:center; width:50%; margin-bottom: 30px;" href="{{ route('admin_loan_enable', ['loan_id' => $loan->loanId,'state' => 1] ) }}" class="btn btn-success"><i class="bi bi-hand-thumbs-up-fill">Habilitar</i></a>					
-														<a style="text-align:center;width:50%; margin-bottom: 30px;" href="{{ route('admin_loan_enable',['loan_id' => $loan->loanId, 'state' => 2] ) }}" class="btn btn-danger"> Rechazar </a>													
+															<a style="text-align:center; width:50%; margin-bottom: 30px;" href="{{ route('admin_loan_enable', ['loan_id' => $loan->loanId,'state' => 1] ) }}" class="btn btn-success">Habilitar</a>					
+															<a style="text-align:center;width:50%; margin-bottom: 30px;" href="{{ route('admin_loan_enable',['loan_id' => $loan->loanId, 'state' => 2] ) }}" class="btn btn-danger"> Rechazar </a>													
 														</div>
-														@elseif($loan->state_id == 2)
-														<a style="text-align:center;width:100%; margin-bottom: 30px;" href="{{ route('admin_loan_enable',['loan_id' => $loan->loanId, 'state' => 4] ) }}" class="btn btn-primary"> Finalizar</a>
+
 														@endif
 													@else
 														@if($loan->state_id == 1 || $loan->state_id == 3)
@@ -128,7 +119,7 @@
 													
 										</ul>
 										
-									</div>
+								</div>
 							@endforeach
 							</div>
 							<div class="row">
@@ -136,16 +127,15 @@
 								{{ $loans->Links() }}
                         		</div>
                     		</div>
-						@else
-						<div class="row">
-							<div class="col-12 text center">
-							No hay prestamos a profesionales de tu CFP por el momento.
-							</div>
-						</div>
-						@endif
-						</div>
-		</div>
-
+			</div>
+			@else
+			<div class="row">
+				<div class="col-12 text center">
+				No hay prestamos a profesionales de tu CFP por el momento.
+				</div>
+			</div>
+			@endif
+	</div>
 @endsection
 
 
