@@ -1,5 +1,5 @@
 
-@extends('layouts.admin')
+@extends('layouts.home')
 
 @section('main')
 
