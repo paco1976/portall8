@@ -156,44 +156,75 @@
 
 
 
-                @guest
-                <li>
+								@guest
+								<li>
 
-                    <a href="{{ url('/login') }}">Ingresar</a>
-                </li>
-
-
-                    @else
-
-                <li class="dropdown">
-                    <a class="dropdown-toggle" href="">
-                        <i class="fa fa-sign-out"></i> {{ Auth::user()->name }}
-                        <i class="fa fa-angle-down"></i>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="{{ url('/perfil') }}">Mi Panel</a></li>
-                        <li><a href="{{ url('/clave') }}">Contraseña</a></li>
-                        <li>
-
-                            <a href="{{ route('logout') }}"
-                            onclick="event.preventDefault();
-                                            document.getElementById('logout-form').submit();">
-                                {{ __('Salir') }}
-                            </a>
-
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                @csrf
-                            </form>
-
-                        </li>
-
-                    </ul>
-                </li>
+									<a href="{{ url('/login') }}">Ingresar</a>
+								</li>
 
 
+								@else
+									@if(Auth::user()->user_type()->first()->name=='Administrador')
+									<!--  menú admnistrador -->
+									<li class="dropdown active">
+										<a class="dropdown-toggle" href="#">
+											<i class="fa-wrench"></i> Herramientas
+											<i class="fa fa-angle-down"></i>
+										</a>
+										<ul class="dropdown-menu">
 
-                <!-- Fin de la vista del autenticado -->
-                @endguest
+											<li><a href="{{ route('admin_profesionales') }}"><i class="fa fa-users"></i> Lista de profesionales</a></li>
+											<li><a href="{{ route('admin_publicaciones') }}"><i class="fa fa-list-ul"></i> Lista de publiaciones</a></li>
+											<li><a href="{{ route('loans') }}"><i class="fa fa-list-ul"></i> Prestamos</a></li>
+											<li><a href="{{ route('admin_tool') }}"><i class="fa fa-list-ul"></i> Herramientas</a></li>
+											<li><a href="{{ route('admin_categorias') }}"><i class="fa fa-list"></i> Categorias</a></li>
+											<li><a href="#"><i class="fa fa-list"></i> Títulos</a></li>
+										
+										</ul>
+									</li>
+									<!--  fin menú admnistrador -->
+									@else
+									<!--Menu de profesional -->
+									<li class="dropdown active">
+										<a class="dropdown-toggle" href="#">
+											<i class="fa fa-comments"></i> Panel de control
+											<i class="fa fa-angle-down"></i>
+										</a>
+										<ul class="dropdown-menu">
+											<li><a href="{{ url('/tarifario') }}"><i class="fa fa-calculator"></i> Tarifarios</a></li>
+											<li><a href="{{ url('/beneficios') }}"><i class="fa fa-gift"></i> Beneficios</a></li>
+											<li><a href="{{ url('/foro') }}"><i class="fa fa-comments"></i> Foro</a></li>
+											<li><a href="{{ route('loans') }}"><i class="fa fa-list-ul"></i> Prestamos</a></li>
+										</ul>
+									</li>
+									<!--fin Menu de profesional -->
+									@endif
+										<li class="dropdown">
+											<a class="dropdown-toggle" href="">
+												<i class="fa fa-sign-out"></i> {{ Auth::user()->name }}
+												<i class="fa fa-angle-down"></i>
+											</a>
+											<ul class="dropdown-menu">
+												<li><a href="{{ url('/perfil') }}">Mi Panel</a></li>
+												<li><a href="{{ url('/clave') }}">Contraseña</a></li>
+												<li>
+
+													<a href="{{ route('logout') }}"
+													onclick="event.preventDefault();
+																	document.getElementById('logout-form').submit();">
+														{{ __('Salir') }}
+													</a>
+
+													<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+														@csrf
+													</form>
+
+												</li>
+
+											</ul>
+										</li>
+										<!-- Fin de la vista del autenticado -->								
+									@endguest
 
 													</div>
 												</div>
