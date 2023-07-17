@@ -73,29 +73,6 @@ class LoanController extends Controller
 
     }
 
-    public function loan_cancel($loan_id){
-
-        $user = User::find(Auth::user()->id);
-        $user->avatar = Storage::disk('avatares')->url($user->avatar);
-        $user->type = $user->user_type()->first();
-        //dd($user);
-
-        if($user->type->name == "Profesional"){
-            $loan = LoanModel::where('id', $loan_id)->first();
-            //dd($loan->dateInit>now()->toDateString()); 
-            $loan->state_id =  2;
-            $loan->save(['state_id']);
-            
-            session::flash('message', 'El prestamo esta dado de baja');
-            return back();
-  
-        }else{
-            session::flash('message', 'No está autorizado para esta acción');
-            return redirect('/');
-        }
-
-    }
-
     public function getLoansFiltered(Request $request){
         //dd($request);
         $user = User::find(Auth::user()->id);

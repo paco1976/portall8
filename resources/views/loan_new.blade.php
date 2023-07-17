@@ -1,4 +1,9 @@
+@if(Auth::user()->user_type()->first()->name=='Administrador')
 @extends('layouts.admin')
+@else
+@endif
+@extends('layouts.panel')
+
 @push('style')
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 @endpush
@@ -15,7 +20,7 @@
 							<ul class="breadcrumb">
 									<li><a href="#">Inicio</a></li>
 									<li><a href="{{ route('perfil') }}">Panel de Control</a></li>
-									<li><a href="{{ route('admin_loan') }}">Prestamos</a></li>
+									<li><a href="{{ route('loan_new') }}">Prestamos</a></li>
 									<li class="active">Nuevo</li>
 
 								</ul>
@@ -71,18 +76,20 @@
                                     				</div>
 													<!-- Inicio Elegir Usuarios, caso Admin -->							
 													<div class="form-group row">
-													<div class="col-md-12">
-															<label for="name" class="col-md-12 col-form-label text-md-right">Profesional</label>
-														</div>
-														<div class="col-md-12">
-															<select class="form-control" name="user"  id="user" required>
-																<option value="">Seleccione</option>
-																@foreach ($users as $user)
-																<option value='{{ $user->id }}'>{{ $user->name }}</option>
-																@endforeach
-															</select>
-														</div>													
-													</div>	
+														@if(Auth::user()->user_type()->first()->name=='Administrador')
+															<div class="col-md-12">
+																	<label for="name" class="col-md-12 col-form-label text-md-right">Profesional</label>
+																</div>
+																<div class="col-md-12">
+																	<select class="form-control" name="user"  id="user" required>
+																		<option value="">Seleccione</option>
+																		@foreach ($users as $user)
+																		<option value='{{ $user->id }}'>{{ $user->name }}</option>
+																		@endforeach
+																	</select>
+																</div>													
+															</div>
+															@endif	
 													<!-- Fin Elegir Usuarios, caso Admin -->	
 													<div class="form-group row">
 														<div class="col-md-12">
