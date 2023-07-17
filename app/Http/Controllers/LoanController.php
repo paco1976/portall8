@@ -36,12 +36,30 @@ class LoanController extends Controller
         $loan = LoanModel::where('id', $loan_id)->first();
 
         if($user->permisos->name == "Administrador"){
+            if($state==4){
+                //$now = getdate();
+                $now=date("y-m-d h:i:s");
+                if($loan->dateFinish<$now){
+                    LoanModel::where('id',$loan_id)->update([
+                        'dateFinish'=>$now ,
+                        'dateClose'=>$now ,                                           
+                     ]);
+                    
+                }else{
+                    LoanModel::where('id',$loan_id)->update([
+                        'dateClose'=>$now ,                                           
+                     ]);
+                }
+            }
+
             $loan->state_id =  $state;
             $loan->save(['state_id']);
             if($state== 1 ){
                 session::flash('message', 'El prestamo esta dado de alta');
-            }else{
+            }else if ($state== 2) {
                 session::flash('message', 'El prestamo esta dado de baja');
+            }else{
+                Session::flash('message', 'El prestamo se ah cerrado');    
             }
             // $this->desableEnableTool($loan->tool_id, $state);                   
 

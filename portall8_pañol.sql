@@ -4,18 +4,15 @@
 --Insertar datos nuevos en estas ultimas tablas creadas
 
 INSERT INTO `states` (`id`, `name`) VALUES
-(1, 'Disponible'),
-(2, 'Reservada'),
-(3, 'Inactica');
+(1, 'Aprovado'),
+(2, 'Rechazado'),
+(3, 'Pendiente');
+(4, 'Finalizado');
 
 INSERT INTO `categoryTools` (`id`, `name`) VALUES
 (1, 'Electricos'),
 (2, 'Percusion'),
 
-INSERT INTO `stateLoans` (`id`, `name`) VALUES
-(1, 'Aprovado'),
-(2, 'Rechazado'),
-(3, 'Pendiente');
 
 INSERT INTO `tools` (`id`, `name`, `description`,`nameImage`, `state_id`, `categoryTool_id`) VALUES
 (1, 'Martillo', 'Amarillo', null, 1, 2);
