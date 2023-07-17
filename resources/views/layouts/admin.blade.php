@@ -123,7 +123,7 @@
 
 										 <li><a href="{{ route('admin_profesionales') }}"><i class="fa fa-users"></i> Lista de profesionales</a></li>
 										 <li><a href="{{ route('admin_publicaciones') }}"><i class="fa fa-list-ul"></i> Lista de publiaciones</a></li>
-										 <li><a href="{{ route('admin_loan') }}"><i class="fa fa-list-ul"></i> Prestamos</a></li>
+										 <li><a href="{{ route('loans') }}"><i class="fa fa-list-ul"></i> Prestamos</a></li>
 										 <li><a href="{{ route('admin_tool') }}"><i class="fa fa-list-ul"></i> Herramientas</a></li>
 										 <!-- <li><a href="#"><i class="fa fa-comments"></i> Consultas</a></li> -->
 										 <li><a href="{{ route('admin_categorias') }}"><i class="fa fa-list"></i> Categorias</a></li>

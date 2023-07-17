@@ -134,7 +134,9 @@
 										 <li><a href="{{ url('/tarifario') }}"><i class="fa fa-calculator"></i> Tarifarios</a></li>
 										 <li><a href="{{ url('/beneficios') }}"><i class="fa fa-gift"></i> Beneficios</a></li>
 										 <li><a href="{{ url('/foro') }}"><i class="fa fa-comments"></i> Foro</a></li>
-										 <li><a href="{{ url('/loan') }}"><i class="fa fa-suitcase"></i> Prestamos</a></li>
+										 <li><a href="{{ url('/loans') }}"><i class="fa fa-suitcase"></i> PrestamosUrl</a></li>
+										 <li><a href="{{ route('loans') }}"><i class="fa fa-list-ul"></i> Prestamos</a></li>
+
 									<!-- <li><a href="../panel.html"><i class="fa fa-wrench"></i> Panel</a></li>			-->
 									</ul>
 								</li>

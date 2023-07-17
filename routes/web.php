@@ -94,18 +94,22 @@ Route::get('/mensajes/{hash}', 'ReferenteController@mensajes')->name('mensajes')
 //panel de control del administrador general
 
 //Prestamos
-Route::get('/admin_loan','LoanController@getLoansFiltered' )->name('admin_loan');
+Route::post('/loan_save','LoanController@loanSave' )->name('loan_save');
+Route::get('/loan_new','LoanController@loanGetForm' )->name('loan_new');
+Route::get('/loans','LoanController@getLoansFiltered' )->name('loans');
+
+
+
 Route::post('/admin_loan_dates','LoanController@admin_loan_dates' )->name('admin_loan_dates');
-Route::post('/admin_loan_save','LoanController@admin_loanSave' )->name('admin_loan_save');
-Route::post('/admin_loan_save_admin','LoanController@admin_loanSave_admin' )->name('admin_loan_save_admin');
+// Route::post('/admin_loan_save_admin','LoanController@admin_loanSave_admin' )->name('admin_loan_save_admin');
 Route::get('/admin_loan_enable/{loan_id}/state/{state}','LoanController@admin_loans_enable_desable' )->name('admin_loan_enable');
+// Route::get('/loan_new_admin','LoanController@admin_loanGetForm_admin' )->name('loan_new_admin');
 
-//Profesional y administrador
-Route::get('/loan_new','LoanController@admin_loanGetForm' )->name('loan_new');
-Route::get('/loan_new_admin','LoanController@admin_loanGetForm_admin' )->name('loan_new_admin');
 
-//Profesional
-Route::get('/loan','LoanController@getLoansProfesionalFiltered' )->name('loan');
+//Profesional new loan
+// Route::get('/loan','LoanController@getLoansProfesionalFiltered' )->name('loan');
+// Route::post('/profesional_loan_save','LoanController@profesional_loanSave' )->name('profesional_loan_save');
+// Route::get('/loan_new_profesional','LoanController@admin_loanGetForm' )->name('loan_new_profesional');
 Route::get('/loan_cancel/{loan_id}','LoanController@loan_cancel' )->name('loan_cancel');
 
 
