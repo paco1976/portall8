@@ -18,7 +18,7 @@ class CreateChatbotTable extends Migration
             $table->unsignedBigInteger('survey_id');
             $table->string('message_received')->default('');
             $table->string('message_sent')->default('');
-            $table->string('id_wa')->default('');
+            $table->string('id_wa')->nullable();
             $table->string('timestamp_wa')->default('');
             $table->string('phone')->default('');
             $table->timestamps();
