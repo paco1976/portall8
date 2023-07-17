@@ -1,8 +1,9 @@
 @if(Auth::user()->user_type()->first()->name=='Administrador')
 @extends('layouts.admin')
 @else
-@endif
 @extends('layouts.panel')
+@endif
+
 
 @push('style')
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">

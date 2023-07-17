@@ -3,8 +3,9 @@
 @if(Auth::user()->user_type()->first()->name=='Administrador')
 @extends('layouts.admin')
 @else
-@endif
 @extends('layouts.panel')
+@endif
+
 @section('main')
 
 		<div role="main" class="main" >
