@@ -8,6 +8,7 @@ use App\Models\Survey;
 use App\Models\Chatbot;
 use App\Models\User;
 
+include app_path('WhatsAppBot/surveyMessages.php');
 // TODO
 /** DELETE survey */
 /** GET surveys */
@@ -154,8 +155,9 @@ class SurveyController extends Controller
                 $status_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
                 // Fin del curl
                 curl_close($curl);
-
-                if($response){
+                file_put_contents("text.txt", json_encode($response));
+                
+                if(isset($response) && is_object($response) && property_exists($response, 'messages')){
                     // Id del mensaje enviado
                     $idWA = $response['messages'][0]['id'];
     
@@ -200,6 +202,8 @@ class SurveyController extends Controller
 
     public function handleResponse(Request $request)
     {
+        global $surveyMessages;
+
         $response = $request->all();
         // file_put_contents("text.txt", json_encode($response));
         // Chequea si la respuesta tiene status (lo que quiere decir que no es un mensaje) y sale de la función si lo tiene.
@@ -258,47 +262,12 @@ class SurveyController extends Controller
              * 1) Respuesta afirmativa al primer mensaje. 
              */
             if ($message === "sendSurvey") {
-
                 /**
                  * 2) Pregunta para calificar
                  */
-                $response = '¿Cómo calificarías su nivel de atención?';
+                $response = $surveyMessages['message1a_text'];
 
-                $dataToSend = [
-                    "button" => "Calificar",
-                    "sections" => [
-                        [
-                            "title" => "Calificaciones",
-                            "rows" => [
-                                [
-                                    "id" => "satisfactionLevel5",
-                                    "title" => "😁",
-                                    "description" => "¡Excelente!"
-                                ],
-                                [
-                                    "id" => "satisfactionLevel4",
-                                    "title" => "🙂",
-                                    "description" => "¡Muy buena!"
-                                ],
-                                [
-                                    "id" => "satisfactionLevel3",
-                                    "title" => "😐",
-                                    "description" => "Regular"
-                                ],
-                                [
-                                    "id" => "satisfactionLevel2",
-                                    "title" => "😕",
-                                    "description" => "Mala"
-                                ],
-                                [
-                                    "id" => "satisfactionLevel1",
-                                    "title" => "😠",
-                                    "description" => "Pésima"
-                                ]
-                            ]
-                        ]
-                    ]
-                ];
+                $dataToSend = $surveyMessages['message1a_buttons'];
 
                 // Guarda en la tabla de survey que el cliente aceptó contestar la encuesta
                 if ($survey) {
@@ -313,7 +282,7 @@ class SurveyController extends Controller
              */
             else if ($message === 'dontSendSurvey') {
 
-                $response = "Gracias.\nSi tenés alguna consulta, escribinos a info@cefeperes.com.ar y te contestaremos a la brevedad.";
+                $response = $surveyMessages['message1b_text'];
 
                 // Guarda la negativa de contestar la encuesta
                 if ($survey) {
@@ -338,49 +307,9 @@ class SurveyController extends Controller
                  */
                 if ($rating >= 3) {
 
-                    $response = '¿Qué es lo que más te gustó del servicio?';
+                    $response = $surveyMessages['message2a_text'];
 
-                    $dataToSend = [
-                        "button" => "Describir",
-                        "sections" => [
-                            [ 
-                                "title" => "Sobre el profesional",
-                                "rows" => [
-                                    [
-                                        "id" => "word:amable",
-                                        "title" => "Fue muy amable",
-                                        "description" => ""
-                                    ],
-                                    [
-                                        "id" => "word:profesional",
-                                        "title" => "Su profesionalidad",
-                                        "description" => ""
-                                    ],
-                                    [
-                                        "id" => "word:responsable",
-                                        "title" => "Fue responsable",
-                                        "description" => ""
-                                    ],
-                                ]
-                            ],
-                            [
-                                "title" => "Sobre su trabajo",
-                                "rows" => [
-                                    [
-                                        "id" => "word:calificado",
-                                        "title" => "Su capacidad",
-                                        "description" => ""
-                                    ],
-                                    [
-                                        "id" => "word:creativo",
-                                        "title" => "Su creatividad",
-                                        "description" => ""
-                                    ],
-
-                                ]
-                            ]
-                        ]
-                    ];
+                    $dataToSend = $surveyMessages['message2a_buttons'];
 
                     $this->sendWhatsAppMessage($survey, "list", $response, 3, $message_ID, $message, $timestamp, $dataToSend, $client_phone);
                 }
@@ -388,7 +317,7 @@ class SurveyController extends Controller
                  * 3) Si el rating es 1 o 2, envía agradecimiento y mail para contactar. Fin de la encuesta.
                  */
                 else {
-                    $response = "¡Gracias por responder nuestra encuesta!\nPor cualquier duda o comentario que nos quieras hacer, podés escribirnos a info@cefeperes.com.ar y te contestaremos a la brevedad.";
+                    $response = $surveyMessages['finalMessage_text'];
 
                     $this->sendWhatsAppMessage($survey, "text", $response, 3, $message_ID, $message, $timestamp, '', $client_phone);
                 }
@@ -396,7 +325,7 @@ class SurveyController extends Controller
 
                 // Guarda la palabra en el tabla de survey
                 if ($survey) {
-                    $response = "¡Gracias por responder nuestra encuesta!\nPor cualquier duda o comentario que nos quieras hacer, podés escribirnos a info@cefeperes.com.ar y te contestaremos a la brevedad.";
+                    $response = $surveyMessages['finalMessage_text'];
 
                     $word = substr($message, strpos($message, "word:") + strlen("word:"));
 
@@ -433,6 +362,7 @@ class SurveyController extends Controller
      */
     public function initSurvey($surveyId, $id)
     {
+        global $surveyMessages;
         // Busca el nombre del profesional
         $user = User::find($id);
 
@@ -445,26 +375,9 @@ class SurveyController extends Controller
                 $profileName = $user->name . ' ' . $user->last_name;
 
                 // Mensaje inicial
-                $initialMessage = "¡Hola! 👋👋 Te escribimos desde el CEFEPERES.\nHace poco te contactaste con *" . $profileName . "*, de nuestra red de profesionales, para contratar un servicio y nos encantaría saber cómo fue tu experiencia.\n¿Te gustaría contestar una breve encuesta? ¡Solo llevará unos minutos!";
+                $initialMessage = str_replace(':profileName', $profileName, $surveyMessages['initialMessage_text']);;
 
-                $dataToSend = [
-                    "buttons" => [
-                        [
-                            "type" => "reply",
-                            "reply" => [
-                                "id" => "sendSurvey",
-                                "title" => "¡Ok!"
-                            ]
-                        ],
-                        [
-                            "type" => "reply",
-                            "reply" => [
-                                "id" => "dontSendSurvey",
-                                "title" => "No, gracias"
-                            ]
-                        ]
-                    ]
-                ];
+                $dataToSend = $surveyMessages['initialMessage_buttons'];
 
                 $this->sendWhatsAppMessage($survey, "buttons", $initialMessage, 1, '', "", "", $dataToSend, $client_phone);
             
