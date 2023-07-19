@@ -307,49 +307,9 @@ class SurveyController extends Controller
                  */
                 if ($rating >= 3) {
 
-                    $response = '¿Qué es lo que más te gustó del servicio?';
+                    $response = $surveyMessages['message2a_text'];
 
-                    $dataToSend = [
-                        "button" => "Describir",
-                        "sections" => [
-                            [ 
-                                "title" => "Sobre el profesional",
-                                "rows" => [
-                                    [
-                                        "id" => "word:amable",
-                                        "title" => "Fue muy amable",
-                                        "description" => ""
-                                    ],
-                                    [
-                                        "id" => "word:profesional",
-                                        "title" => "Su profesionalidad",
-                                        "description" => ""
-                                    ],
-                                    [
-                                        "id" => "word:responsable",
-                                        "title" => "Fue responsable",
-                                        "description" => ""
-                                    ],
-                                ]
-                            ],
-                            [
-                                "title" => "Sobre su trabajo",
-                                "rows" => [
-                                    [
-                                        "id" => "word:calificado",
-                                        "title" => "Su capacidad",
-                                        "description" => ""
-                                    ],
-                                    [
-                                        "id" => "word:creativo",
-                                        "title" => "Su creatividad",
-                                        "description" => ""
-                                    ],
-
-                                ]
-                            ]
-                        ]
-                    ];
+                    $dataToSend = $surveyMessages['message2a_buttons'];
 
                     $this->sendWhatsAppMessage($survey, "list", $response, 3, $message_ID, $message, $timestamp, $dataToSend, $client_phone);
                 }
@@ -357,7 +317,7 @@ class SurveyController extends Controller
                  * 3) Si el rating es 1 o 2, envía agradecimiento y mail para contactar. Fin de la encuesta.
                  */
                 else {
-                    $response = "¡Gracias por responder nuestra encuesta!\nPor cualquier duda o comentario que nos quieras hacer, podés escribirnos a info@cefeperes.com.ar y te contestaremos a la brevedad.";
+                    $response = $surveyMessages['finalMessage_text'];
 
                     $this->sendWhatsAppMessage($survey, "text", $response, 3, $message_ID, $message, $timestamp, '', $client_phone);
                 }
@@ -365,7 +325,7 @@ class SurveyController extends Controller
 
                 // Guarda la palabra en el tabla de survey
                 if ($survey) {
-                    $response = "¡Gracias por responder nuestra encuesta!\nPor cualquier duda o comentario que nos quieras hacer, podés escribirnos a info@cefeperes.com.ar y te contestaremos a la brevedad.";
+                    $response = $surveyMessages['finalMessage_text'];
 
                     $word = substr($message, strpos($message, "word:") + strlen("word:"));
 
