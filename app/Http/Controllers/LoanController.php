@@ -185,8 +185,14 @@ class LoanController extends Controller
         }
 
        $datesRequest=$dataForm['dates'];
-
        $datesTrue=str_contains($datesRequest, "to");
+
+       $userSelected=null;
+       if($user->permisos->name == "Administrador"){ 
+            $userSelected= (int)$dataForm['user'];
+        }else{
+            $userSelected=$user->id;
+        }
 
        if($datesTrue){
 
@@ -200,7 +206,7 @@ class LoanController extends Controller
                    $dates_=$this->dateEnableByTool($tool_selectd);
                    $tools = null;
 
-                   if($user->permisos->name == "Administrador"){
+                   if($user->permisos->name == "Administrador"){ //Le tiene que mandar si o si el tool_selected y usuarios
                     return view('/loan_new', compact('users', 'tool_selectd', 'tools', 'dates_', 'user'));   
                    }else{
                     return view('/loan_new', compact( null, 'tool_selectd', 'tools', 'dates_', 'user'));   //null? o vacio++??
@@ -210,38 +216,30 @@ class LoanController extends Controller
                                        
                    if($this-> existLoans($myArray, $tool_selectd)){
                        Session::flash('message', 'Ya existe el prestamo');
-                       return redirect()->route('loan_new_profesional');   
+                       return redirect()->route('loan_new');   
                    }
-
                    $loan = LoanModel::create([
-                           'user_id' => $user->id,
+                           'user_id' => $userSelected,
                            'tool_id' => $dataForm['tool_selectd'],
                            'dateInit' => $myArray[0],
                            'dateFinish' => $myArray[count($myArray)-1], 
                            'state_id' => 3,//pendiente     
                        ]);
 
-                  $loan->save();                    
-                   Session::flash('message', 'Ingreso exitoso');
-                   
-                   if($user->permisos->name == "Administrador"){
-                    return view('/loan_new', compact('users', 'tool_selectd', 'tools', 'dates_', 'user'));   
-                   }else{
-                    return view('/loan_new', compact( null, 'tool_selectd', 'tools', 'dates_', 'user'));   //null? o vacio++??
-                   }
-
+                    $loan->save();                    
+                    Session::flash('message', 'Ingreso exitoso');                   
+                    return redirect()->route('loan_new');  
                }
-       } else{
+       }else{
+          $loan = LoanModel::create([
+          'user_id' => $userSelected,
+          'tool_id' => $dataForm['tool_selectd'],
+          'dateInit' => $datesRequest,
+          'dateFinish' => $datesRequest,  
+          'state_id' => 3,//pendiente     
+        ]);
 
-           $loan = LoanModel::create([
-               'user_id' => $user->id,
-               'tool_id' => $dataForm['tool_selectd'],
-               'dateInit' => $datesRequest,
-               'dateFinish' => $datesRequest, 
-               'state_id' => 3,        
-           ]);
            $loan->save();
-
            Session::flash('message', 'Ingreso exitoso');
            return redirect()->route('loan_new');   
        }
