@@ -72,9 +72,7 @@
 			<script src="vendor/respond/respond.js"></script>
 			<script src="vendor/excanvas/excanvas.js"></script>
 		<![endif]-->
-		
-		@stack('style')
-		
+
 	</head>
 	<body>
 		<!-- Google Tag Manager (noscript) -->
@@ -434,8 +432,5 @@
 		}
 	  }
 	</script>
-
-	@stack('script')
-
 	</body>
 </html>
