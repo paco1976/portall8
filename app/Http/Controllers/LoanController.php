@@ -128,6 +128,7 @@ class LoanController extends Controller
                 'loans.dateFinish as finish',
                 'loans.state_id as state_id',
                ) 
+            ->orderBy('loans.dateInit', 'asc')
             ->paginate(15);
 
 
@@ -286,33 +287,33 @@ class LoanController extends Controller
         return false;
     }
 
-    public function admin_loan_dates(Request $request){
+    public function admin_loan_dates( $id){
 
         $user = User::find(Auth::user()->id);
         $user->avatar = Storage::disk('avatares')->url($user->avatar);
         $user->permisos = $user->user_type()->first();
         $user->cfp = $user->cfp()->first();
 
-        $dataForm = request()->validate([
-            'tool_id' => 'required'        
-        ],[
-            'tool_id.required' => 'Debe seleccionar una herramienta'
-        ]);
-
+        // $dataForm = request()->validate([
+        //     'tool_id' => 'required'        
+        // ],[
+        //     'tool_id.required' => 'Debe seleccionar una herramienta'
+        // ]);
         $tools = null;
-        $tool_id = (int)$dataForm['tool_id'];
+            dd($id);
+            $tool_selectd= $this->GetTool($tool_id);
+            $dates_=$this->dateEnableByTool($tool_id);
+            //dd($user);
+            if($user->permisos->name == "Administrador"){
+    
+                $users = User::all();
+                return view('/loan_new', compact('users', 'tool_selectd', 'tools', 'user', 'dates_'));   
+    
+            }else{         
+                return view('loan_new',  compact( [],'tool_selectd','tools','user', 'dates_'));   
+            }
 
-        $tool_selectd= $this->GetTool($tool_id);
-        $dates_=$this->dateEnableByTool($tool_id);
-        //dd($user);
-        if($user->permisos->name == "Administrador"){
-
-            $users = User::all();
-            return view('/loan_new', compact('users', 'tool_selectd', 'tools', 'user', 'dates_'));   
-
-        }else{         
-            return view('loan_new',  compact( [],'tool_selectd','tools','user', 'dates_'));   
-        }
+        
     }
 
     private function GetTool($tool_id){

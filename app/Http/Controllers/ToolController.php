@@ -32,7 +32,7 @@ class ToolController extends Controller
     //     return view('admin.tools');
     // }
 
-    public function admin_toolsList(Request $request){
+    public function toolsList(Request $request){
         $user = User::find(Auth::user()->id);
         $user->avatar = Storage::disk('avatares')->url($user->avatar);
         $user->permisos = $user->user_type()->first();
@@ -40,7 +40,7 @@ class ToolController extends Controller
         $categories = CategoryToolsModel::all();
         $tools = ToolModel::query();
 
-        if($user->permisos->name == "Administrador"){
+        // if($user->permisos->name == "Administrador"){
             $tools = $tools 
             ->join('categoryTools AS c', 'c.id', '=', 'tools.categoryTool_id');
 
@@ -61,10 +61,10 @@ class ToolController extends Controller
             ->paginate(15);
             return view('admin.tools', compact('user', 'tools', 'categories'));
 
-        }else{
-            session::flash('message', 'No está autorizado para esta acción');
-            return redirect('/');
-        }
+        // }else{
+        //     session::flash('message', 'No está autorizado para esta acción');
+        //     return redirect('/');
+        // }
     }
 
     public function tool_new_form(){

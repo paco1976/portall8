@@ -112,8 +112,8 @@
 													</div>
 													</div>
 											</form>
-											@else
-											<form  method="post" action="{{ route('admin_loan_dates') }}" id="dates" >											
+											<!-- @else -->
+											<!-- <form  method="post" action="{{ route('admin_loan_dates') }}" id="dates" >											
 												@csrf																							
 												<div class="form-group row">
 													<div class="col-md-12">
@@ -141,7 +141,7 @@
 															</div>
 														</div>
                                         		</div>
-											</form>	
+											</form>	 -->
 											
 											@endif
 										</div>

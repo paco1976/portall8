@@ -100,21 +100,13 @@ Route::get('/loans','LoanController@getLoansFiltered' )->name('loans');
 
 
 
-Route::post('/admin_loan_dates','LoanController@admin_loan_dates' )->name('admin_loan_dates');
-// Route::post('/admin_loan_save_admin','LoanController@admin_loanSave_admin' )->name('admin_loan_save_admin');
+Route::get('/admin_loan_dates/{id}','LoanController@admin_loan_dates' )->name('admin_loan_dates');
 Route::get('/admin_loan_enable/{loan_id}/state/{state}','LoanController@admin_loans_enable_desable' )->name('admin_loan_enable');
-// Route::get('/loan_new_admin','LoanController@admin_loanGetForm_admin' )->name('loan_new_admin');
-
-
-//Profesional new loan
-// Route::get('/loan','LoanController@getLoansProfesionalFiltered' )->name('loan');
-// Route::post('/profesional_loan_save','LoanController@profesional_loanSave' )->name('profesional_loan_save');
-// Route::get('/loan_new_profesional','LoanController@admin_loanGetForm' )->name('loan_new_profesional');
 Route::get('/loan_cancel/{loan_id}','LoanController@loan_cancel' )->name('loan_cancel');
 
 
 //Herramientas 
-Route::get('/admin_tool','ToolController@admin_toolsList' )->name('admin_tool');
+Route::get('/toolsList','ToolController@toolsList' )->name('toolsList');
 Route::get('/admin_tool_edit/{id}','ToolController@tool_edit_form')->name('admin_tool_edit'); 
 Route::get('/admin_tool_new','ToolController@tool_new_form')->name('admin_tool_new'); 
 Route::get('/admin_tool_enable/{id}','ToolController@admin_tool_enable')->name('admin_tool_enable'); 
