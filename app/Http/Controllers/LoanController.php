@@ -300,9 +300,9 @@ class LoanController extends Controller
         //     'tool_id.required' => 'Debe seleccionar una herramienta'
         // ]);
         $tools = null;
-            dd($id);
-            $tool_selectd= $this->GetTool($tool_id);
-            $dates_=$this->dateEnableByTool($tool_id);
+            //dd($id);
+            $tool_selectd= $this->GetTool($id);
+            $dates_=$this->dateEnableByTool($id);
             //dd($user);
             if($user->permisos->name == "Administrador"){
     

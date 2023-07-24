@@ -91,7 +91,7 @@
 					</div>
 
 					<div class="search">
-					<form id="searchForm" action="{{route('publicacion_buscar')}}" method="get">
+						<form id="searchForm" action="{{route('publicacion_buscar')}}" method="get">
 							<div class="input-group">
 								<input type="text" name="data" class="form-control search" id="q" placeholder="Buscar..." required>
 								<span class="input-group-btn">
@@ -250,8 +250,7 @@
 						<!--
 						<div class="footer-ribbon">
 							<span>Estemos en contacto</span> 
-						</div>
-					-->
+						</div>-->
 						<div class="col-md-6">
 							<div class="newsletter">
 								<h4>Red de CFP´s:</h4>
@@ -407,35 +406,32 @@
 			gtag('config', 'G-ZEK93B6CSE');
 		</script>
 		<!-- Google Tag Manager -->
-	<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-		new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-		j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-		'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-		})(window,document,'script','dataLayer','GTM-NDX4K44');</script>
+		<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+			new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+			j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+			'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+			})(window,document,'script','dataLayer','GTM-NDX4K44');</script>
 	<!-- End Google Tag Manager -->
 
 	<!-- Este script bloque el ingeso de letras en imput de whatsapp-->
-	<script>
-	function validate(evt) {
-		var theEvent = evt || window.event;
-	  
-		// Handle paste
-		if (theEvent.type === 'paste') {
-			key = event.clipboardData.getData('text/plain');
-		} else {
-		// Handle key press
-			var key = theEvent.keyCode || theEvent.which;
-			key = String.fromCharCode(key);
+		<script> function validate(evt) {
+			var theEvent = evt || window.event;
+		
+			// Handle paste
+			if (theEvent.type === 'paste') {
+				key = event.clipboardData.getData('text/plain');
+			} else {
+			// Handle key press
+				var key = theEvent.keyCode || theEvent.which;
+				key = String.fromCharCode(key);
+			}
+			var regex = /[0-9]|\./;
+			if( !regex.test(key) ) {
+			theEvent.returnValue = false;
+			if(theEvent.preventDefault) theEvent.preventDefault();
+			}
 		}
-		var regex = /[0-9]|\./;
-		if( !regex.test(key) ) {
-		  theEvent.returnValue = false;
-		  if(theEvent.preventDefault) theEvent.preventDefault();
-		}
-	  }
-	</script>
-
-	@stack('script')
-
+		</script>
+		@stack('script')
 	</body>
 </html>
