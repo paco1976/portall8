@@ -199,11 +199,12 @@ class LoanController extends Controller
 
                $myArray = explode('to', $datesRequest);
                //$maxDays=$this-> greaterThanMax($myArray);
-               //dd($maxDays);
+              
                $tool_selectd= $this->GetTool((int)$dataForm['tool_selectd']);
+               //dd("ok");
 
-               if($this-> greaterThanMax($myArray)){
-                   Session::flash('message', 'El maximo de dias para el prestamo es de 3');
+               if($this-> greaterThanMax($myArray) || $this-> existLoans($myArray, $tool_selectd)){
+                   Session::flash('message', 'Asegúrese que el máximo de días que eligió no sea mayor a 7, o que el préstamo esté dispoinible');
                    $dates_=$this->dateEnableByTool($tool_selectd);
                    $tools = null;
 
@@ -217,7 +218,7 @@ class LoanController extends Controller
                                        
                    if($this-> existLoans($myArray, $tool_selectd)){
                        Session::flash('message', 'Ya existe el prestamo');
-                       return redirect()->route('loan_new');   
+                       return redirect()->route('loans');   
                    }
                    $loan = LoanModel::create([
                            'user_id' => $userSelected,
@@ -229,7 +230,7 @@ class LoanController extends Controller
 
                     $loan->save();                    
                     Session::flash('message', 'Ingreso exitoso');                   
-                    return redirect()->route('loan_new');  
+                    return redirect()->route('loans');  
                }
        }else{
           $loan = LoanModel::create([
@@ -242,7 +243,7 @@ class LoanController extends Controller
 
            $loan->save();
            Session::flash('message', 'Ingreso exitoso');
-           return redirect()->route('loan_new');   
+           return redirect()->route('toolsList');   
        }
 
        
@@ -277,11 +278,8 @@ class LoanController extends Controller
         $dif = date_diff($fecha1, $fecha2);
         $differenceFormat = '%a';
         $resta = $dif->format($differenceFormat);
-        //dd($resta);
-        //$num_a=explode('-', $myArray[0]);
-        //$num_b=explode('-', $myArray[1]);
         
-        if($resta>3){
+        if($resta>=7){
             return true;
         }
         return false;
@@ -294,16 +292,11 @@ class LoanController extends Controller
         $user->permisos = $user->user_type()->first();
         $user->cfp = $user->cfp()->first();
 
-        // $dataForm = request()->validate([
-        //     'tool_id' => 'required'        
-        // ],[
-        //     'tool_id.required' => 'Debe seleccionar una herramienta'
-        // ]);
         $tools = null;
             //dd($id);
             $tool_selectd= $this->GetTool($id);
             $dates_=$this->dateEnableByTool($id);
-            //dd($user);
+
             if($user->permisos->name == "Administrador"){
     
                 $users = User::all();
