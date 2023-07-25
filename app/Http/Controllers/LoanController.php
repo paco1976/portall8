@@ -37,28 +37,12 @@ class LoanController extends Controller
 
         if($user->permisos->name == "Administrador"){
             if($state==4 || $state== 2){//Finalizado - Rechazado
-                //$now = getdate();
-                $now=date("y-m-d h:i:s");
-                if($now<$loan->dateIniti){ //Hoy<Inicio
-                    LoanModel::where('id',$loan_id)->update([
-                        'dateInit'=>$now ,
-                        'dateFinish'=>$now ,
-                        'dateClose'=>$now ,                                           
-                     ]);
-                    
-                }else{
-                    if($now<$loan->dateFinish){//Hoy < Hasta
-                        LoanModel::where('id',$loan_id)->update([
-                            'dateFinish'=>$now ,
-                            'dateClose'=>$now ,                                           
-                        ]);
-                    }else{
-                        LoanModel::where('id',$loan_id)->update([
-                            'dateClose'=>$now ,                                           
-                        ]);
-                    
-                    }
-                }                           
+
+                $now = date_create(date('y-m-d'));
+                LoanModel::where('id',$loan_id)->update([
+                    'dateClose'=>$now ,                                           
+                ]);
+                          
             }
 
             if($state== 1 ){//Aprobado
@@ -132,6 +116,7 @@ class LoanController extends Controller
                 'u.last_name as lastName',
                 'loans.dateInit as init',
                 'loans.dateFinish as finish',
+                'loans.dateClose as close',
                 'loans.state_id as state_id',
                ) 
             ->orderBy('loans.dateInit', 'asc')
@@ -281,8 +266,6 @@ class LoanController extends Controller
         $fecha1 = date_create($fecha1);
         $fecha2 = date_create($fecha2);
         $dif = date_diff($fecha1, $fecha2);
-        // $differenceFormat = '%a';
-        // $resta = $dif->format($differenceFormat);
 
         if($dif->days>=7){
             return true;
