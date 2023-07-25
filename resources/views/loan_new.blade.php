@@ -106,7 +106,7 @@
 																	Guardar
 																</button>
 																<button  class="btn btn-danger">
-																		<a href="{{ Url('/loan_new_admin') }}" style="text-decoration:none; color:white" >Cancelar</a>
+																		<a href="{{ Url('/loan_new') }}" style="text-decoration:none; color:white" >Cancelar</a>
 																</button>
 															</div>
 														</div>
@@ -135,7 +135,7 @@
 		// 	this.jumpToDate("2025-01")
 		// },
 		disable: js_array,
-		dateFormat: "Y-m-d",
+		dateFormat: "d-m-y",
 		mode: "range",
 		minDate: new Date(),
 		max:3,
