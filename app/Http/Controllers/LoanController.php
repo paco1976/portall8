@@ -36,33 +36,39 @@ class LoanController extends Controller
         $loan = LoanModel::where('id', $loan_id)->first();
 
         if($user->permisos->name == "Administrador"){
-            if($state==4){
+            if($state==4 || $state== 2){//Finalizado - Rechazado
                 //$now = getdate();
                 $now=date("y-m-d h:i:s");
-                if($loan->dateFinish<$now){
+                if($now<$loan->dateIniti){ //Hoy<Inicio
                     LoanModel::where('id',$loan_id)->update([
+                        'dateInit'=>$now ,
                         'dateFinish'=>$now ,
                         'dateClose'=>$now ,                                           
                      ]);
                     
                 }else{
-                    LoanModel::where('id',$loan_id)->update([
-                        'dateClose'=>$now ,                                           
-                     ]);
-                }
+                    if($now<$loan->dateFinish){//Hoy < Hasta
+                        LoanModel::where('id',$loan_id)->update([
+                            'dateFinish'=>$now ,
+                            'dateClose'=>$now ,                                           
+                        ]);
+                    }else{
+                        LoanModel::where('id',$loan_id)->update([
+                            'dateClose'=>$now ,                                           
+                        ]);
+                    
+                    }
+                }                           
+            }
+
+            if($state== 1 ){//Aprobado
+                session::flash('message', 'El prestamo esta dado de alta');
+            }else if ($state== 2 || $state== 4) {//Rechazado
+                session::flash('message', 'El prestamo esta dado de baja');
             }
 
             $loan->state_id =  $state;
             $loan->save(['state_id']);
-            if($state== 1 ){
-                session::flash('message', 'El prestamo esta dado de alta');
-            }else if ($state== 2) {
-                session::flash('message', 'El prestamo esta dado de baja');
-            }else{
-                Session::flash('message', 'El prestamo se ah cerrado');    
-            }
-            // $this->desableEnableTool($loan->tool_id, $state);                   
-
             return back();
          
         }
@@ -198,12 +204,12 @@ class LoanController extends Controller
        if($datesTrue){
 
                $myArray = explode('to', $datesRequest);
-               //$maxDays=$this-> greaterThanMax($myArray);
-               //dd($maxDays);
+              
                $tool_selectd= $this->GetTool((int)$dataForm['tool_selectd']);
+               //dd($this-> greaterThanMax($myArray), $this-> existLoans($myArray, $tool_selectd));
 
-               if($this-> greaterThanMax($myArray)){
-                   Session::flash('message', 'El maximo de dias para el prestamo es de 3');
+               if($this-> greaterThanMax($myArray) || $this-> existLoans($myArray, $tool_selectd)){
+                   Session::flash('message', 'Asegúrese que el máximo de días que eligió no sea mayor a 7, o que el préstamo esté dispoinible');
                    $dates_=$this->dateEnableByTool($tool_selectd);
                    $tools = null;
 
@@ -217,7 +223,7 @@ class LoanController extends Controller
                                        
                    if($this-> existLoans($myArray, $tool_selectd)){
                        Session::flash('message', 'Ya existe el prestamo');
-                       return redirect()->route('loan_new');   
+                       return redirect()->route('loans');   
                    }
                    $loan = LoanModel::create([
                            'user_id' => $userSelected,
@@ -229,7 +235,7 @@ class LoanController extends Controller
 
                     $loan->save();                    
                     Session::flash('message', 'Ingreso exitoso');                   
-                    return redirect()->route('loan_new');  
+                    return redirect()->route('loans');  
                }
        }else{
           $loan = LoanModel::create([
@@ -242,7 +248,7 @@ class LoanController extends Controller
 
            $loan->save();
            Session::flash('message', 'Ingreso exitoso');
-           return redirect()->route('loan_new');   
+           return redirect()->route('toolsList');   
        }
 
        
@@ -275,13 +281,10 @@ class LoanController extends Controller
         $fecha1 = date_create($fecha1);
         $fecha2 = date_create($fecha2);
         $dif = date_diff($fecha1, $fecha2);
-        $differenceFormat = '%a';
-        $resta = $dif->format($differenceFormat);
-        //dd($resta);
-        //$num_a=explode('-', $myArray[0]);
-        //$num_b=explode('-', $myArray[1]);
-        
-        if($resta>3){
+        // $differenceFormat = '%a';
+        // $resta = $dif->format($differenceFormat);
+
+        if($dif->days>=7){
             return true;
         }
         return false;
@@ -294,16 +297,11 @@ class LoanController extends Controller
         $user->permisos = $user->user_type()->first();
         $user->cfp = $user->cfp()->first();
 
-        // $dataForm = request()->validate([
-        //     'tool_id' => 'required'        
-        // ],[
-        //     'tool_id.required' => 'Debe seleccionar una herramienta'
-        // ]);
         $tools = null;
-            dd($id);
-            $tool_selectd= $this->GetTool($tool_id);
-            $dates_=$this->dateEnableByTool($tool_id);
-            //dd($user);
+            //dd($id);
+            $tool_selectd= $this->GetTool($id);
+            $dates_=$this->dateEnableByTool($id);
+
             if($user->permisos->name == "Administrador"){
     
                 $users = User::all();

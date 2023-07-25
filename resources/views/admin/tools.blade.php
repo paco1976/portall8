@@ -78,7 +78,7 @@
 											<li class="list-group-item">{{$tool->description}}</li>
 											<!-- Seleccionar para prestamos Todos -->
 											<div style="display:flex; flex-direction:row">
-												<a style="text-align:center; width:100%; margin-bottom: 30px;" href="{{ route('admin_loan_dates', ['id' => $tool->id] ) }}" class="btn btn-success"><i class="bi bi-hand-thumbs-up-fill">Seleccionar para prestamo</i></a>					
+												<a style="text-align:center; width:100%; margin-bottom: 3px;" href="{{ route('admin_loan_dates', ['id' => $tool->id] ) }}" class="btn btn-success"><i class="bi bi-hand-thumbs-up-fill">Seleccionar para prestamo</i></a>					
 											</div>
 											<!-- Administrar para Admin -->
 											@if(Auth::user()->user_type()->first()->name=='Administrador')								

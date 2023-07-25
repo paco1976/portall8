@@ -30,12 +30,12 @@
 					</div>
 				</section>
 				@if (Session::has('message'))
-                        <div class="alert alert-success" style="display:flex; flex-direction:row; justify-content:space-between">
-                            <p >{{ Session::get('message') }}</p>
-							<button type="button" style="float:right; border-radius: 2px;" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span>
-							</button>
-                        </div>									
-                        @endif	
+                   <div class="alert alert-success" style="display:flex; flex-direction:row; justify-content:space-between">
+                        <p >{{ Session::get('message') }}</p>
+						<button type="button" style="float:right; border-radius: 2px;" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span>
+						</button>
+                    </div>									
+                @endif	
 				
 				<div class="container">
 					<div class="row">
@@ -64,11 +64,11 @@
 															<input type="hidden"  id="tool_selectd" class="form-control" name="tool_selectd" required
 															placeholder=" {{$tool_selectd->name}}" value=" {{$tool_selectd->id}}" />
 														</div> 
-															@error('user_type')
-															<span class="invalid-feedback" role="alert">
-																<strong>{{ $message }}</strong>
-															</span>
-															@enderror
+														@error('user_type')
+														<span class="invalid-feedback" role="alert">
+															<strong>{{ $message }}</strong>
+														</span>
+														@enderror
                                     				</div>
 													<!-- Inicio Elegir Usuarios, caso Admin -->							
 													<div class="form-group row">
@@ -86,62 +86,33 @@
 																</div>													
 															</div>
 															@endif	
-													<!-- Fin Elegir Usuarios, caso Admin -->	
-													<div class="form-group row">
-														<div class="col-md-12">
-															<label for="name" class="col-md-12 col-form-label text-md-right">Dias</label>
+														<!-- Fin Elegir Usuarios, caso Admin -->	
+														<div class="form-group row">
+															<div class="col-md-12">
+																<label for="name" class="col-md-12 col-form-label text-md-right">Dias</label>
+															</div>
+															<div class="col-sm-9 mt-2">
+																<input type="datetime-local"  id="dates" class="form-control input-lg @error('password') is-invalid @enderror"  name="dates" autofocus required />
+															</div>
+															@error('dates')
+															<span class="invalid-feedback" role="alert">
+																<strong>{{ $message }}</strong>
+															</span>
+															@enderror
 														</div>
-														<div class="col-sm-9 mt-2">
-															<input type="datetime-local"  id="dates" class="form-control input-lg @error('password') is-invalid @enderror"  name="dates" autofocus required 
-															 />
-														</div>
-														@error('dates')
-                                                		<span class="invalid-feedback" role="alert">
-                                                    		<strong>{{ $message }}</strong>
-                                               			 </span>
-                                            			@enderror
-                                    				</div>
-													<div class="form-group row mb-0"><br>
-													<div class="col-md-12 offset-md-4">
-														<button type="submit" class="btn btn-primary">
-															Guardar
-														</button>
-														<button  class="btn btn-danger">
-																<a href="{{ Url('/loan_new_admin') }}" style="text-decoration:none; color:white" >Cancelar</a>
-														</button>
-													</div>
-													</div>
-											</form>
-											<!-- @else -->
-											<!-- <form  method="post" action="{{ route('admin_loan_dates') }}" id="dates" >											
-												@csrf																							
-												<div class="form-group row">
-													<div class="col-md-12">
-														<label for="tool_id" class="col-md-4 col-form-label text-md-right">Herramienta</label>
-													</div>
-                                        			<div class="col-md-12">
-                                           				<select class="form-control" name="tool_id"  id="tool_id" required>
-                                                			<option value="">Seleccione una opción</option>
-                                               				@foreach ($tools as $tool)
-                                                        	<option value='{{ $tool->id }}'>{{ $tool->name }}  IDE {{ $tool->id }}</option>
-                                                			@endforeach
-                                           				</select>
-
-                                            			@error('user_type')
-                                                		<span class="invalid-feedback" role="alert">
-                                                    		<strong>{{ $message }}</strong>
-                                               			 </span>
-                                            			@enderror
 														<div class="form-group row mb-0"><br>
 															<div class="col-md-12 offset-md-4">
-																
 																<button type="submit" class="btn btn-primary">
-																	Disponibilidad
+																	Guardar
+																</button>
+																<button  class="btn btn-danger">
+																		<a href="{{ Url('/loan_new') }}" style="text-decoration:none; color:white" >Cancelar</a>
 																</button>
 															</div>
 														</div>
-                                        		</div>
-											</form>	 -->
+													</div>
+											</form>
+											
 											
 											@endif
 										</div>
@@ -164,14 +135,11 @@
 		// 	this.jumpToDate("2025-01")
 		// },
 		disable: js_array,
-		dateFormat: "Y-m-d",
+		dateFormat: "d-m-y",
 		mode: "range",
 		minDate: new Date(),
 		max:3,
       });
 	});
-
-	
-
 </script>
 @endpush
