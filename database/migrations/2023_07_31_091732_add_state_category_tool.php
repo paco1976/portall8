@@ -14,7 +14,7 @@ class AddStateCategoryTool extends Migration
     public function up()
     {
         Schema::table('categoryTools', function($t) {
-            DB::statement("ALTER TABLE `categorytools` add column  `active` boolean null ");
+            DB::statement("ALTER TABLE `categoryTools` add column  `active` boolean null ");
         });
     }
 
@@ -26,7 +26,7 @@ class AddStateCategoryTool extends Migration
     public function down()
     {
         Schema::table('categoryTools', function($t) {
-            DB::statement("ALTER TABLE `categorytools` add column  `active` boolean  null ");
+            DB::statement("ALTER TABLE `categoryTools` add column  `active` boolean  null ");
         });
     }
 }
