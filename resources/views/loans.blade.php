@@ -41,6 +41,7 @@
 												<option value="">Todos los Estados</option>
 												<option value="approved">Aprobados</option>
 												<option value="refused">No Aprobados</option>
+												<option value="close">Cerrados</option>
 												<option value="pending">Pendientes</option>
 											</select>
 								</div>
@@ -91,7 +92,7 @@
 								@if($loan->state_id == 2 )
 								<p style="font-weight: 600; color:red" >Rechazado</p>
 								@elseif($loan->state_id == 4)
-									<p style="font-weight: 600; color:red" >Finalizado</p>
+									<p style="font-weight: 600; color:black" >Finalizado</p>
 									<li class="list-group-item">Cerrado {{date('d/ m/ Y', strtotime($loan->close))}}</li>
 								@elseif($loan->state_id == 1)
 								<p style="font-weight: 600;" >Aprobado</p>
