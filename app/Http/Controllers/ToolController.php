@@ -72,7 +72,9 @@ class ToolController extends Controller
         $user = User::find(Auth::user()->id);
         $user->avatar = Storage::disk('avatares')->url($user->avatar);
         $user->permisos = $user->user_type()->first();
-        $categories = CategoryToolsModel::all();
+        $categories = CategoryToolsModel::where('active', 1)->get();
+
+        // $categories = CategoryToolsModel::all();
         $tool=null;
         return view('/admin.tool_new', compact('user', 'categories','tool'));
     }
@@ -151,22 +153,36 @@ class ToolController extends Controller
         $user = User::find(Auth::user()->id);
         $user->permisos = $user->user_type()->first();
         $tool = ToolModel::where('id', $id)->get();
-        // dd($tool[0]->state_id);
          if($user->permisos->name == "Administrador"){
 
-                if($tool[0]->state_id==1){
+                if($tool[0]->active==1){
+
                     Session::flash('message', 'Se deshabilito la herramienta');
                     ToolModel::where('id',$id)->update([
                         'active'=> 0,                  
                      ]);
                 }else{
-                    Session::flash('message', 'Se habilito la herramienta');
-                    ToolModel::where('id',$id)->update([
-                        'active'=> 1,                  
-                     ]);
+
+                    //Solo si, La categoria adjudicada esta habilitada.
+                    $tools = DB::table('tools')->select('tools.id')
+                    ->join('categoryTools AS c', 'c.id', '=', 'tools.categoryTool_id')
+                    ->where('tools.id', $id)
+                    ->where('c.active', 1)
+                    ->first();
+
+                    //dd($tools);
+                    if($tools==null){
+                        Session::flash('message', 'Habilite la categoria de la herramienta para poder darla de alta.');
+                    }else{
+                        Session::flash('message', 'Se habilito la herramienta');
+                        ToolModel::where('id',$id)->update([
+                            'active'=> 1,                  
+                         ]);
+                    }
+                    
                 }
                 
-                 return redirect()->route('admin_tool');  
+                 return redirect()->route('toolsList');  
 
         }else{
             session::flash('message', 'No está autorizado para esta acción');

@@ -76,19 +76,22 @@
 											<li class="list-group-item" ><h5 class="card-title"> <span style="color:black">Categoria</span> {{$tool->categoryName}}</h5></li>
 											<li class="list-group-item" ><h5 class="card-title">{{$tool->name}}</h5></li>
 											<li class="list-group-item">{{$tool->description}}</li>
-											<!-- Seleccionar para prestamos Todos -->
-											<div style="display:flex; flex-direction:row">
-												<a style="text-align:center; width:100%; margin-bottom: 3px;" href="{{ route('admin_loan_dates', ['id' => $tool->id] ) }}" class="btn btn-success"><i class="bi bi-hand-thumbs-up-fill">Seleccionar para prestamo</i></a>					
-											</div>
+											@if($tool->active == 1)
+												<!-- Seleccionar para prestamos Todos -->
+												<div style="display:flex; flex-direction:row">
+													<a style="text-align:center; width:100%; margin-bottom: 3px;" href="{{ route('admin_loan_dates', ['id' => $tool->id] ) }}" class="btn btn-primary"><i class="bi bi-hand-thumbs-up-fill">Seleccionar para prestamo</i></a>					
+												</div>
+												@endif
 											<!-- Administrar para Admin -->
 											@if(Auth::user()->user_type()->first()->name=='Administrador')								
 												@if($tool->active == 1)
+												<!-- Seleccionar para prestamos Todos -->
 												<div style="display:flex; flex-direction:row">
-													<a style="text-align:center; width:100%; margin-bottom: 30px;" href="{{ route('admin_tool_enable', ['id' => $tool->id] ) }}" class="btn btn-danger"><i class="bi bi-hand-thumbs-up-fill">Deshabillitar</i></a>					
+													<a style="text-align:center; width:100%; margin-bottom: 30px;" href="{{ route('admin_tool_state', ['id' => $tool->id] ) }}" class="btn btn-danger"><i class="bi bi-hand-thumbs-up-fill">Deshabillitar</i></a>					
 												</div>
 												@else
 												<div style="display:flex; flex-direction:row">
-													<a style="text-align:center; width:100%; margin-bottom: 30px;" href="{{ route('admin_tool_enable', ['id' => $tool->id] ) }}" class="btn btn-success"><i class="bi bi-hand-thumbs-up-fill">Habilitar</i></a>					
+													<a style="text-align:center; width:100%; margin-bottom: 30px;" href="{{ route('admin_tool_state', ['id' => $tool->id] ) }}" class="btn btn-success"><i class="bi bi-hand-thumbs-up-fill">Habilitar</i></a>					
 												</div>
 												@endif
 											@endif

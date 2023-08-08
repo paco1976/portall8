@@ -64,9 +64,15 @@
 													</li>
 													<li class="list-group-item" ><h5 class="card-title">{{$category->name}}</h5></li>
 													<li>
+													@if($category->active == 1)
 													<div style="display:flex; flex-direction:row">
-														<a style="text-align:center; width:100%; margin-bottom: 30px;" href="{{ route('admin_categoryTool_delete', ['id' => $category->id] ) }}" class="btn btn-danger"><i class="bi bi-hand-thumbs-up-fill">Eliminar</i></a>					
+														<a style="text-align:center; width:100%; margin-bottom: 30px;" href="{{ route('admin_categoryTool_delete', ['id' => $category->id] ) }}" class="btn btn-danger"><i class="bi bi-hand-thumbs-up-fill">Deshabilitar</i></a>					
 													</div>
+													@else
+													<div style="display:flex; flex-direction:row">
+														<a style="text-align:center; width:100%; margin-bottom: 30px;" href="{{ route('admin_categoryTool_delete', ['id' => $category->id] ) }}" class="btn btn-success"><i class="bi bi-hand-thumbs-up-fill">Habilitar</i></a>					
+													</div>
+													@endif						
 													</li>
 													
 													

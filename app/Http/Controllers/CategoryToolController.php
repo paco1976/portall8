@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\CategoryToolsModel;
+use App\Models\LoanModel;
 
 use Barryvdh\Debugbar\Facade as Debugbar;
 
@@ -38,10 +39,13 @@ class CategoryToolController extends Controller
                 $categories=$categories->where('name', 'like', "%{$name}%");
             }
 
+
+
             $categories = $categories
             ->select(
                 'id',
                 'name',
+                'active',
                ) 
             ->paginate(15);
 
@@ -58,6 +62,21 @@ class CategoryToolController extends Controller
         $cat = CategoryToolsModel::where('id',$id)->first();
 
         return view('/admin.categoryTool_new', compact('user', 'cat'));
+    }
+
+
+    public function category_existInLoans($id){
+        $user = User::find(Auth::user()->id);
+        $user->avatar = Storage::disk('avatares')->url($user->avatar);
+        $user->permisos = $user->user_type()->first();
+
+        $tools = DB::table('tools')->select('tools.id')
+        ->join('categoryTools AS c', 'c.id', '=', 'tools.categoryTool_id')
+        ->where('tools.active', 1)
+        ->where('c.id', $id)
+        ->first();
+
+        return $tools;
     }
 
     public function categoryTool_new(){
@@ -82,7 +101,7 @@ class CategoryToolController extends Controller
         if($request['id']){
             //dd($request);
             CategoryToolsModel::where('id',$request['id'])->update([
-                'name'=>$dataForm['name'],             
+                'name'=>$dataForm['name'],  
             ]);
             Session::flash('message', 'Edicion exitosa');
             return redirect()->route('admin_categoryTools');  
@@ -91,7 +110,9 @@ class CategoryToolController extends Controller
                 //dd($request);
 
             $cat = CategoryToolsModel::create([
-                'name' => $dataForm['name'],               
+                'name' => $dataForm['name'],
+                'active' => 1,               
+               
             ]);
             $cat->save();
             Session::flash('message', 'Ingreso exitoso');
@@ -101,15 +122,36 @@ class CategoryToolController extends Controller
         
     }
 
-    public function categoryTool_delete($id){
+    public function categoryTool_active($id){
         $user = User::find(Auth::user()->id);
         $user->avatar = Storage::disk('avatares')->url($user->avatar);
         $user->permisos = $user->user_type()->first();
          
         if($user->permisos->name == "Administrador"){
-            CategoryToolsModel::where('id',$id)->delete();
-            Session::flash('message', 'Se elimino con exito');
+            $cat = CategoryToolsModel::where('id',$id)->first();
+            $state=null;
+
+            if($cat->active==1){
+                $result=$this->category_existInLoans($id);
+                //dd($result);
+                if($result==null){
+                    Session::flash('message', 'Se edito el estado con exito');
+                    $state=0;
+                }else{
+                    $state=1;
+                    Session::flash('message', 'La Categoria esta en uso,  no se puede editar el estado');
+                }
+            }else{
+                Session::flash('message', 'Se edito el estado con exito');
+                $state=1;
+            }
+
+            CategoryToolsModel::where('id',$id)->update([
+                'active'=>$state,  
+            ]);
+
             return redirect()->route('admin_categoryTools'); 
+
         }else{
             session::flash('message', 'No está autorizado para esta acción');
             return redirect('/');

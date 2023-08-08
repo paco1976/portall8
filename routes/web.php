@@ -99,7 +99,6 @@ Route::get('/loan_new','LoanController@loanGetForm' )->name('loan_new');
 Route::get('/loans','LoanController@getLoansFiltered' )->name('loans');
 
 
-
 Route::get('/admin_loan_dates/{id}','LoanController@admin_loan_dates' )->name('admin_loan_dates');
 Route::get('/admin_loan_enable/{loan_id}/state/{state}','LoanController@admin_loans_enable_desable' )->name('admin_loan_enable');
 Route::get('/loan_cancel/{loan_id}','LoanController@loan_cancel' )->name('loan_cancel');
@@ -109,13 +108,13 @@ Route::get('/loan_cancel/{loan_id}','LoanController@loan_cancel' )->name('loan_c
 Route::get('/toolsList','ToolController@toolsList' )->name('toolsList');
 Route::get('/admin_tool_edit/{id}','ToolController@tool_edit_form')->name('admin_tool_edit'); 
 Route::get('/admin_tool_new','ToolController@tool_new_form')->name('admin_tool_new'); 
-Route::get('/admin_tool_enable/{id}','ToolController@admin_tool_enable')->name('admin_tool_enable'); 
+Route::get('/admin_tool_state/{id}','ToolController@admin_tool_enable')->name('admin_tool_state'); 
 Route::post('/tool_save','ToolController@tool_save' )->name('tool_save');
 
 //Categorias
 Route::get('/admin_categoryTool_edit/{id}','CategoryToolController@category_edit_form')->name('admin_categoryTool_edit'); 
 Route::get('/admin_categoryTool_new','CategoryToolController@categoryTool_new')->name('admin_categoryTool_new'); 
-Route::get('/admin_categoryTool_delete/{id}','CategoryToolController@categoryTool_delete' )->name('admin_categoryTool_delete');
+Route::get('/admin_categoryTool_delete/{id}','CategoryToolController@categoryTool_active' )->name('admin_categoryTool_delete');
 Route::get('/admin_categoryTools','CategoryToolController@getCategoryFiltered' )->name('admin_categoryTools');
 Route::post('/category_save','CategoryToolController@admin_catSave' )->name('category_save');
 

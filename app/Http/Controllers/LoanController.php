@@ -101,6 +101,8 @@ class LoanController extends Controller
                     $loans = $loans->where('loans.state_id',  2);
                 }else if($state == "approved"){
                     $loans = $loans->where('loans.state_id',  1);
+                }else if($state == "close"){
+                    $loans = $loans->whereNotNull('loans.dateClose');
                 }
             }
 
