@@ -120,6 +120,8 @@ class LoanController extends Controller
                 'loans.dateFinish as finish',
                 'loans.dateClose as close',
                 'loans.state_id as state_id',
+                'loans.returned as returned',
+                'loans.removed  as removed',
                ) 
             ->orderBy('loans.dateInit', 'asc')
             ->paginate(15);
@@ -217,7 +219,7 @@ class LoanController extends Controller
                            'tool_id' => $dataForm['tool_selectd'],
                            'dateInit' => $myArray[0],
                            'dateFinish' => $myArray[count($myArray)-1], 
-                           'state_id' => 3,//pendiente     
+                           'state_id' => 3,//pendiente                          
                        ]);
 
                     $loan->save();                    

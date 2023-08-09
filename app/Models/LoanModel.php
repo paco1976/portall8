@@ -12,7 +12,7 @@ class LoanModel extends Model
     protected $table ='loans';
 
     protected $fillable = [
-        'id','loan_id', 'user_id', 'tool_id', 'dateInit', 'dateFinish', 'state_id', 'created_at', 'updated_at' 
+        'id','loan_id', 'user_id', 'tool_id', 'dateInit', 'dateFinish', 'state_id', 'removed','returned','created_at', 'updated_at' 
     ];
 
     
