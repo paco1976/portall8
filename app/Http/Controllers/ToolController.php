@@ -39,7 +39,8 @@ class ToolController extends Controller
 
         $categories = CategoryToolsModel::all();
         $tools = ToolModel::query();
-
+        
+        $categoryId = "";
         // if($user->permisos->name == "Administrador"){
             $tools = $tools 
             ->join('categoryTools AS c', 'c.id', '=', 'tools.categoryTool_id');
@@ -59,7 +60,7 @@ class ToolController extends Controller
                 'c.name as categoryName'
                ) 
             ->paginate(15);
-            return view('admin.tools', compact('user', 'tools', 'categories'));
+            return view('admin.tools', compact('user', 'tools', 'categories', 'categoryId'));
 
         // }else{
         //     session::flash('message', 'No está autorizado para esta acción');
@@ -125,7 +126,7 @@ class ToolController extends Controller
                     'categoryTool_id'=>$data['categoryId']                    
                  ]);
                  Session::flash('message', 'Edicion exitosa');
-                 return redirect()->route('admin_tool');  
+                 return redirect()->route('admin_tool_edit');  
 
                 }else{
                     //dd($request);
@@ -138,7 +139,7 @@ class ToolController extends Controller
                 ]);
                 $tool->save();
                 Session::flash('message', 'Ingreso exitoso');
-                return redirect()->route('admin_tool');   
+                return redirect()->route('admin_tool_new');   
             }
             
         }else{

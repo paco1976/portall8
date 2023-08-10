@@ -176,10 +176,10 @@
 										<ul class="dropdown-menu">
 
 											<li><a href="{{ route('admin_profesionales') }}"><i class="fa fa-users"></i> Lista de profesionales</a></li>
-											<li><a href="{{ route('admin_publicaciones') }}"><i class="fa fa-list-ul"></i> Lista de publiaciones</a></li>
-											<li><a href="{{ route('loans') }}"><i class="fa fa-list-ul"></i> Prestamos</a></li>
+											<li><a href="{{ route('admin_publicaciones') }}"><i class="fa fa-list-ul"></i> Lista de publicaciones</a></li>
+											<li><a href="{{ route('loans') }}"><i class="fa fa-list-ul"></i> Préstamos</a></li>
 											<li><a href="{{ route('toolsList') }}"><i class="fa fa-list-ul"></i> Herramientas</a></li>
-											<li><a href="{{ route('admin_categorias') }}"><i class="fa fa-list"></i> Categorias</a></li>
+											<li><a href="{{ route('admin_categorias') }}"><i class="fa fa-list"></i> Categorías</a></li>
 											<li><a href="#"><i class="fa fa-list"></i> Títulos</a></li>
 										
 										</ul>
@@ -196,7 +196,8 @@
 											<li><a href="{{ url('/tarifario') }}"><i class="fa fa-calculator"></i> Tarifarios</a></li>
 											<li><a href="{{ url('/beneficios') }}"><i class="fa fa-gift"></i> Beneficios</a></li>
 											<li><a href="{{ url('/foro') }}"><i class="fa fa-comments"></i> Foro</a></li>
-											<li><a href="{{ route('loans') }}"><i class="fa fa-list-ul"></i> Prestamos</a></li>
+											<li><a href="{{ route('toolsList') }}"><i class="bi bi-tools"></i>  Pañol de herramientas</a></li>
+											<li><a href="{{ route('loans') }}"><i class="fa fa-list-ul"></i> Mis préstamos</a></li>
 										</ul>
 									</li>
 									<!--fin Menu de profesional -->

@@ -15,7 +15,11 @@
 							</div>
 							<div class="row">
 								<div class="col-md-12">
-									<h1>Prestamos</h1>
+								@if(Auth::user()->user_type()->first()->name=='Administrador')
+									<h1>Préstamos</h1>
+								@else
+									<h1>Mis préstamos</h1>
+								@endif
 								</div>
 
 							</div>
@@ -63,7 +67,7 @@
 					<div class="mb-md" style="margin-top:20px">
 					
 						<a href="{{ route('toolsList') }}">
-							<button id="addToTable" class="btn btn-primary">Nuevo Prestamo </button></a>
+							<button id="addToTable" class="btn btn-primary">Nuevo préstamo </button></a>
 					</div>
 				</div>
 			</div>
