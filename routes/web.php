@@ -130,6 +130,7 @@ Route::get('/admin_publicacion_delete/{publicacion_hash}/origen/{origen}','Admin
 Route::get('/admin_publicaciones_aprobar_desaprobar/{publicacion_hash}/origen/{origen}','AdminController@admin_publicaciones_aprobar_desaprobar' )->name('admin_publicaciones_aprobar_desaprobar');
 Route::get('/admin_user_aprobar_desaprobar/{user_hash}/origen/{origen}','AdminController@admin_user_aprobar_desaprobar' )->name('admin_user_aprobar_desaprobar');
 Route::get('/admin_user_delete/{user_hash}/origen/origen/{origen}','AdminController@admin_user_delete' )->name('admin_user_delete');
+Route::get('/admin_publicaciones_show_rating/{publicacion_hash}/origen/{origen}','AdminController@admin_publicaciones_show_rating' )->name('admin_publicaciones_show_rating');
 
 Route::get('/admin_consultas/{publicacion_hash}', 'AdminController@admin_consultas')->name('admin_consultas');
 Route::get('/admin_mensajes/{hash}', 'AdminController@admin_mensajes')->name('admin_mensajes');

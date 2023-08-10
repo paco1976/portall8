@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Notifiable;
 
+
 class Publicacion extends Model
 {
     
@@ -78,5 +79,47 @@ class Publicacion extends Model
     public function scopeBuscador_admin($query, $description)
     {
         return $query->where('description', 'like', "%$description%")->where('active', 1);
+    }
+
+    public function surveys() {
+        return $this->hasmany('App\Models\Survey', 'publicacion_id', 'id');
+    }
+
+    public function rating()
+    {
+        return round($this->surveys()->avg('satisfaction'), 1);
+    }
+
+    public function clients_registered()
+    {
+        return $this->surveys()->count();
+    }
+    
+    public function surveys_sent()
+    {
+        return $this->surveys()->where('contacted', true)->count();
+    }
+    public function surveys_accepted()
+    {
+        return $this->surveys()->where('accepts_survey', true)->count();
+    }
+   
+    public function descriptive_words()
+    {
+
+        $allWords = $this->surveys->pluck('descriptive_words')->filter()->flatten()->values();
+
+        $wordCount = $allWords->countBy();
+
+        $sortedWords = $wordCount->sortDesc();
+
+        $topThreeWords = $sortedWords->take(3)->keys()->toArray();
+        
+        $topThreeWords = array_map(function ($word) {
+            return str_replace('_', ' ', $word);
+        }, $topThreeWords);
+
+        return $topThreeWords;
+
     }
 }

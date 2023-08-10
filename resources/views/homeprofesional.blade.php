@@ -51,6 +51,31 @@
 			<div class="col-md-8">
 
 				<h2 class="shorter">{{ $user->name}} <strong>{{ $user->last_name}} </strong></h2>
+				
+				<!-- Rating -->
+				@if($publicacion->show_rating)
+				<div class="star-rating">
+					@for ($i = 1; $i <= 5; $i++) @if ($rating < 3) <i class="bi bi-star "></i>
+						@else
+						@if ($i <= floor($rating)) <i class="bi bi-star-fill" style="color:gold;"></i>
+							@elseif ($i <= ceil($rating)) <i class="bi bi-star-half" style="color:gold;"></i>
+								@else
+								<i class="bi bi-star"></i>
+								@endif
+								@endif
+								@endfor
+
+								@if ($rating < 3) <span>No hay suficientes calificaciones</span>
+								@endif
+				</div>
+				@endif			
+
+				<!-- Descriptive words -->
+				<div>
+				@foreach ($words as $word)
+				<h5 class="badge badge-pill btn-info">{{ $word }}</h5>
+				@endforeach
+				</div>
 				<!-- 							
 							<span class="thumb-info-social-icons">
 								@if($user_profile->facebook)
@@ -118,12 +143,12 @@
 				@endif
 
 				@if (!$info)
-				<a onClick="muestra_oculta('client-form')" class="btn btn-lg btn-primary" data-appear-animation="bounceIn">Ver <strong>datos</strong> de contacto</a> 
+				<a onClick="muestra_oculta('client-form')" class="btn btn-lg btn-primary" data-appear-animation="bounceIn">Ver <strong>datos</strong> de contacto</a>
 				<!-- <span class="arrow hlb hidden-xs hidden-sm hidden-md" data-appear-animation="rotateInUpLeft" style="top: -22px;"></span> -->
 
 				<div id="client-form" class="contact-info">
-				<p>Completá tus datos para ver la información de contacto del profesional</p>
-				@include('clientForm', ['user_id' => $user->id, 'publicacion_id' => $publicacion->id])
+					<p>Completá tus datos para ver la información de contacto del profesional</p>
+					@include('clientForm', ['user_id' => $user->id, 'publicacion_id' => $publicacion->id])
 				</div>
 				@endif
 			</div>
@@ -259,14 +284,14 @@
 <section class="featured footer">
 	<div class="container">
 		<div class="row">
-				<div id="zones">
+			<div id="zones">
 				<h2><i class="bi bi-geo-alt"></i> Zona de cobertura</h2>
-					<p class="zones-list">
-						@foreach($zonas as $zona)
-						{{ $zona->name }}@if(!$loop->last),@endif
-						@endforeach
-					</p>
-				</div>
+				<p class="zones-list">
+					@foreach($zonas as $zona)
+					{{ $zona->name }}@if(!$loop->last),@endif
+					@endforeach
+				</p>
+			</div>
 		</div>
 	</div>
 </section>

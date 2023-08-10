@@ -25,7 +25,6 @@ class CreateSurveysTable extends Migration
             $table->json('descriptive_words')->nullable();
             $table->text('review')->nullable();
             $table->timestamps();
-
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
         });
