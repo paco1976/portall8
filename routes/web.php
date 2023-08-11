@@ -100,6 +100,8 @@ Route::get('/loans','LoanController@getLoansFiltered' )->name('loans');
 
 
 Route::get('/admin_loan_dates/{id}','LoanController@admin_loan_dates' )->name('admin_loan_dates');
+Route::get('/admin_loan_removedTool/{loan_id}','LoanController@admin_loan_removedTool' )->name('admin_loan_removedTool');
+
 Route::get('/admin_loan_enable/{loan_id}/state/{state}','LoanController@admin_loans_enable_desable' )->name('admin_loan_enable');
 Route::get('/loan_cancel/{loan_id}','LoanController@loan_cancel' )->name('loan_cancel');
 

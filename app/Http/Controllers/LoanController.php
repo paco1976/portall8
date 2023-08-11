@@ -26,6 +26,29 @@ class LoanController extends Controller
         // $this->middleware('auth');
     }
  
+    public function admin_loan_removedTool($loan_id){
+
+        $user = User::find(Auth::user()->id);
+        $user->avatar = Storage::disk('avatares')->url($user->avatar);
+        $user->permisos = $user->user_type()->first();
+
+        $loan = LoanModel::where('id', $loan_id)->first();
+
+        if($user->permisos->name == "Administrador"){
+            if($state==1){// (4)Finalizado - (2)Rechazado
+                LoanModel::where('id',$loan_id)->update([
+                    'removed' =>1                                          
+                ]);                       
+            }
+            session::flash('message', 'La Herramienta fue retirada');
+            return back();
+        }
+        else{
+            session::flash('message', 'No está autorizado para esta acción');
+            return redirect('/');
+        }
+
+    }
 
     public function admin_loans_enable_desable($loan_id, $state){
 
@@ -36,11 +59,15 @@ class LoanController extends Controller
         $loan = LoanModel::where('id', $loan_id)->first();
 
         if($user->permisos->name == "Administrador"){
-            if($state==4 || $state== 2){//Finalizado - Rechazado
-
+            if($state==4 || $state== 2){// (4)Finalizado - (2)Rechazado
+                $state_returned=0;
+                if($state==4){
+                    $state_returned=1;
+                }
                 $now = date_create(date('y-m-d'));
                 LoanModel::where('id',$loan_id)->update([
-                    'dateClose'=>$now ,                                           
+                    'dateClose'=>$now , 
+                    'returned' =>$state_returned                                          
                 ]);
                           
             }
@@ -51,7 +78,7 @@ class LoanController extends Controller
                 session::flash('message', 'El prestamo esta dado de baja');
             }
 
-            $loan->state_id =  $state;
+            $loan->state_id =$state;
             $loan->save(['state_id']);
             return back();
          

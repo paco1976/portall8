@@ -99,7 +99,29 @@
 								@else($loan->state_id == 3)
 								<p style="font-weight: 600;" >Pendiente</p>
 								@endif
-							</li>												
+							</li>
+							<!-- Visualizar si la herramienta retirada y devuelta -->
+							<li class="list-group-item" style="background-color:whitesmoke;display:flex;flex-direction:row; justify-content:space-between">
+								<P>Herramienta</P>
+								@if($loan->removed == 1)
+								<p style="font-weight: 600; " >Retirada</p>
+								@elseif($loan->removed == 0)
+								<p style="font-weight: 600;" >Sin retirar</p>
+								@endif
+							</li>		
+							<li class="list-group-item" style="background-color:whitesmoke;display:flex;flex-direction:row; justify-content:space-between">
+								<P>Herramienta</P>
+								@if($loan->returned == 1)
+								<p style="font-weight: 600; " >Devuelta</p>
+								@elseif($loan->returned == 0)
+									<p style="font-weight: 600; " >Sin devolver</p>
+								@endif
+							</li>
+							@if(Auth::user()->user_type()->first()->name=='Administrador')
+								@if($loan->returned == 0)
+								<a style="text-align:center; width:100%; margin-bottom: 30px;" href="{{ route('admin_loan_removedTool', ['loan_id' => $loan->loanId] ) }}" class="btn btn-success">Retiro herramienta</a>					
+								@endif
+							@endif										
 							<!-- Si es admin -->
 							@if(Auth::user()->user_type()->first()->name=='Administrador')
 								<li class="list-group-item">{{$loan->name}} {{$loan->lastName}}</li>
