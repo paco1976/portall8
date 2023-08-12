@@ -39,7 +39,7 @@
 									<div class="tab-content">
 										<div class="tab-pane active">
 											<h2 class="short"><strong>Registre </strong>la herramienta</h2>
-											<form  method="POST" action="{{ route('tool_save') }}"  >
+											<form  method="POST" action="{{ route('tool_save') }}" enctype="multipart/form-data">
 												
 												@csrf
 
@@ -48,7 +48,7 @@
 												<div class="row" >
 													<div class="form-group">
 														<div class="col-md-12">
-															<label for="categoryId" class="col-md-4 col-form-label text-md-right">Categoria</label>
+															<label for="categoryId" class="col-form-label text-md-right">Categoría</label>
 														</div>
 														<div class="col-md-12">
 															<select class="form-control @error('categoryId') is-invalid @enderror" name="categoryId"  id="categoryId" required>
@@ -68,7 +68,7 @@
 												<div class="row" >
 													<div class="form-group">
 														<div class="col-md-12">
-															<label for="name" class="col-md-4 col-form-label text-md-right" >Nombre</label>
+															<label for="name" class="col-form-label text-md-right" >Nombre</label>
 														</div>
 														<div class="col-md-12">
 															<input class="form-control @error('name') is-invalid @enderror" id="name" type="text"  name="name" 
@@ -85,13 +85,12 @@
 												<div class="row">
 													<div class="form-group">
 														<div class="col-md-12">
-															<label for="description" class="col-md-4 col-form-label text-md-right">Descripcion</label>
+															<label for="description" class="col-form-label text-md-right">Descripción</label>
 														</div>
 
-														<div class="col-md-12">
-															<input id="description" type="text" class="form-control @error('description') is-invalid @enderror" name="description" 
-																value="{{ old('description') ?? $tool->description ?? ''}}" required autofocus>
-
+														<div class="col-md-12">										
+															<textarea rows="5" id="description" class="form-control @error('description') is-invalid @enderror" name="description" 
+																required autofocus >{{ old('description') ?? $tool->description ?? ''}}</textarea>
 															@error('description')
 																<span class="invalid-feedback" role="alert">
 																	<strong>{{ $message }}</strong>
@@ -100,6 +99,20 @@
 														</div>
 													</div>
 												</div>
+
+												<div class="form-group row">											                                 		
+												
+												<label class="col-md-4 col-form-label text-md-right">Cargar imagen </label>
+
+                                        		<div class="col-md-6">
+                                            	<input id="nameImage" type="file" class="form-control @error('nameImage') is-invalid @enderror" name="nameImage" value="{{ old('nameImage') ?? $tool->nameImage ?? ''}}" @if(!$toolHasImage) required @endif>
+                                           		 @error('nameImage')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            	@enderror
+                                        		</div>
+            									</div>
 
 												<div class="form-group row mb-0">
 													<div class="col-md-12 offset-md-4" style="display:flex; flex-direction:row">
@@ -110,6 +123,14 @@
 													</div>
 												</div>
 											</form>
+											@if(isset($tool) && $tool->nameImage)
+    											<img class="img-thumbnail" width="200" src="{{ Storage::disk('tools')->url($tool->nameImage) }}" alt="Tool Image">
+												<form method="POST" action="{{ route('delete_tool_image', ['id' => $tool->id]) }}">
+        										@csrf
+        										@method('DELETE')
+        										<button type="submit" class="btn btn-danger">Eliminar imagen</button>
+    											</form>
+											@endif       
 
 										</div>
 									</div>

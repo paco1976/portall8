@@ -121,30 +121,34 @@
 	<div class="container" style="padding:10px;flex-wrap: wrap;display:flex;flex-direction:row; justify-content:space-arround; ">
 
 		@foreach($tools as $tool)
-		<div class="card" style="width: 15rem;margin: 10px;">
-			<ul class="list-group list-group-flush">
-				<li class="list-group-item" style="background-color:gainsboro;display:flex;flex-direction:row; justify-content:space-between">
-					<p class="card-text">Ide {{$tool->id}}</p>
-					<!-- Administrar para Admin -->
-					@if(Auth::user()->user_type()->first()->name=='Administrador')
-					<div style="display:flex; flex-direction:row">
-						<a style="text-align:center; width:100%;" href="{{ route('admin_tool_edit', ['id' => $tool->id] ) }}" class="btn btn-primary"><i class="bi bi-hand-thumbs-up-fill">Editar</i></a>
-					</div>
-					@endif
-				</li>
-				<li class="list-group-item">
-					<h5 class="card-title"> <span style="color:black">Categoria</span> {{$tool->categoryName}}</h5>
-				</li>
-				<li class="list-group-item">
-					<h5 class="card-title">{{$tool->name}}</h5>
-				</li>
-				<li class="list-group-item">{{$tool->description}}</li>
-				@if($tool->active == 1)
+		<a href="{{ route('admin_loan_dates', ['id' => $tool->id] ) }}" style="text-decoration: none;">
+		<div class="card" style="width: 15rem;margin: 10px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);">
+			<ul class="list-group list-group-flush" style="border: none;">
+				<div style="height: 200px; position: relative; overflow: hidden;">
+    			<div class="img-responsive" style="background-image: url('{{ empty($tool->nameImage) ? Storage::disk('tools')->url('tool_default.jpg') : Storage::disk('tools')->url($tool->nameImage) }}'); width: 100%; height: 100%; background-size: cover; background-position: center; transition: transform 0.3s;"
+                            onmouseover="this.style.transform = 'scale(1.1)';"
+                            onmouseout="this.style.transform = 'scale(1)';"></div>
+				</div>	
+
+			<!-- Administrar para Admin -->
+			@if(Auth::user()->user_type()->first()->name=='Administrador')
+			<li class="list-group-item" style="background-color:gainsboro;display:flex;flex-direction:row; justify-content:space-between">
+
+			<p class="card-text">Id {{$tool->id}}</p> 
+				
+			<div style="display:flex; flex-direction:row">
+				<a style="text-align:center; width:100%;" href="{{ route('admin_tool_edit', ['id' => $tool->id] ) }}" class="btn btn-primary"><i class="bi bi-hand-thumbs-up-fill">Editar</i></a>
+			</div>
+			 </li> 
+			@endif
+				
+					<h6 class="card-title" style="margin-left: 15px; margin-top: 25px; font-size: 1rem; color: black;">{{$tool->name}}</h6>
+				<!-- @if($tool->active == 1) -->
 				<!-- Seleccionar para prestamos Todos -->
-				<div style="display:flex; flex-direction:row">
+				<!-- <div style="display:flex; flex-direction:row">
 					<a style="text-align:center; width:100%; margin-bottom: 3px;" href="{{ route('admin_loan_dates', ['id' => $tool->id] ) }}" class="btn btn-primary"><i class="bi bi-hand-thumbs-up-fill">Seleccionar para prestamo</i></a>
-				</div>
-				@endif
+				</div> -->
+				<!-- @endif -->
 				<!-- Administrar para Admin -->
 				@if(Auth::user()->user_type()->first()->name=='Administrador')
 				@if($tool->active == 1)
@@ -159,6 +163,7 @@
 				@endif
 				@endif
 			</ul>
+			</a>
 
 		</div>
 		@endforeach

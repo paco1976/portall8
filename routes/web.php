@@ -110,6 +110,7 @@ Route::get('/admin_tool_edit/{id}','ToolController@tool_edit_form')->name('admin
 Route::get('/admin_tool_new','ToolController@tool_new_form')->name('admin_tool_new'); 
 Route::get('/admin_tool_state/{id}','ToolController@admin_tool_enable')->name('admin_tool_state'); 
 Route::post('/tool_save','ToolController@tool_save' )->name('tool_save');
+Route::delete('/delete-image/{id}', 'ToolController@deleteToolImage')->name('delete_tool_image');
 
 //Categorias
 Route::get('/admin_categoryTool_edit/{id}','CategoryToolController@category_edit_form')->name('admin_categoryTool_edit'); 

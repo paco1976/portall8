@@ -34,7 +34,7 @@ class ToolController extends Controller
 
     public function toolsList(Request $request){
         $user = User::find(Auth::user()->id);
-        $user->avatar = Storage::disk('avatares')->url($user->avatar);
+        // $user->avatar = Storage::disk('avatares')->url($user->avatar);
         $user->permisos = $user->user_type()->first();
 
         $categories = CategoryToolsModel::all();
@@ -55,6 +55,7 @@ class ToolController extends Controller
                 'tools.id as id',
                 'tools.name as name',
                 'tools.description as description',
+                'tools.nameImage as nameImage',
                 'tools.active as active',
                 'tools.categoryTool_id as category',
                 'c.name as categoryName'
@@ -71,18 +72,18 @@ class ToolController extends Controller
     public function tool_new_form(){
        
         $user = User::find(Auth::user()->id);
-        $user->avatar = Storage::disk('avatares')->url($user->avatar);
+        // $user->avatar = Storage::disk('avatares')->url($user->avatar);
         $user->permisos = $user->user_type()->first();
         $categories = CategoryToolsModel::where('active', 1)->get();
 
         // $categories = CategoryToolsModel::all();
         $tool=null;
-        return view('/admin.tool_new', compact('user', 'categories','tool'));
+        return view('/admin.tool_new', compact('user', 'categories', 'tool'));
     }
 
-    public function tool_edit_form( $id){
+    public function tool_edit_form($id){
         $user = User::find(Auth::user()->id);
-        $user->avatar = Storage::disk('avatares')->url($user->avatar);
+        // $user->avatar = Storage::disk('avatares')->url($user->avatar);
         $user->permisos = $user->user_type()->first();
         $categories = CategoryToolsModel::all();
         $tool=null;
@@ -96,12 +97,16 @@ class ToolController extends Controller
                 'tools.id as id',
                 'tools.name as name',
                 'tools.description as description',
+                'tools.nameImage as nameImage',
                 'c.name as categoryName',
                 'c.id as categoryId',
             )           
             ->get();             
             $tool=$tool[0];
-            return view('/admin.tool_new', compact('user', 'categories', 'tool'));
+
+            $toolHasImage = !empty($tool->nameImage);
+
+            return view('/admin.tool_new', compact('user', 'categories', 'tool', 'toolHasImage'));
     }
 
     public function tool_save(Request $request){
@@ -112,24 +117,35 @@ class ToolController extends Controller
                 'categoryId' => 'required',
                 'name' => 'required',
                 'description' => 'required',
+                'nameImage' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             ],[
-                'categoryId.required' =>'Debe seleccionar una categoria',
+                'categoryId.required' =>'Debe seleccionar una categoría',
                 'name.required' =>'Debe ingresar un nombre',
                 'description.required' => 'Debe colocar una descripción sobre la herramienta',
-            ]);
-
+            ]);           
+        
             if($request['toolId']){
-                            //dd($request);
                 ToolModel::where('id',$request['toolId'])->update([
                     'name'=>$data['name'],
                     'description'=>$data['description'],
                     'categoryTool_id'=>$data['categoryId']                    
                  ]);
-                 Session::flash('message', 'Edicion exitosa');
-                 return redirect()->route('admin_tool_edit');  
+                 
+                 $tool = ToolModel::find($request['toolId']);
+                 if(!$tool->nameImage){
+                     if ($request->hasFile('nameImage')){
+                        $file = $request->file('nameImage');
+                        $filename = $file->getClientOriginalName(); // Get the original filename
+                        $path = Storage::disk('tools')->putFileAs($tool->id, $file, $filename); // Save the file with the original filename
+                        $tool->nameImage = $path;
+                        $tool->save();
+                    }   
+                 }
+
+                 Session::flash('message', 'Edición exitosa');
+                 return redirect()->route('admin_tool_edit', $tool->id);  
 
                 }else{
-                    //dd($request);
 
                 $tool = ToolModel::create([
                     'name' => $data['name'],
@@ -138,6 +154,16 @@ class ToolController extends Controller
                     'active'=> 1,                  
                 ]);
                 $tool->save();
+
+                    if ($request->hasFile('nameImage')){
+                        $file = $request->file('nameImage');
+                        $filename = $file->getClientOriginalName(); // Get the original filename
+                        $path = Storage::disk('tools')->putFileAs($tool->id, $file, $filename); // Save the file with the original filename
+                        $tool->nameImage = $path;
+                        $tool->save();
+                    }            
+                
+
                 Session::flash('message', 'Ingreso exitoso');
                 return redirect()->route('admin_tool_new');   
             }
@@ -189,6 +215,18 @@ class ToolController extends Controller
             session::flash('message', 'No está autorizado para esta acción');
             return redirect('/');
         }
+    }
+    
+    public function deleteToolImage($id) {
+        $tool = ToolModel::find($id);    
+        
+        if ($tool->nameImage) {
+            Storage::disk('tools')->delete($tool->nameImage);
+            $tool->nameImage = '';
+            $tool->save();
+        }
+    
+        return redirect()->route('admin_tool_edit', ['id' => $id])->with('message', 'Imagen eliminada exitosamente');
     }
     
 }
