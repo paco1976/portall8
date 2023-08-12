@@ -124,23 +124,18 @@
 		<a href="{{ route('admin_loan_dates', ['id' => $tool->id] ) }}" style="text-decoration: none;">
 		<div class="card" style="width: 15rem;margin: 10px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);">
 			<ul class="list-group list-group-flush" style="border: none;">
+				<!-- Administrar para Admin -->
+				@if(Auth::user()->user_type()->first()->name=='Administrador')
+				<li class="list-group-item" style="background-color:gainsboro;">
+				<small class="text-muted">ID {{$tool->id}}</small>
+				 </li> 
+				@endif
 				<div style="height: 200px; position: relative; overflow: hidden;">
     			<div class="img-responsive" style="background-image: url('{{ empty($tool->nameImage) ? Storage::disk('tools')->url('tool_default.jpg') : Storage::disk('tools')->url($tool->nameImage) }}'); width: 100%; height: 100%; background-size: cover; background-position: center; transition: transform 0.3s;"
                             onmouseover="this.style.transform = 'scale(1.1)';"
                             onmouseout="this.style.transform = 'scale(1)';"></div>
 				</div>	
 
-			<!-- Administrar para Admin -->
-			@if(Auth::user()->user_type()->first()->name=='Administrador')
-			<li class="list-group-item" style="background-color:gainsboro;display:flex;flex-direction:row; justify-content:space-between">
-
-			<p class="card-text">Id {{$tool->id}}</p> 
-				
-			<div style="display:flex; flex-direction:row">
-				<a style="text-align:center; width:100%;" href="{{ route('admin_tool_edit', ['id' => $tool->id] ) }}" class="btn btn-primary"><i class="bi bi-hand-thumbs-up-fill">Editar</i></a>
-			</div>
-			 </li> 
-			@endif
 				
 					<h6 class="card-title" style="margin-left: 15px; margin-top: 25px; font-size: 1rem; color: black;">{{$tool->name}}</h6>
 				<!-- @if($tool->active == 1) -->
@@ -153,8 +148,9 @@
 				@if(Auth::user()->user_type()->first()->name=='Administrador')
 				@if($tool->active == 1)
 				<!-- Seleccionar para prestamos Todos -->
-				<div style="display:flex; flex-direction:row">
-					<a style="text-align:center; width:100%; margin-bottom: 30px;" href="{{ route('admin_tool_state', ['id' => $tool->id] ) }}" class="btn btn-danger"><i class="bi bi-hand-thumbs-up-fill">Deshabillitar</i></a>
+				<div style="display:flex; flex-direction:column">
+					<a style="text-align:center; width:100%; margin-bottom: 10px" href="{{ route('admin_tool_edit', ['id' => $tool->id] ) }}" class="btn btn-primary"><span class="bi bi-pencil-square"> Editar</span></a>
+					<a style="text-align:center; width:100%;" href="{{ route('admin_tool_state', ['id' => $tool->id] ) }}" class="btn btn-danger"><span class="bi bi-x-circle"> Deshabillitar</span></a>
 				</div>
 				@else
 				<div style="display:flex; flex-direction:row">
