@@ -33,7 +33,7 @@
 								<div class="tabs" >
 									<ul class="nav nav-tabs">
 										<li class="active">
-											<a href=""><i style="font-size:30px;margin-right:5px" class="fa fa-wrench"></i> Nuevo Ingreso</a>
+											<a href=""><i style="font-size:30px;margin-right:5px" class="fa fa-wrench"></i> Nuevo ingreso</a>
 										</li>
 									</ul>
 									<div class="tab-content">
@@ -105,7 +105,7 @@
 												<label class="col-md-4 col-form-label text-md-right">Cargar imagen </label>
 
                                         		<div class="col-md-6">
-                                            	<input id="nameImage" type="file" class="form-control @error('nameImage') is-invalid @enderror" name="nameImage" value="{{ old('nameImage') ?? $tool->nameImage ?? ''}}" @if(!$toolHasImage) required @endif>
+                                            	<input id="nameImage" type="file" class="form-control @error('nameImage') is-invalid @enderror" name="nameImage" value="{{ old('nameImage') ?? $tool->nameImage ?? ''}}">
                                            		 @error('nameImage')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>

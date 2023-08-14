@@ -106,12 +106,12 @@
 	<div class="row" style=" padding:10px;">
 		<div class="col-sm-2" style="margin-top:20px">
 			<a href="{{ route('admin_tool_new') }}">
-				<button id="addToTable" class="btn btn-primary">Nueva Herramienta</button>
+				<button id="addToTable" class="btn btn-primary">Nueva herramienta</button>
 			</a>
 		</div>
 		<div class="col-sm-2" style="margin-top:20px">
 			<a href="{{ route('admin_categoryTools') }}">
-				<button id="addToTable" class="btn btn-secondary">Administrar Categorias</button>
+				<button id="addToTable" class="btn btn-secondary">Administrar categorías</button>
 			</a>
 		</div>
 	</div>
@@ -172,7 +172,7 @@
 	@else
 	<div class="row">
 		<div class="col-12 text center">
-			No hay Herramientas disponibles en CFP por el momento.
+			No hay herramientas disponibles en este momento.
 		</div>
 	</div>
 	@endif
