@@ -30,7 +30,7 @@ class LoanController extends Controller
     public function admin_loans_enable_desable($loan_id, $state){
 
         $user = User::find(Auth::user()->id);
-        $user->avatar = Storage::disk('avatares')->url($user->avatar);
+        // $user->avatar = Storage::disk('avatares')->url($user->avatar);
         $user->permisos = $user->user_type()->first();
 
         $loan = LoanModel::where('id', $loan_id)->first();
@@ -66,7 +66,7 @@ class LoanController extends Controller
     public function getLoansFiltered(Request $request){
         //dd($request);
         $user = User::find(Auth::user()->id);
-        $user->avatar = Storage::disk('avatares')->url($user->avatar);
+        // $user->avatar = Storage::disk('avatares')->url($user->avatar);
         $user->permisos = $user->user_type()->first();
 
         
@@ -133,7 +133,7 @@ class LoanController extends Controller
     
     public function loanGetForm(){ 
         $user = User::find(Auth::user()->id);
-        $user->avatar = Storage::disk('avatares')->url($user->avatar);
+        // $user->avatar = Storage::disk('avatares')->url($user->avatar);
         $user->permisos = $user->user_type()->first();
 
         $users= User::All();
@@ -152,7 +152,7 @@ class LoanController extends Controller
     public function loanSave(Request $request){
 
         $user = User::find(Auth::user()->id);
-        $user->avatar = Storage::disk('avatares')->url($user->avatar);
+        // $user->avatar = Storage::disk('avatares')->url($user->avatar);
         $user->permisos = $user->user_type()->first();
         $users= User::All();
 
@@ -198,7 +198,7 @@ class LoanController extends Controller
                //dd($this-> greaterThanMax($myArray), $this-> existLoans($myArray, $tool_selectd));
 
                if($this-> greaterThanMax($myArray) || $this-> existLoans($myArray, $tool_selectd)){
-                   Session::flash('message', 'Asegúrese deque el máximo de días que eligió no sea mayor a 7, o que el préstamo esté disponible');
+                   Session::flash('message', 'Asegúrese de que el máximo de días que eligió no sea mayor a 7, o que el préstamo esté disponible');
                    $dates_=$this->dateEnableByTool($tool_selectd);
                    $tools = null;
 
@@ -282,7 +282,7 @@ class LoanController extends Controller
     public function admin_loan_dates( $id){
 
         $user = User::find(Auth::user()->id);
-        $user->avatar = Storage::disk('avatares')->url($user->avatar);
+        // $user->avatar = Storage::disk('avatares')->url($user->avatar);
         $user->permisos = $user->user_type()->first();
         $user->cfp = $user->cfp()->first();
 
