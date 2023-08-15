@@ -16,15 +16,16 @@
 							<ul class="breadcrumb">
 									<li><a href="#">Inicio</a></li>
 									<li><a href="{{ route('perfil') }}">Panel de Control</a></li>
-									<li><a href="{{ route('loan_new') }}">Prestamos</a></li>
-									<li class="active">Nuevo</li>
+									<li><a href="{{ route('toolsList') }}">Pañol</a></li>
+									<li class="active">Nuevo préstamo</li>
 
 								</ul>
 							</div>
-						</div>
+						</div>						
+						
 						<div class="row">
 							<div class="col-md-12">
-								<h1>Prestamos</h1>
+								<h1>Nuevo préstamo</h1>
 							</div>
 						</div>
 					</div>
@@ -36,97 +37,77 @@
 						</button>
                     </div>									
                 @endif	
-				
 				<div class="container">
-					<div class="row">
-							<div class="col-md-6" style="display:block;justify-content:center">
-								<div class="tabs" >
-									<ul class="nav nav-tabs">
-										<li class="active">
-											<a href=""><i style="font-size:30px;margin-right:5px" class="fa fa-wrench"></i> Nuevo Prestamos</a>
-										</li>
-									</ul>
-									<div class="tab-content">
-										<div class="tab-pane active">
-											<h2 class="short"><strong>Registro </strong></h2>
-												
-											@if ($tool_selectd)
-											<!-- Selecciona dias Disponibles y Guarda -->
-											<form  method="post" action="{{ route('loan_save') }}"  id="save">	
-													@csrf									
-													<div class="form-group row">
-														<div class="col-md-12">
-															<label for="tool" class="col-md-12 col-form-label text-md-right">
-																<h5>Herramienta Seleccionada: {{ $tool_selectd->name }}  IDE {{ $tool_selectd->id }}</h5>	
-															</label>
-														</div>
-														<div class="col-sm-9 mt-2">
-															<input type="hidden"  id="tool_selectd" class="form-control" name="tool_selectd" required
-															placeholder=" {{$tool_selectd->name}}" value=" {{$tool_selectd->id}}" />
-														</div> 
-														@error('user_type')
-														<span class="invalid-feedback" role="alert">
-															<strong>{{ $message }}</strong>
-														</span>
-														@enderror
-                                    				</div>
-													<!-- Inicio Elegir Usuarios, caso Admin -->							
-													<div class="form-group row">
-														@if(Auth::user()->user_type()->first()->name=='Administrador')
-															<div class="col-md-12">
-																	<label for="name" class="col-md-12 col-form-label text-md-right">Profesional</label>
-																</div>
-																<div class="col-md-12">
-																	<select class="form-control" name="user"  id="user" required>
-																		<option value="">Seleccione</option>
-																		@foreach ($users as $user)
-																		<option value='{{ $user->id }}'>{{ $user->name }}</option>
-																		@endforeach
-																	</select>
-																</div>													
-															</div>
-															@endif	
-														<!-- Fin Elegir Usuarios, caso Admin -->	
-														<div class="form-group row">
-															<div class="col-md-12">
-																<label for="name" class="col-md-12 col-form-label text-md-right">Dias</label>
-															</div>
-															<div class="col-sm-9 mt-2">
-																<input type="datetime-local"  id="dates" class="form-control input-lg @error('password') is-invalid @enderror"  name="dates" autofocus required />
-															</div>
-															@error('dates')
-															<span class="invalid-feedback" role="alert">
-																<strong>{{ $message }}</strong>
-															</span>
-															@enderror
-														</div>
-														<div class="form-group row mb-0"><br>
-															<div class="col-md-12 offset-md-4">
-																<button type="submit" class="btn btn-primary">
-																	Guardar
-																</button>
-																<button  class="btn btn-danger">
-																		<a href="{{ Url('/loans') }}" style="text-decoration:none; color:white" >Cancelar</a>
-																</button>
-															</div>
-														</div>
-													</div>
-											</form>
-											
-											
-											@endif
-										</div>
-									</div>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card mb-3">
+                <div class="row no-gutters">
+                    <div class="col-md-7">
+					@if ($tool_selectd)
+                        <div style="height: 300px; width: 100%; position: relative; overflow: hidden;">
+                            <div style="background-image: url('{{ empty($tool_selectd->nameImage) ? Storage::disk('tools')->url('tool_default.jpg') : Storage::disk('tools')->url($tool_selectd->nameImage) }}'); width: 100%; height: 100%; background-size: cover; background-position: center;"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="card-body">
+                            <h2 style="margin: 0">{{ $tool_selectd->name }}</h2>
+                            <p><small class="text-muted">ID: {{ $tool_selectd->id }}</small></p>
+                            <p>{{ $tool_selectd->description }}</p>
+                            <form method="post" action="{{ route('loan_save') }}" id="save">
+								@csrf
+
+								<input type="hidden"  id="tool_selectd" class="form-control" name="tool_selectd" required placeholder=" {{$tool_selectd->name}}" value=" {{$tool_selectd->id}}" />
+								@error('user_type')
+								<span class="invalid-feedback" role="alert">
+								<strong>{{ $message }}</strong>
+								</span>
+								@enderror
+								<!-- Inicio Elegir Usuarios, caso Admin -->							
+								@if(Auth::user()->user_type()->first()->name=='Administrador')
+								<div >
+								<label for="name">Profesional</label>
 								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-@endsection
+								<div >
+								<select name="user"  id="user" required>
+								<option value="">Seleccione</option>
+								@foreach ($users as $user)
+								<option value='{{ $user->id }}'>{{ $user->name }}</option>
+								@endforeach
+								</select>
+								</div>													
+								</div>
+								@endif	
+								<!-- Fin Elegir Usuarios, caso Admin -->
+                               
+								<div class="form-group">
+                                    <label for="dates">Seleccionar fechas</label>
+                                    <input type="datetime-local" id="dates" class="form-control input-lg @error('password') is-invalid @enderror" name="dates" placeholder="__/__/__ a __/__/__" autofocus required>
+                                    @error('dates')
+                                    <div class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></div>
+                                    @enderror
+                                </div>
+
+
+								<button type="submit" class="btn btn-primary">Solicitar</button>
+                                <a href="{{ Url('/loans') }}" class="btn btn-danger">Regresar</a>
+                            </form>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+				@endsection
 
 @push('script')
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://npmcdn.com/flatpickr/dist/l10n/es.js"></script>
 <script>
 	$(document).ready(function() {
 		var js_array = [<?php echo '"'.implode('","', $dates_).'"' ?>];
@@ -135,9 +116,10 @@
 		// 	this.jumpToDate("2025-01")
 		// },
 		disable: js_array,
-		dateFormat: "y-m-d",
+		dateFormat: "Y-m-d",
 		mode: "range",
 		minDate: new Date(),
+		locale: "es",
 		max:3,
       });
 	});

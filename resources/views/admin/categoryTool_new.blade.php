@@ -14,7 +14,7 @@
 						</div>
 						<div class="row">
 							<div class="col-md-12">
-								<h1>Categorias</h1>
+								<h1>Categorías</h1>
 							</div>
 						</div>
 					</div>
@@ -33,12 +33,12 @@
 								<div class="tabs" >
 									<ul class="nav nav-tabs">
 										<li class="active">
-											<a href=""><i style="font-size:30px;margin-right:5px" class="fa fa-wrench"></i> Nuevo Ingreso</a>
+											<a href=""><i style="font-size:30px;margin-right:5px" class="fa fa-wrench"></i> Nuevo ingreso</a>
 										</li>
 									</ul>
 									<div class="tab-content">
 										<div class="tab-pane active">
-											<h2 class="short"><strong>Registre la </strong>categoria</h2>
+											<h2 class="short"><strong>Registre la </strong>categoría</h2>
 											<form  method="POST" action="{{ route('category_save') }}"  >
 												
 												@csrf

@@ -53,7 +53,7 @@ class LoanController extends Controller
     public function admin_loans_enable_desable($loan_id, $state){
 
         $user = User::find(Auth::user()->id);
-        $user->avatar = Storage::disk('avatares')->url($user->avatar);
+        // $user->avatar = Storage::disk('avatares')->url($user->avatar);
         $user->permisos = $user->user_type()->first();
 
         $loan = LoanModel::where('id', $loan_id)->first();
@@ -93,7 +93,7 @@ class LoanController extends Controller
     public function getLoansFiltered(Request $request){
         //dd($request);
         $user = User::find(Auth::user()->id);
-        $user->avatar = Storage::disk('avatares')->url($user->avatar);
+        // $user->avatar = Storage::disk('avatares')->url($user->avatar);
         $user->permisos = $user->user_type()->first();
 
         
@@ -160,7 +160,7 @@ class LoanController extends Controller
     
     public function loanGetForm(){ 
         $user = User::find(Auth::user()->id);
-        $user->avatar = Storage::disk('avatares')->url($user->avatar);
+        // $user->avatar = Storage::disk('avatares')->url($user->avatar);
         $user->permisos = $user->user_type()->first();
 
         $users= User::All();
@@ -179,7 +179,7 @@ class LoanController extends Controller
     public function loanSave(Request $request){
 
         $user = User::find(Auth::user()->id);
-        $user->avatar = Storage::disk('avatares')->url($user->avatar);
+        // $user->avatar = Storage::disk('avatares')->url($user->avatar);
         $user->permisos = $user->user_type()->first();
         $users= User::All();
 
@@ -193,7 +193,7 @@ class LoanController extends Controller
             ],[
                 'user.required' => 'Debe seleccionar una herramienta',
                 'tool_selectd.required' => 'Debe seleccionar una herramienta',
-                'date.required' => 'Debe Ingresar una fecha',
+                'date.required' => 'Debe ingresar una fecha',
             ]);
 
         }else{
@@ -203,12 +203,12 @@ class LoanController extends Controller
                 'dates' => 'required',
             ],[
                 'tool_selectd.required' => 'Debe seleccionar una herramienta',
-                'date.required' => 'Debe Ingresar una fecha',
+                'date.required' => 'Debe ingresar una fecha',
             ]);
         }
 
        $datesRequest=$dataForm['dates'];
-       $datesTrue=str_contains($datesRequest, "to");
+       $datesTrue=str_contains($datesRequest, "a");
 
        $userSelected=null;
        if($user->permisos->name == "Administrador"){ 
@@ -219,20 +219,20 @@ class LoanController extends Controller
 
        if($datesTrue){
 
-               $myArray = explode('to', $datesRequest);
-              
+               $myArray = explode('a', $datesRequest);
+            
                $tool_selectd= $this->GetTool((int)$dataForm['tool_selectd']);
                //dd($this-> greaterThanMax($myArray), $this-> existLoans($myArray, $tool_selectd));
 
                if($this-> greaterThanMax($myArray) || $this-> existLoans($myArray, $tool_selectd)){
-                   Session::flash('message', 'Asegúrese que el máximo de días que eligió no sea mayor a 7, o que el préstamo esté dispoinible');
+                   Session::flash('message', 'Asegúrese de que el máximo de días que eligió no sea mayor a 7, o que el préstamo esté disponible');
                    $dates_=$this->dateEnableByTool($tool_selectd);
                    $tools = null;
 
                    if($user->permisos->name == "Administrador"){ //Le tiene que mandar si o si el tool_selected y usuarios
                     return view('/loan_new', compact('users', 'tool_selectd', 'tools', 'dates_', 'user'));   
                    }else{
-                    return view('/loan_new', compact( null, 'tool_selectd', 'tools', 'dates_', 'user'));   //null? o vacio++??
+                    return view('/loan_new', compact( 'tool_selectd', 'tools', 'dates_', 'user'));   //null? o vacio++??
                    }
 
                }else{
@@ -274,13 +274,15 @@ class LoanController extends Controller
         $dates= DB::table('loans AS p')
         ->select('p.dateInit', 'p.dateFinish')
         ->where('tool_id', '=', $tool_id)
-        ->where('state_id', '=', 1)
-        ->orWhere('state_id', '=', 3)
-        ->whereDate( 'p.dateInit' ,'>=', $myArray[0])
-        ->whereDate( 'p.dateFinish' ,'<=',  $myArray[count($myArray)-1])
+        ->where(function ($query) use ($myArray) {
+            $query->where('state_id', '=', 1)
+                  ->orWhere('state_id', '=', 3)
+                  ->where('p.dateInit', '>=', $myArray[0])
+                  ->where('p.dateFinish', '<=',  $myArray[count($myArray)-1]);
+        })
         ->groupBy('p.dateInit', 'p.dateFinish')
         ->get();
-        //dd($dates);
+        
         $dates_=$this->convertToArrayDates($dates);
 
         if(count($dates_)>0){
@@ -307,7 +309,7 @@ class LoanController extends Controller
     public function admin_loan_dates( $id){
 
         $user = User::find(Auth::user()->id);
-        $user->avatar = Storage::disk('avatares')->url($user->avatar);
+        // $user->avatar = Storage::disk('avatares')->url($user->avatar);
         $user->permisos = $user->user_type()->first();
         $user->cfp = $user->cfp()->first();
 
@@ -319,7 +321,7 @@ class LoanController extends Controller
             if($user->permisos->name == "Administrador"){
     
                 $users = User::all();
-                return view('/loan_new', compact('users', 'tool_selectd', 'tools', 'user', 'dates_'));   
+                return view('loan_new', compact('users', 'tool_selectd', 'tools', 'user', 'dates_'));   
     
             }else{         
                 return view('loan_new',  compact( [],'tool_selectd','tools','user', 'dates_'));   
@@ -333,19 +335,20 @@ class LoanController extends Controller
         return $tool_selectd;
     }
 
-    private function dateEnableByTool( $tool_id){
+    private function dateEnableByTool($tool_id){
 
         $dt = now();
         $dt->format('Y-m-d');
         $dates= DB::table('loans AS p')
         ->select('p.dateInit', 'p.dateFinish')
         ->where('tool_id', '=', $tool_id)
-        ->where('state_id', '=', 1)
-        ->orWhere('state_id', '=', 3)
-        ->whereDate( 'p.dateInit' ,'>=', $dt)
+        ->where(function ($query) use ($dt) {
+            $query->where('state_id', '=', 1)
+                  ->orWhere('state_id', '=', 3)
+                  ->where('p.dateInit', '>=', $dt);
+        })
         ->groupBy('p.dateInit', 'p.dateFinish')
         ->get();
-        //dd($dates);
 
         $dates_=$this->convertToArrayDates($dates);
         return $dates_;

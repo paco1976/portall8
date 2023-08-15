@@ -17,7 +17,7 @@
 							</div>
 							<div class="row">
 								<div class="col-md-12">
-									<h1>Categorias de herramientas</h1>
+									<h1>Categorías de herramientas</h1>
 								</div>
 
 							</div>
@@ -45,7 +45,7 @@
 									<div class="mb-md" style="margin-top:20px">
 									
 										<a href="{{ route('admin_categoryTool_new') }}">
-											<button id="addToTable" class="btn btn-primary">Nueva Catgeoria </button>
+											<button id="addToTable" class="btn btn-primary">Nueva categoría </button>
 										</a>
 									</div>
 								</div>
@@ -57,22 +57,18 @@
 							<div class="card" style="width: 25rem;margin: 10px;" >										
 										<ul class="list-group list-group-flush" style="list-style:none">
 													<li class="list-group-item" style="background-color:gainsboro;display:flex;flex-direction:row; justify-content:space-between">
-														<p class="card-text">IDE {{$category->id}}</p>
-														<div style="display:flex; flex-direction:row">
-															<a style="text-align:center; width:100%;" href="{{ route('admin_categoryTool_edit', ['id' => $category->id] ) }}" class="btn btn-primary"><i class="bi bi-hand-thumbs-up-fill">Editar</i></a>					
-														</div>
+														<small class="text-muted">ID {{$category->id}}</small>
 													</li>
 													<li class="list-group-item" ><h5 class="card-title">{{$category->name}}</h5></li>
 													<li>
+													<div style="display:flex; flex-direction:column">
+															<a style="text-align:center; width:100%; margin-bottom: 10px" href="{{ route('admin_categoryTool_edit', ['id' => $category->id] ) }}" class="btn btn-primary"><span class="bi bi-pencil-square"> Editar</span></a>					
 													@if($category->active == 1)
-													<div style="display:flex; flex-direction:row">
-														<a style="text-align:center; width:100%; margin-bottom: 30px;" href="{{ route('admin_categoryTool_delete', ['id' => $category->id] ) }}" class="btn btn-danger"><i class="bi bi-hand-thumbs-up-fill">Deshabilitar</i></a>					
+														<a style="text-align:center; width:100%; margin-bottom: 30px;" href="{{ route('admin_categoryTool_delete', ['id' => $category->id] ) }}" class="btn btn-danger"><span class="bi bi-x-circle"> Deshabilitar</span></a>					
+														@else
+														<a style="text-align:center; width:100%; margin-bottom: 30px;" href="{{ route('admin_categoryTool_delete', ['id' => $category->id] ) }}" class="btn btn-success"><span class="bi bi-hand-thumbs-up-fill"> Habilitar</span></a>					
+														@endif						
 													</div>
-													@else
-													<div style="display:flex; flex-direction:row">
-														<a style="text-align:center; width:100%; margin-bottom: 30px;" href="{{ route('admin_categoryTool_delete', ['id' => $category->id] ) }}" class="btn btn-success"><i class="bi bi-hand-thumbs-up-fill">Habilitar</i></a>					
-													</div>
-													@endif						
 													</li>
 													
 													
