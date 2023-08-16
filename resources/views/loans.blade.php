@@ -34,7 +34,14 @@
 				<button type="button" style="float:right; border-radius: 2px;" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span>
 				</button>
             </div>									
-            @endif	
+		@endif
+		@if (Session::has('error'))
+            <div class="alert alert-danger" style="display:flex; flex-direction:row; justify-content:space-between">
+                <p >{{ Session::get('error') }}</p>
+				<button type="button" style="float:right; border-radius: 2px;" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span>
+				</button>
+            </div>									
+		@endif	
 			@if(Auth::user()->user_type()->first()->name=='Administrador')			
 			<div >
 							<form  id="contactForm" action="{{route('loans')}}" method="get" style="display:flex; flex-direction:row;justify-content: space-between;">
@@ -135,13 +142,18 @@
 								@endif
 							</li>
 							@if(Auth::user()->user_type()->first()->name=='Administrador')
-								@if($loan->returned == 0)
-								<a style="text-align:center; width:100%; margin-bottom: 30px;" href="{{ route('admin_loan_removedTool', ['loan_id' => $loan->loanId] ) }}" class="btn btn-success">Retiro herramienta</a>					
+								@if($loan->state_id == 1)
+									@if($loan->removed == 0)
+									<a style="text-align:center; width:100%; margin-bottom: 30px;" href="{{ route('admin_loan_removedTool', ['loan_id' => $loan->loanId] ) }}" class="btn btn-success">Retiro herramienta</a>					
+									@endif
+									@if($loan->removed == 1 &&  $loan->returned == 0))
+									<a style="text-align:center; width:100%; margin-bottom: 30px;" href="{{ route('admin_loan_returnedTool', ['loan_id' => $loan->loanId] ) }}" class="btn btn-info">Devolver herramienta</a>					
+									@endif
 								@endif
 							@endif										
 							<!-- Si es admin -->
 							@if(Auth::user()->user_type()->first()->name=='Administrador')
-								@if($loan->state_id == 1)
+								@if($loan->state_id == 1 && $loan->removed == 1 &&  $loan->returned == 1 )
 								<a style="text-align:center; width:100%; margin-bottom: 30px;" href="{{ route('admin_loan_enable', ['loan_id' => $loan->loanId,'state' => 4] ) }}" class="btn btn-primary">Finalizar</a>					
 								@elseif($loan->state_id == 3)
 								<div style="display:flex; flex-direction:row; justify-content: space-between;">

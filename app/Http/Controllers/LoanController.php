@@ -33,14 +33,41 @@ class LoanController extends Controller
         $user->permisos = $user->user_type()->first();
 
         $loan = LoanModel::where('id', $loan_id)->first();
-
+        //$loan->state_id
         if($user->permisos->name == "Administrador"){
-            if($state==1){// (4)Finalizado - (2)Rechazado
+            if($loan->state_id==1){// (4)Finalizado - (2)Rechazado
                 LoanModel::where('id',$loan_id)->update([
                     'removed' =>1                                          
                 ]);                       
+            }else{
+                session::flash('error', 'Debe aprobar el presatamo para retirar la herramienta');
+                return back();
             }
             session::flash('message', 'La Herramienta fue retirada');
+            return back();
+        }
+        else{
+            session::flash('message', 'No está autorizado para esta acción');
+            return redirect('/');
+        }
+
+    }
+
+    public function admin_loan_returnedTool($loan_id){
+
+        $user = User::find(Auth::user()->id);
+        $user->avatar = Storage::disk('avatares')->url($user->avatar);
+        $user->permisos = $user->user_type()->first();
+
+        $loan = LoanModel::where('id', $loan_id)->first();
+        //$loan->state_id
+        if($user->permisos->name == "Administrador"){
+            if($loan->state_id==1){// (4)Finalizado - (2)Rechazado
+                LoanModel::where('id',$loan_id)->update([
+                    'returned' => 1                                         
+                ]);                       
+            }
+            session::flash('message', 'La Herramienta fue devuelta');
             return back();
         }
         else{
