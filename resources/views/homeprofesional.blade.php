@@ -60,12 +60,12 @@
 						@if ($i <= floor($rating)) <i class="bi bi-star-fill" style="color:gold;"></i>
 							@elseif ($i <= ceil($rating)) <i class="bi bi-star-half" style="color:gold;"></i>
 								@else
-								<i class="bi bi-star"></i>
+								<i class="bi bi-star" style="color:gold;"></i>
 								@endif
 								@endif
 								@endfor
 
-								@if ($rating < 3) <span>No hay suficientes calificaciones</span>
+								@if ($rating < 3) <small>No hay suficientes calificaciones</small>
 								@endif
 				</div>
 				@endif			

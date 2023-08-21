@@ -104,10 +104,29 @@ class Publicacion extends Model
         return $this->surveys()->where('accepts_survey', true)->count();
     }
    
-    public function descriptive_words()
+    public function most_used_positive_words()
     {
 
         $allWords = $this->surveys->pluck('descriptive_words')->filter()->flatten()->values();
+
+        $wordCount = $allWords->countBy();
+
+        $sortedWords = $wordCount->sortDesc();
+
+        $topThreeWords = $sortedWords->take(3)->keys()->toArray();
+        
+        $topThreeWords = array_map(function ($word) {
+            return str_replace('_', ' ', $word);
+        }, $topThreeWords);
+
+        return $topThreeWords;
+
+    }
+
+    public function most_used_negative_words()
+    {
+
+        $allWords = $this->surveys->pluck('no_agreement')->filter()->flatten()->values();
 
         $wordCount = $allWords->countBy();
 

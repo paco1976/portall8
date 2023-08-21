@@ -14,7 +14,7 @@ class AddWaIdToSurveys extends Migration
     public function up()
     {
         Schema::table('surveys', function (Blueprint $table) {
-            $table->string('wa_id');
+            $table->string('wa_id')->default('');
 
         });
     }

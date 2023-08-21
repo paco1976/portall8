@@ -137,6 +137,8 @@ Route::get('/admin_mensajes/{hash}', 'AdminController@admin_mensajes')->name('ad
 Route::get('/admin_categorias','AdminController@admin_categorias' )->name('admin_categorias'); 
 Route::get('/admin_categoria_activar_desactivar/{id}','AdminController@admin_categoria_activar_desactivar' )->name('admin_categoria_activar_desactivar');
 Route::put('/admin_categoria_icon','AdminController@admin_categoria_icon' )->name('admin_categoria_icon');
+Route::get('/admin_surveys/{publicacion_hash}', 'AdminController@admin_surveys')->name('admin_surveys');
+
 
 Route::get('/admin_visitas/{publicacion_hash}', 'AdminController@admin_visitas')->name('admin_visitas');
 Route::get('/admin_whatsapp/{publicacion_hash}', 'AdminController@admin_whatsapp')->name('admin_whatsapp');

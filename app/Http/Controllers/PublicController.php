@@ -193,7 +193,7 @@ class PublicController extends Controller
  
         $rating = $publicacion->rating();
         $show_rating = $publicacion->show_rating;
-        $words = $publicacion->descriptive_words();
+        $words = $publicacion->most_used_positive_words();
 
         return view('homeprofesional', compact('categoria_servicios_all', 'categoria_productos_all',  'user_type_all','user_cfp_all', 'publicacion','categoria', 'titulo', 'user', 'user_profile', 'zonas', 'subjets', 'info', 'whatsapp_url', 'rating', 'show_rating', 'words'));
 

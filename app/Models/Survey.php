@@ -18,6 +18,7 @@ class Survey extends Model
         'satisfaction',
         'descriptive_words',
         'no_agreement',
+        'wa_id',
         'review',
     ];
 
@@ -48,6 +49,24 @@ class Survey extends Model
     public function isReviewEmpty()
     {
         return empty($this->review);
+    }
+
+    public function positiveWords()
+    {        
+        if($this->descriptive_words !== null){
+            return array_map(function ($word) {
+                return str_replace('_', ' ', $word);
+            }, $this->descriptive_words);
+        } else return [];
+    }
+
+    public function negativeWords()
+    {        
+        if($this->no_agreement !== null){
+            return array_map(function ($word) {
+                return str_replace('_', ' ', $word);
+            }, $this->no_agreement);
+        } else return [];
     }
 
 }

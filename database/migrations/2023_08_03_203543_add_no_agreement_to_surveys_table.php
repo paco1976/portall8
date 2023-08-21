@@ -14,7 +14,7 @@ class AddNoAgreementToSurveysTable extends Migration
     public function up()
     {
         Schema::table('surveys', function (Blueprint $table) {
-            $table->json('no_agreement')->default("[]");
+            $table->json('no_agreement')->nullable();
         });
     }
 

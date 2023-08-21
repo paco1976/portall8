@@ -108,10 +108,6 @@
 							<td>{{$publicacion->categoria->name}}</td>
 							<td>{{$publicacion->titulo->name}}</td>
 
-
-
-
-
 							<td style="text-align:center">
 								@if($publicacion->cant_consultas>0)
 								@if($publicacion->menssage_not_read>0)
@@ -135,7 +131,11 @@
 							@endif
 
 							<td style="text-align:center">
-								{{$publicacion->surveys_accepted}}
+								@if($publicacion->surveys_accepted>0)
+								<a href="{{ route('admin_surveys', ['publicacion_hash' => $publicacion->hash]) }}" class="btn btn-success"><strong>{{$publicacion->surveys_accepted}}</strong></a>
+								@else
+								<a href="" class="btn btn-success">0</a>
+								@endif
 							</td>
 							<td style="text-align:center">
 								{{$publicacion->surveys_sent}}
@@ -155,22 +155,7 @@
 							<td style="text-align:center">
 								<a href="{{ route('admin_publicaciones_show_rating', ['publicacion_hash' => $publicacion->hash, 'origen' => 'profesionales']) }}" class="btn btn-success"><i class="fa fa-eye"></i></a>
 							</td>
-							@endif
-
-							<!-- <td>	
-							@foreach ($publicacion->words as $word)
-							{{ $word }}@if (!$loop->last),@endif
-							@endforeach
-							</td> -->
-							<!-- @if($publicacion->show_rating==0)
-							<td style="text-align:center">
-								<a href="{{ route('admin_publicaciones_show_rating', ['publicacion_hash' => $publicacion->hash, 'origen' => 'profesionales']) }}" class="btn btn-warning"><i class="fa fa-eye-slash"></i></a>
-							</td>
-							@else
-							<td style="text-align:center">
-								<a href="{{ route('admin_publicaciones_show_rating', ['publicacion_hash' => $publicacion->hash, 'origen' => 'profesionales']) }}" class="btn btn-success"><i class="fa fa-eye"></i></a>
-							</td>
-							@endif -->
+							@endif							
 
 							@if($publicacion->aprobado==0)
 							<td style="text-align:center">

@@ -14,7 +14,8 @@ global $surveyMessages;
  *                                     |___ Calificar (3b) 
  *                                          |___ Calificaciones 4-5 (message1c)  
  *                                          |                         |___  Describir     (4b) 
- *                                          |                                 |___   FIN (finalMessage1) (5)                                                                         
+ *                                                                            |___ escribir    
+ *                                          |                                          |___   FIN (finalMessage1) (5)                                                                         
  *                                          |
  *                                          |___ Calificaciones 3   (message1d)                                                                                       
  *                                          |                           |___ escribir     (4c)                                                                           
@@ -100,7 +101,7 @@ $surveyMessages = [
             ]
         ]
     ],
-    'message1c_text' => '¿Qué es lo que más te gustó del servicio?',
+    'message1c_text' => "¿Qué es lo que más te gustó del servicio?\n(Podés volver a este mensaje para seleccionar más de una opción).",
     'message1c_buttons' => [
         "button" => "Describir", 
         "sections" => [ 
@@ -149,36 +150,61 @@ $surveyMessages = [
     ],     
     'message1d_text' => '¿Qué cosas mejorarías?', // Pasa a finalMessage1
     'message1e_text' => '¿Qué cosas no te gustaron?', // Pasa a finalMessage1
-    'message2a_text' => '¿Por qué?', 
+    'message1f_text' => "¿Querés dejarnos una reseña?", // Pasa a finalMessage1 o review
+    'message1f_buttons' => [
+        "buttons" => [
+            [
+                "type" => "reply",
+                "reply" => [
+                    "id" => "review", // Pasa a reseña
+                    "title" => "Sí"
+                ]
+            ],
+            [
+                "type" => "reply",
+                "reply" => [
+                    "id" => "no_review", // Pasa a por qué no
+                    "title" => "No"
+                ]
+            ]
+        ]
+    ],
+    'message1g_text' => "Por favor dejanos tu reseña a continuación.\nAl contestar a este mensaje aceptás que tu comentario sea publicado en nuestra página", // Pasa a finalMessage1 o review
+    'message2a_text' => "¿Por qué?\n(Podés volver a este mensaje para seleccionar más de una opción).", 
     'message2a_buttons' => [
-        "button" => "Seleccionar una opción", 
+        "button" => "Ver opciones", 
         "sections" => [  // Pasa a finalMessage2
             [ 
                 "title" => "Seleccionar una opción",
                 "rows" => [
                     [
-                        "id" => "noAgree:no_respondió",
+                        "id" => "noAgree:no_respondio",
                         "title" => "No me respondió",
                         "description" => ""
                     ],
                     [
                         "id" => "noAgree:no_acordamos_día",
-                        "title" => "No pudimos fijar un día de visita",
+                        "title" => "No pudimos fijar un día",
                         "description" => ""
                     ],
                     [
                         "id" => "noAgree:no_llega_a_zona",
-                        "title" => "No llega a la zona en la que estoy",
+                        "title" => "No llega a mi zona",
                         "description" => ""
                     ],
                     [
-                        "id" => "noAgree:desacuerdo_con_presupuesto",
-                        "title" => "No estuve de acuerdo con el presupuesto",
+                        "id" => "noAgree:caro",
+                        "title" => "Me pareció caro",
                         "description" => ""
                     ],
                     [
-                        "id" => "noAgree:no_realiza_tipo_de_trabajo",
-                        "title" => "No realiza el tipo de trabajo por el que consulté",
+                        "id" => "noAgree:no_aceptó",
+                        "title" => "No aceptó el trabajo",
+                        "description" => ""
+                    ],
+                    [
+                        "id" => "noAgree:otra",
+                        "title" => "Otra razón",
                         "description" => ""
                     ],
                 ]

@@ -728,9 +728,6 @@ class AdminController extends Controller
                     $publicacion->surveys_accepted = $publicacion->surveys_accepted();
                     $publicacion->surveys_sent = $publicacion->surveys_sent();
                     $publicacion->rating = $publicacion->rating();
-                    $publicacion->words = $publicacion->descriptive_words();
-
-
                 }
                 
             }
@@ -1268,6 +1265,33 @@ class AdminController extends Controller
             return back();
         }else{
             session::flash('message', 'No está autorizado');
+            return redirect('/');
+        }
+    }
+
+    public function admin_surveys($publicacion_hash){
+        $user = User::find(Auth::user()->id);
+
+        $publicacion = Publicacion::where('hash', $publicacion_hash)->first();
+        $surveys = $publicacion->surveys()
+                        ->where('accepts_survey', true)
+                        ->orderBy('created_at', 'DESC')
+                        ->paginate(10);
+        
+        $publicacion->user = $publicacion->user()->first();
+        $publicacion->positive_words = $publicacion->most_used_positive_words();
+        $publicacion->negative_words = $publicacion->most_used_negative_words();
+        $publicacion->rating = $publicacion->rating();
+
+        $user->permisos = $user->user_type()->first();
+        if($user->permisos->name == "Administrador" ){
+            
+                        
+            return view('admin.surveys', compact('publicacion', 'surveys', 'user'));
+            
+        }
+        else{
+            session::flash('message', 'No está autorizado para esta acción');
             return redirect('/');
         }
     }
