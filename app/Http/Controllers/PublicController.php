@@ -190,8 +190,12 @@ class PublicController extends Controller
         $info = $request->query('info', false);
 
         $whatsapp_url = "https://wa.me/549". $user_profile->mobile . "?text=Hola!%20Te%20contacto%20a%20través%20de%20CEFEPERES%20y%20te%20quería%20hacer%20una%20consulta!";
+ 
+        $rating = $publicacion->rating();
+        $show_rating = $publicacion->show_rating;
+        $words = $publicacion->most_used_positive_words();
 
-        return view('homeprofesional', compact('categoria_servicios_all', 'categoria_productos_all',  'user_type_all','user_cfp_all', 'publicacion','categoria', 'titulo', 'user', 'user_profile', 'zonas', 'subjets', 'info', 'whatsapp_url'));
+        return view('homeprofesional', compact('categoria_servicios_all', 'categoria_productos_all',  'user_type_all','user_cfp_all', 'publicacion','categoria', 'titulo', 'user', 'user_profile', 'zonas', 'subjets', 'info', 'whatsapp_url', 'rating', 'show_rating', 'words'));
 
     }
 

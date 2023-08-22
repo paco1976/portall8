@@ -724,6 +724,10 @@ class AdminController extends Controller
                         $publicacion->menssage_not_read = $publicacion->menssage_not_read + $consulta->messages()->where('read', false)->count();
                         $publicacion->menssage_total = $publicacion->menssage_total +$consulta->messages()->count();
                     }
+                    $publicacion->clients_registered = $publicacion->clients_registered();
+                    $publicacion->surveys_accepted = $publicacion->surveys_accepted();
+                    $publicacion->surveys_sent = $publicacion->surveys_sent();
+                    $publicacion->rating = $publicacion->rating();
                 }
                 
             }
@@ -817,6 +821,33 @@ class AdminController extends Controller
 
     }
 
+    public function admin_publicaciones_show_rating($publicacion_hash){
+        $user = User::find(Auth::user()->id);
+        $user->permisos = $user->user_type()->first();
+
+        $publicacion = Publicacion::where('hash', $publicacion_hash)->first();
+
+        if($user->permisos->name == "Administrador"){
+
+            if($publicacion->show_rating == 0){
+                session::flash('message', 'El rating se hizo visible');
+                $publicacion->show_rating = 1;
+                $publicacion->save(['show_rating']);
+            }else{
+                session::flash('message', 'El rating se ocultó');
+                $publicacion->show_rating = 0;
+                $publicacion->save(['show_rating']);
+            }
+
+            return back();
+        }
+        else{
+            session::flash('message', 'No está autorizado para esta acción');
+            return redirect('/');
+        }
+
+    }
+
 
 
     public function admin_publicacion($hash){
@@ -833,7 +864,7 @@ class AdminController extends Controller
             //dd($publicacion);
             //no se usa esta función???
             $publicacion->imagenes = $publicacion->imagenes()->get();
-            $user_publicacion = $publiacion->user_publicacion()->first();
+            $user_publicacion = $publicacion->user_publicacion()->first();
             
             $publicacion->titulos_asociados = $publicacion->titulos_asociados()->get();
             $subjets = Interactionsubjet::get();
@@ -1234,6 +1265,33 @@ class AdminController extends Controller
             return back();
         }else{
             session::flash('message', 'No está autorizado');
+            return redirect('/');
+        }
+    }
+
+    public function admin_surveys($publicacion_hash){
+        $user = User::find(Auth::user()->id);
+
+        $publicacion = Publicacion::where('hash', $publicacion_hash)->first();
+        $surveys = $publicacion->surveys()
+                        ->where('accepts_survey', true)
+                        ->orderBy('created_at', 'DESC')
+                        ->paginate(10);
+        
+        $publicacion->user = $publicacion->user()->first();
+        $publicacion->positive_words = $publicacion->most_used_positive_words();
+        $publicacion->negative_words = $publicacion->most_used_negative_words();
+        $publicacion->rating = $publicacion->rating();
+
+        $user->permisos = $user->user_type()->first();
+        if($user->permisos->name == "Administrador" ){
+            
+                        
+            return view('admin.surveys', compact('publicacion', 'surveys', 'user'));
+            
+        }
+        else{
+            session::flash('message', 'No está autorizado para esta acción');
             return redirect('/');
         }
     }

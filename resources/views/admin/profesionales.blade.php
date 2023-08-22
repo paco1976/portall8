@@ -79,7 +79,7 @@
 										<th style="text-align:center">CFP</th>
 										<th style="text-align:center" colspan="3">Usuario<br>Activado / Borrar / Clave</th>
 										<th style="text-align:center">Perfil</th>
-										<th style="text-align:center" colspan="2">Publicaciones <br> Contidad / Mensajes </th>
+										<th style="text-align:center" colspan="2">Publicaciones <br> Cantidad / Mensajes </th>
 									</tr>
 								</thead>
 								<tbody>

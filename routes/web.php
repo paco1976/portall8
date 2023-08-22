@@ -133,12 +133,15 @@ Route::get('/admin_publicacion_delete/{publicacion_hash}/origen/{origen}','Admin
 Route::get('/admin_publicaciones_aprobar_desaprobar/{publicacion_hash}/origen/{origen}','AdminController@admin_publicaciones_aprobar_desaprobar' )->name('admin_publicaciones_aprobar_desaprobar');
 Route::get('/admin_user_aprobar_desaprobar/{user_hash}/origen/{origen}','AdminController@admin_user_aprobar_desaprobar' )->name('admin_user_aprobar_desaprobar');
 Route::get('/admin_user_delete/{user_hash}/origen/origen/{origen}','AdminController@admin_user_delete' )->name('admin_user_delete');
+Route::get('/admin_publicaciones_show_rating/{publicacion_hash}/origen/{origen}','AdminController@admin_publicaciones_show_rating' )->name('admin_publicaciones_show_rating');
 
 Route::get('/admin_consultas/{publicacion_hash}', 'AdminController@admin_consultas')->name('admin_consultas');
 Route::get('/admin_mensajes/{hash}', 'AdminController@admin_mensajes')->name('admin_mensajes');
 Route::get('/admin_categorias','AdminController@admin_categorias' )->name('admin_categorias'); 
 Route::get('/admin_categoria_activar_desactivar/{id}','AdminController@admin_categoria_activar_desactivar' )->name('admin_categoria_activar_desactivar');
 Route::put('/admin_categoria_icon','AdminController@admin_categoria_icon' )->name('admin_categoria_icon');
+Route::get('/admin_surveys/{publicacion_hash}', 'AdminController@admin_surveys')->name('admin_surveys');
+
 
 Route::get('/admin_visitas/{publicacion_hash}', 'AdminController@admin_visitas')->name('admin_visitas');
 Route::get('/admin_whatsapp/{publicacion_hash}', 'AdminController@admin_whatsapp')->name('admin_whatsapp');
