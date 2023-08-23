@@ -86,7 +86,7 @@
 				<div class="container">
 					<div class="logo">
 						<a href="{{ url('/') }}">
-							<img alt="CFP" width="278" height="67" data-sticky-width="227" data-sticky-height="55" src="https://www.serviciosprofesionales.com.ar/img/logo.png">
+							<img alt="CFP" width="278" height="67" data-sticky-width="227" data-sticky-height="55" src="{{ asset('img/logo.png')}}">
 						</a>
 					</div>
 
@@ -317,7 +317,7 @@
 					<div class="container">
 						<div class="row">
 							<div class="col-md-8">
-								<p><a href="http://www.tecnoarte.com.ar" target="_blank"><img src="https://www.serviciosprofesionales.com.ar/tecnoarte.png" alt="logo" width="118" height="16"></a></p>
+								<p><a href="http://www.tecnoarte.com.ar" target="_blank"><img src="{{ asset('tecnoarte.png')}}" alt="logo" width="118" height="16"></a></p>
 							</div>
 							<div class="col-md-4">
 								<nav id="sub-menu">
