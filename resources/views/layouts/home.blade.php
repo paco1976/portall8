@@ -353,8 +353,9 @@
         <script src="{{ asset('vendor/dropzone/dropzone.js') }}"></script> 
 
 		<!-- Paco -->
+		<!--
 		<script src="{{ asset('js/datos_profesional.js') }}"></script>
-
+		-->
 		<!-- Theme Base, Components and Settings -->
 		<script src="{{ asset('js/theme.js') }}"></script>
 

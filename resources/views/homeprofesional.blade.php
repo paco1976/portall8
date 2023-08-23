@@ -143,13 +143,28 @@
 				@endif
 
 				@if (!$info)
-				<a onClick="muestra_oculta('client-form')" class="btn btn-lg btn-primary" data-appear-animation="bounceIn">Ver <strong>datos</strong> de contacto</a>
-				<!-- <span class="arrow hlb hidden-xs hidden-sm hidden-md" data-appear-animation="rotateInUpLeft" style="top: -22px;"></span> -->
-
-				<div id="client-form" class="contact-info">
-					<p>Completá tus datos para ver la información de contacto del profesional</p>
-					@include('clientForm', ['user_id' => $user->id, 'publicacion_id' => $publicacion->id])
-				</div>
+				<button type="button" class="btn btn-lg btn-primary" data-toggle="modal" data-target="#myModal">
+					Ver datos de contacto
+				   </button>  
+				 </div>
+				 
+				 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				   <div class="modal-dialog modal-dialog-centered" role="document">
+					 <div class="modal-content">
+					   <div class="modal-header border-bottom-0">
+						 <h5 class="modal-title" id="exampleModalLabel">Completá tus datos para ver la información de contacto del profesional</h5>
+						 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						   <span aria-hidden="true">&times;</span>
+						 </button>
+					   </div>
+					   <div class="modal-body">
+						
+					   		@include('clientForm', ['user_id' => $user->id, 'publicacion_id' => $publicacion->id])
+						
+					   </div>
+					 </div>
+				   </div>
+				 </div>
 				@endif
 			</div>
 		</div>
