@@ -3,10 +3,12 @@
 namespace App\Providers;
 
 use App\Models\Categoria;
+use App\Models\Categoria_Tipo;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Storage;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -29,9 +31,12 @@ class AppServiceProvider extends ServiceProvider
     {
         Paginator::useBootstrap();
         Schema::defaultStringLength(191);
-        $categoria_servicios_all = Categoria::where(['categoria_tipo_id' => 1,'active' => 1])->get();
-        $categoria_productos_all = Categoria::where(['categoria_tipo_id' => 2,'active' => 1])->get();
-        //return view('comunidad', compact('categoria_servicios_all', 'categoria_productos_all'));
-        View::share(compact('categoria_servicios_all', 'categoria_productos_all'));
+        $categoria_tipo_all = Categoria_Tipo::get();
+        $categoria_all = Categoria::where(['active' => 1])->get();
+        foreach ($categoria_all as $categoria) {
+            $categoria->icon = Storage::disk('categorias')->url($categoria->icon);
+        }
+        
+        View::share(compact('categoria_tipo_all', 'categoria_all'));
     }
 }

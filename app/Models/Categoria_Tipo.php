@@ -20,8 +20,9 @@ class Categoria_Tipo extends Model
         'name',
     ];
 
-    public function categorias(){
-        return $this->hasMany('App\Models\Categoria');
+    public function categorias()
+    {
+        return $this->hasMany('App\Models\Categoria', 'categoria_tipo_id');
     }
 
 }
