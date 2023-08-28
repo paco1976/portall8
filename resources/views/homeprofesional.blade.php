@@ -112,52 +112,36 @@
 							</div>
 							@endif
 
-							@if (!$info)
-							<button type="button" class="btn btn-modern btn-primary mt-3" data-toggle="modal" data-target="#myModal">
-								Ver datos de contacto
-							</button>  
 							
-							<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModal" aria-hidden="true">
-								<div class="modal-dialog">
+							@if (!$info)
+							
+							
+							<button type="button" class="btn btn-modern btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#myModal">
+								Ver datos de contacto
+							  </button>
+							
+							
+							<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+								<div class="modal-dialog modal-dialog-centered" role="document">
 									<div class="modal-content">
-										<div class="modal-header">
-											<h4 class="modal-title" id="defaultModalLabel">Completá tus datos para ver la información de contacto del profesional</h4>
-											<button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">&times;</button>
-									</div>
-									<div class="modal-body">
-											@include('clientForm', ['user_id' => $user->id, 'publicacion_id' => $publicacion->id])
-									</div>
-									</div>
-								</div>
-							</div>
-							@endif
-
-							--------------------------
-								<!-- Este es el form  modal-->
-								<div class="modal fade" id="defaultModal" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel" aria-hidden="true">
-								<div class="modal-dialog">
-									<div class="modal-content">
-										<div class="modal-header">
-											<h4 class="modal-title" id="defaultModalLabel">Datos de contacto del profesional</h4>
-											<button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">&times;</button>
+									  	<div class="modal-header border-bottom-0">
+											<h5 class="modal-title" id="exampleModalLabel">Completá tus datos para ver la información de contacto del profesional</h5>
+											<button type="button" class="btn-close" data-bs-dismiss="modal"
+                           					 aria-hidden="true">&times;</button>
 										</div>
 										<div class="modal-body">
-											
-											
-										</div>
-										<div class="modal-footer">
-											<button type="button" class="btn btn-light" data-bs-dismiss="modal">Cerrar</button>
+												@include('clientForm', ['user_id' => $user->id, 'publicacion_id' => $publicacion->id])
 										</div>
 									</div>
 								</div>
 							</div>
 
+							@endif
 
-
-							---------------------------
 
 							<a href="#individual" class="btn btn-modern btn-dark mt-3" data-hash data-hash-offset="0"
 								data-hash-offset-lg="100">Hacé una consulta</a>
+							
 						</div>
 
 						<div class="col-sm-4 text-lg-end my-4 my-lg-0">
