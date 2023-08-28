@@ -121,20 +121,7 @@
 							  </button>
 							
 							
-							<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-								<div class="modal-dialog modal-dialog-centered" role="document">
-									<div class="modal-content">
-									  	<div class="modal-header border-bottom-0">
-											<h5 class="modal-title" id="exampleModalLabel">Completá tus datos para ver la información de contacto del profesional</h5>
-											<button type="button" class="btn-close" data-bs-dismiss="modal"
-                           					 aria-hidden="true">&times;</button>
-										</div>
-										<div class="modal-body">
-												@include('clientForm', ['user_id' => $user->id, 'publicacion_id' => $publicacion->id])
-										</div>
-									</div>
-								</div>
-							</div>
+							
 
 							@endif
 
@@ -339,7 +326,24 @@
 			</div>
 		</div>
 	</div>
-
+	@if(!$info)
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				  <div class="modal-header border-bottom-0">
+					<h5 class="modal-title" id="exampleModalLabel">Completá tus datos para ver la información de contacto del profesional</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-hidden="true">&times;</button>
+				</div>
+				<div class="modal-body">
+					<div id="client-form" class="contact-info">
+						@include('clientForm', ['user_id' => $user->id, 'publicacion_id' => $publicacion->id])
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	@endif
 
 
 
