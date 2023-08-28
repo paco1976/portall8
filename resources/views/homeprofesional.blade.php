@@ -81,10 +81,64 @@
 					<div class="row align-items-center appear-animation" data-appear-animation="fadeInUpShorter"
 						data-appear-animation-delay="1000">
 						<div class="col-lg-8">
-							<button class="btn btn-modern btn-primary mt-3" data-bs-toggle="modal"
-								data-bs-target="#defaultModal">
+							@if ($info)
+							<div class="contactInfo">
+								<h5>Información de contacto</h5>
+								@if($user_profile->mobile)
+								<a class="bi bi-whatsapp contact-link" href="{{ $whatsapp_url }}" target="_blank" data-tooltip title="WhatsApp"> {{$user_profile->mobile}}</a></br>
+								@endif
+								@if($user->email)
+								<a class="bi bi-envelope-at contact-link" href="mailto:{{ $user->email }}" target="_blank" data-tooltip title="Email"> {{ $user->email }}</a></br>
+								@endif
+								<div class="contact-icons">
+									<ul class="social-icons">
+										@if($user_profile->facebook)
+										<li class="facebook"><a href="https://www.facebook.com/{{ $user_profile->facebook }}" target="_blank" data-placement="bottom" data-tooltip title="Facebook">Facebook</a></li>
+										@endif
+										@if($user_profile->instagram)
+										<li class="instagram"><a href="https://www.instagram.com/{{ $user_profile->instagram }}" target="_blank" data-placement="bottom" data-tooltip title="Instagram">Instagram</a></li>
+										@endif
+
+										@if($user_profile->linkedin)
+										<li class="linkedin"><a href="https://www.linkedin.com/in/{{ $user_profile->linkedin }}" target="_blank" data-placement="bottom" data-tooltip title="Linkedin">Linkedin</a></li>
+										@endif
+
+										@if($user_profile->twitter)
+										<li class="twitter"><a href="https://www.twitter.com/{{ $user_profile->twitter }}" target="_blank" data-placement="bottom" data-tooltip title="Twitter">Twitter</a></li>
+										@endif
+									</ul>
+								</div>
+
+							</div>
+							@endif
+
+							@if (!$info)
+							<button type="button" class="btn btn-modern btn-primary mt-3" data-toggle="modal" data-target="#myModal">
 								Ver datos de contacto
-							</button>
+							</button>  
+							
+							
+							<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+							<div class="modal-dialog modal-dialog-centered" role="document">
+								<div class="modal-content">
+								<div class="modal-header border-bottom-0">
+									<h5 class="modal-title" id="exampleModalLabel">Completá tus datos para ver la información de contacto del profesional</h5>
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+									</button>
+								</div>
+								<div class="modal-body">
+									
+										@include('clientForm', ['user_id' => $user->id, 'publicacion_id' => $publicacion->id])
+									
+								</div>
+								</div>
+							</div>
+							</div>
+							@endif
+
+
+
 							<a href="#individual" class="btn btn-modern btn-dark mt-3" data-hash data-hash-offset="0"
 								data-hash-offset-lg="100">Hacé una consulta</a>
 						</div>
@@ -285,366 +339,11 @@
 		</div>
 	</div>
 
-	<!-- Este es el form  modal-->
-	<div class="modal fade" id="defaultModal" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel"
-		aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title" id="defaultModalLabel">Datos de contacto del profesional</h4>
-					<button type="button" class="btn-close" data-bs-dismiss="modal"
-						aria-hidden="true">&times;</button>
-				</div>
-				<div class="modal-body">
-					<p><strong>{{ $user->name }} {{ $user->last_name }}</strong><br>
-						<strong>Telefono:</strong>
-						@if ($user_profile->mobile)
-							{{ $user_profile->mobile }}
-						@endif
-						<br>
-						<strong>Mail:</strong> <a href="mailto:{{ $user->email }}"> {{ $user->email }} </a>
-					</p>
-					<div class="col-sm-12 text-lg-end my-4 my-lg-0">
-						@if ($user_profile->facebook || $user_profile->twitter || $user_profile->linkedin)
-							<strong class="text-uppercase text-1 me-3 text-dark">Seguime</strong>
-						@endif
-						<ul class="social-icons float-lg-end">
-							@if ($user_profile->facebook)
-								<li class="social-icons-facebook"><a href="{{ asset($user_profile->facebook) }}"
-										target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a></li>
-							@endif
-							@if ($user_profile->twitter)
-								<li class="social-icons-twitter"><a href="{{ asset($user_profile->twitter) }}"
-										target="_blank" title="Twitter"><i class="fab fa-twitter"></i></a></li>
-							@endif
-							@if ($user_profile->linkedin)
-								<li class="social-icons-linkedin"><a href="{{ asset($user_profile->linkedin) }}"
-										target="_blank" title="Linkedin"><i class="fab fa-linkedin-in"></i></a></li>
-							@endif
-						</ul>
-					</div>
-					<hr class="solid my-4 appear-animation" data-appear-animation="fadeInUpShorter"
-						data-appear-animation-delay="900">
-					<!-- <p><strong><em>IMPORTANTE:</strong> Al contactar al Profesional está aceptando los términos y condiciones del sitio. Leer <a href="#">condiciones de uso</a>.</em></p> -->
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-light" data-bs-dismiss="modal">Cerrar</button>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-
-
-<!-- hasta acá-->
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
---------------------
-<div role="main" class="main">
-
-	<section class="page-top">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-12">
-					<ul class="breadcrumb">
-						<li><a href="{{ route('homepublicaciones', ['id'=> $categoria->id]) }}"> Volver a {{ $categoria->name }}</a></li>
-						<li class="active">{{ $user->name}} {{ $user->last_name}}</li>
-					</ul>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-md-12">
-					<a href="{{ route('homepublicaciones', ['id'=> $categoria->id]) }}">
-						<h1>{{ $categoria->name }}</h1>
-					</a>
-				</div>
-			</div>
-		</div>
-	</section>
-
-	<div class="container">
-
-		<div class="row">
-			<div class="col-md-4">
-
-				<div class="owl-carousel" data-plugin-options='{"items": 1}'>
-					<div>
-						<div class="thumbnail">
-							<img alt="" height="300" class="img-responsive" src="{{ asset($user->avatar) }}">
-						</div>
-					</div>
-					@if($publicacion->cant_images > 0)
-					@foreach($publicacion->imagenes as $imagen)
-					<div>
-						<div class="thumbnail">
-							<img alt="" height="300" class="img-responsive" src="{{ asset($imagen->url) }}">
-						</div>
-					</div>
-					@endforeach
-					@endif
-				</div>
-
-			</div>
-
-			<div class="col-md-8">
-
-				<h2 class="shorter">{{ $user->name}} <strong>{{ $user->last_name}} </strong></h2>
-				
-				<!-- Rating -->
-				@if($publicacion->show_rating)
-				<div class="star-rating">
-					@for ($i = 1; $i <= 5; $i++) @if ($rating < 3) <i class="bi bi-star "></i>
-						@else
-						@if ($i <= floor($rating)) <i class="bi bi-star-fill" style="color:gold;"></i>
-							@elseif ($i <= ceil($rating)) <i class="bi bi-star-half" style="color:gold;"></i>
-								@else
-								<i class="bi bi-star" style="color:gold;"></i>
-								@endif
-								@endif
-								@endfor
-
-								@if ($rating < 3) <small>No hay suficientes calificaciones</small>
-								@endif
-				</div>
-				@endif			
-
-				<!-- Descriptive words -->
-				<div>
-				@foreach ($words as $word)
-				<h5 class="badge badge-pill btn-info">{{ $word }}</h5>
-				@endforeach
-				</div>
-				<!-- 							
-							<span class="thumb-info-social-icons">
-								@if($user_profile->facebook)
-								<a data-tooltip data-placement="bottom" target="_blank" href="{{ asset($user_profile->facebook) }}" data-original-title="Facebook"><i class="fa fa-facebook"></i><span>Facebook</span></a>
-								@endif
-								@if($user_profile->twitter)
-								<a data-tooltip data-placement="bottom" target="_blank"  href="{{ asset($user_profile->twitter) }}" data-original-title="Twitter"><i class="fa fa-twitter"></i><span>Twitter</span></a>
-								@endif
-								@if($user_profile->linkedin)
-								<a data-tooltip data-placement="bottom" target="_blank"  href="{{ asset($user_profile->linkedin) }}" data-original-title="Linkedin"><i class="fa fa-linkedin"></i><span>Linkedin</span></a>
-								@endif
-								
-							</span> -->
-
-				@if($publicacion->description)
-				<p class="description-profesional">{{ $publicacion->description }}</p>
-				@endif
-				<h2 class="shorter">Títulos <strong>relacionados</strong></h2>
-				<ul class="list icons list-unstyled">
-
-					<li><i class="fa fa-check"></i> {{ $titulo->name }}</li>
-					@foreach ($publicacion->titulos_asociados as $tit)
-					<li><i class="fa fa-check"></i> {{ $tit->name }}</li>
-					@endforeach
-				</ul>
-
-			</div>
-		</div>
-	</div>
-
-	<div class="container contact-btn">
-		<div class="row">
-			<div class="col-md-4">
-			</div>
-			<div class="col-md-4">
-				@if ($info)
-				<div class="contactInfo">
-					<h5>Información de contacto</h5>
-					@if($user_profile->mobile)
-					<a class="bi bi-whatsapp contact-link" href="{{ $whatsapp_url }}" target="_blank" data-tooltip title="WhatsApp"> {{$user_profile->mobile}}</a></br>
-					@endif
-					@if($user->email)
-					<a class="bi bi-envelope-at contact-link" href="mailto:{{ $user->email }}" target="_blank" data-tooltip title="Email"> {{ $user->email }}</a></br>
-					@endif
-					<div class="contact-icons">
-						<ul class="social-icons">
-							@if($user_profile->facebook)
-							<li class="facebook"><a href="https://www.facebook.com/{{ $user_profile->facebook }}" target="_blank" data-placement="bottom" data-tooltip title="Facebook">Facebook</a></li>
-							@endif
-							@if($user_profile->instagram)
-							<li class="instagram"><a href="https://www.instagram.com/{{ $user_profile->instagram }}" target="_blank" data-placement="bottom" data-tooltip title="Instagram">Instagram</a></li>
-							@endif
-
-							@if($user_profile->linkedin)
-							<li class="linkedin"><a href="https://www.linkedin.com/in/{{ $user_profile->linkedin }}" target="_blank" data-placement="bottom" data-tooltip title="Linkedin">Linkedin</a></li>
-							@endif
-
-							@if($user_profile->twitter)
-							<li class="twitter"><a href="https://www.twitter.com/{{ $user_profile->twitter }}" target="_blank" data-placement="bottom" data-tooltip title="Twitter">Twitter</a></li>
-							@endif
-						</ul>
-					</div>
-
-				</div>
-				@endif
-
-				@if (!$info)
-				<button type="button" class="btn btn-lg btn-primary" data-toggle="modal" data-target="#myModal">
-					Ver datos de contacto
-				   </button>  
-				 </div>
-				 
-				 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-				   <div class="modal-dialog modal-dialog-centered" role="document">
-					 <div class="modal-content">
-					   <div class="modal-header border-bottom-0">
-						 <h5 class="modal-title" id="exampleModalLabel">Completá tus datos para ver la información de contacto del profesional</h5>
-						 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						   <span aria-hidden="true">&times;</span>
-						 </button>
-					   </div>
-					   <div class="modal-body">
-						
-					   		@include('clientForm', ['user_id' => $user->id, 'publicacion_id' => $publicacion->id])
-						
-					   </div>
-					 </div>
-				   </div>
-				 </div>
-				@endif
-			</div>
-		</div>
-	</div>
-
-
-
-
-
-	<div class="container">
-
-		<div class="row">
-			<div class="col-md-12">
-
-				@if (Session::has('message'))
-				<div class="alert alert-success">
-					<p>{{ Session::get('message') }}</p>
-				</div>
-				@endif
-				@if (Session::has('error'))
-				<div class="alert alert-danger">
-					<p>{{ Session::get('error') }}</p>
-				</div>
-				@endif
-
-				<h2 class="short"><strong>Hacé una</strong> consulta</h2>
-				<form id="contactForm" action="{{ route('interaction_publicacion', ['id'=> $publicacion->id]) }}" method="POST" enctype="multipart/form-data">
-					{{ method_field('PUT') }}
-					@csrf
-					<div class="row">
-						<div class="form-group">
-							<div class="col-md-6">
-								<label>Tu Nombre *</label>
-								<input type="text" value="{{ old('name') }}" data-msg-required="Por favor ingresa tu Nombre." maxlength="100" class="form-control" name="name" id="name">
-								@error('name')
-								<div class="alert alert-danger">
-									<p><strong>{{ $message }}</strong></p>
-								</div>
-								@enderror
-							</div>
-							<div class="col-md-6">
-								<label>Apellido *</label>
-								<input type="text" value="{{ old('last_name') }}" data-msg-required="Por favor ingresa tu Apellido." maxlength="100" class="form-control" name="last_name" id="name">
-								@error('last_name')
-								<div class="alert alert-danger">
-									<p><strong>{{ $message }}</strong></p>
-								</div>
-								@enderror
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="form-group">
-							<div class="col-md-6">
-								<label>Celular *</label>
-								<input type="text" value="{{ old('mobile') }}" data-msg-required="Por favor ingresa su celular. Ej 1155667788." maxlength="100" class="form-control" name="mobile">
-								@error('mobile')
-								<div class="alert alert-danger">
-									<p><strong>{{ $message }}</strong></p>
-								</div>
-								@enderror
-							</div>
-							<div class="col-md-6">
-								<label>Tu E-mail *</label>
-								<input type="email" value="{{ old('email') }}" data-msg-required="Por favor ingresa tu e-mail." data-msg-email="Please enter a valid Dirección de correo." maxlength="100" class="form-control" name="email" id="email">
-								@error('email')
-								<div class="alert alert-danger">
-									<p><strong>{{ $message }}</strong></p>
-								</div>
-								@enderror
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="form-group">
-							<div class="col-md-12">
-								<label>Asunto *</label>
-								<select maxlength="100" class="form-control" name="subjet" id="subjet" require>
-									<option value="">...</option>
-									@foreach($subjets as $subjet)
-									<option value="{{$subjet->id}}">{{$subjet->name}}</option>
-									@endforeach
-								</select>
-								@error('subjet')
-								<div class="alert alert-danger">
-									<p><strong>{{ $message }}</strong></p>
-								</div>
-								@enderror
-								<!--<input type="text" value="" data-msg-required="Por favor ingresa tu asunto." maxlength="100" class="form-control" name="subject" id="subject" required> -->
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="form-group">
-							<div class="col-md-12">
-								<label>Adjuntar Imagen</label>
-								<input type="file" maxlength="100" class="form-control" name="file[]" multiple="multiple">
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="form-group">
-							<div class="col-md-12">
-								<label>Mensaje *</label>
-								<textarea maxlength="5000" data-msg-required="Por favor ingresa tu mensaje." rows="10" class="form-control" name="message" id="message"></textarea>
-								@error('message')
-								<div class="alert alert-danger">
-									<p><strong>{{ $message }}</strong></p>
-								</div>
-								@enderror
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-12">
-							<!-- <input type="submit" value="Enviar Mensaje" class="btn btn-primary btn-lg" data-loading-text="Cargando..."> -->
-							<button type="submit" class="btn btn-primary btn-lg">Enviar Mensaje</button>
-						</div>
-					</div>
-				</form>
-			</div>
-
-
-		</div>
-
-	</div>
-
-</div>
 
 
 @if(count($zonas) > 0)
