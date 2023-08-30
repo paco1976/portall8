@@ -100,22 +100,23 @@
 				@else
 				<table class="table table-bordered table-striped mb-0" id="datatable-editable">
 					<thead>
-						<tr>			
+						<tr>
+							<th>Título Relacionado</th>
 							<th>Categoría</th>
 							<th>Visitas</th>
 							<th>Aprobado</th>
 							<th>Consultas</th>
-							<th>Certificado</th>
 							<th>Acción</th>
 						</tr>
 					</thead>
 					<tbody>
 						@foreach($mispublicaciones as $publicacion)
 						<tr data-item-id="1">
+							<td>{{$publicacion->titulo->name}}</td>
 							<td>{{$publicacion->categoria->name}}</td>	
 							<td> <!--{{$publicacion->view}} -->
 								@if ($publicacion->cant_visitas < 1 )
-									<a href="" class="btn btn-info"> {{$publicacion->cant_visitas}} </a>		
+									<a href="" class="btn btn-info"> 0 </a>		
 								@else
 									<a href="" class="btn btn-info"> {{$publicacion->cant_visitas}} </a>
 								@endif
@@ -132,13 +133,6 @@
 								<a href="{{ route('publicacion_consultas', ['publicacion_hash'=> $publicacion->hash]) }}" class="btn btn-info"><strong>{{$publicacion->cant_consultas}} </strong></a>
 								@else
 								<a href="#" class="btn btn-danger"><i class="fa fa-read"><strong>NO</strong></i></a>
-								@endif
-							</td>
-							<td>
-								@if ($publicacion->doc)
-								<a href="{{ $publicacion->doc }}" class="btn btn-info" target="_blank" >VER</a>
-								@else
-								<a href="#" class="btn btn-danger" target="_blank" >NO</a>
 								@endif
 							</td>
 							<td class="actions">
