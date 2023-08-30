@@ -192,6 +192,40 @@
                                     @enderror
                                 </div>
                             </div>
+
+                            <div class="form-group row">
+                                <!--<a href="#" class="btn btn-default fileupload-new" data-dismiss="fileupload">Zonas de trabajo </a>-->
+                                <label class="col-lg-3 col-form-label form-control-label line-height-9 pt-2 text-2">Zonas de trabajo </label>
+                                <div class="col-lg-9">
+                                    <ul class="portfolio-list sort-destination" data-sort-id="portfolio">
+                                        <li class="col-md-4 col-sm-6 col-xs-12 isotope-item websites">
+                                            <label for="">
+                                            <input type="checkbox" name="select-all" onclick="toggle(this);" multiple ria-label="Radio button for following text input" /> Todos los barrios
+                                            </label><br>
+                                        </li>
+                                    
+                                        
+                                        @if($zonas_all)
+                                            @foreach($zonas_all as $zona)
+                                                <li class="col-md-4 col-sm-6 col-xs-12 isotope-item websites">
+                                                @if($user->hasZona($zona))
+                                                    <label for="">
+                                                    <input type="checkbox" name="zonas[]" value="{{ $zona->name }}" multiple ria-label="Radio button for following text input" checked> {{ $zona->name }}
+                                                    </label><br>
+                                                @else
+                                                <label for="">
+                                                <input type="checkbox" name="zonas[]" value="{{ $zona->name }}" multiple ria-label="Radio button for following text input"> {{ $zona->name }}
+                                                </label><br>
+                                                @endif
+                                                    
+                                                </li>
+                                            @endforeach
+                                        @else  
+                                            <p>Ups! Algo ocurrio con las zonas</p>
+                                        @endif
+                                    </ul>
+                                </div>
+                            </div>
                             
                                                         
 
@@ -234,4 +268,13 @@
 
 </div>
 </div>
+<script>
+    function toggle(source) {
+        var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i] != source)
+                checkboxes[i].checked = source.checked;
+        }
+    }
+</script>
 @endsection

@@ -9,10 +9,10 @@ use App\Models\Zonas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\File;
-use Intervention\Image\Image;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Image;
 
 class ProfileController extends Controller
 {
@@ -115,23 +115,108 @@ class ProfileController extends Controller
     public function update(){
         //$user = User::find($id);
         $user = User::find(Auth::user()->id);
-        
-            $user_profile = User_Profile::where('user_id',$user->id)->first();
+        $profile = User_Profile::where('user_id',$user->id)->first();
+        //dd(request('zonas'));
+        if ($user->email == request()->input('email')) {
             $data = request()->validate([
-                'mobile'=> 'required',
-                'user_cfp'=>'required',
-                'phono'=> '',
-                'twitter' => '',
+                'name' => ['required', 'string', 'max:255'],
+                'last_name' => ['required', 'string', 'max:255'],
+                'email' => ['required', 'string', 'email', 'max:255'],
+                'mobile'=> ['required'],
+                'dni' => ['required', 'string', 'max:255'],
+                'avatar' => ['image','max:2048'],
+                'phone'=> '',
                 'facebook' => '',
                 'instagram' => '',
-                'linkedin' => '',
-                'zonas[]'=>'',
-                
+                'zonas[]'=>'sometimes|required',
             ],[
                 'mobile.required'=>'El campo celular es obligatorio',
-                'user_cfp.required'=>'El campo cfp es obligatorio',
+                'name' => 'El campo Nombre es obligatorio',
+                'last_name' => 'El campo Apellido es obligatorio',
+                'mobile'=> 'El campo celular es obligatorio',
+                'dni' => 'El campo DNI es obligatorio'                
             ]);
+        }
+        else{
+            $data = request()->validate([
+                'name' => ['required', 'string', 'max:255'],
+                'last_name' => ['required', 'string', 'max:255'],
+                'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                'mobile'=> ['required'],
+                'dni' => ['required', 'string', 'max:255'],
+                'avatar' => ['image','max:2048'],
+                'phone'=> '',
+                'facebook' => '',
+                'instagram' => '',
+                'zonas[]'=>'sometimes|required',
+            ],[
+                'mobile.required'=>'El campo celular es obligatorio',
+                'name' => 'El campo Nombre es obligatorio',
+                'last_name' => 'El campo Apellido es obligatorio',
+                'mobile'=> 'El campo celular es obligatorio',
+                'dni' => 'El campo DNI es obligatorio'                
+            ]);
+        }
 
+        //$user->cfp_id = 15;
+        $user->name = $data['name'];
+        $user->last_name = $data['last_name'];
+        $user->dni = $data['dni'];
+        $user->email = $data['email'];
+        
+        if ($user->save(['name','last_name','dni','email'])) {
+            $profile->mobile= $data['mobile'];
+            $profile->phone= $data['phone'];
+            $profile->facebook= $data['facebook'];
+            $profile->instagram= $data['instagram'];
+            $profile->save(['mobile', 'phone','facebook','instagram']);
+
+            if (request()->hasfile('avatar')) {
+                $carpetas = Storage::disk('avatares')->directories();
+                $directorio_existe = false;
+                foreach($carpetas as $carpeta){
+                    if($carpeta == $user->id){   
+                        $directorio_existe = true;
+                    }
+                }
+                if($directorio_existe == false){
+                    $resultado = Storage::disk('avatares')->makeDirectory($user->id, 0777, true);
+                }
+
+                $image = request()->file('avatar');
+                $input['imagename'] = time().'.'.$image->extension();
+                $destinationPath = Storage::disk('avatares')->path($user->id);
+                $img = Image::make($image->path());
+                $img->resize(300, 300, function ($constraint) {
+                    $constraint->aspectRatio();
+                })->save($destinationPath.'/'.$input['imagename']);
+                $path = $user->id.'/'.$input['imagename'];
+                $user->avatar = $path;
+                $user->save(['avatar']);
+            }
+            
+            $zonas_all = Zonas::all();
+            $zonas_new = request('zonas');
+            //dd($zonas_new);
+            if(is_array($zonas_new)){
+                //dd('entro a las zonas');
+                foreach($zonas_all as $zona) {
+                    $user->zonas()->detach(Zonas::where('name', $zona)->first());
+                }
+                foreach($zonas_new as $zona) {
+                    $user->zonas()->attach(Zonas::where('name', $zona)->first());
+                }
+            }
+
+            Session::flash('message', 'El perfil se actualizado con éxito');
+            return back();
+        } else {
+            Session::flash('error', 'El perfil no se pudo actualizar, revise los datos');
+            return back();
+        }  
+
+            
+           /*
             $user->cfp_id = $data['user_cfp'];
 
             $user_profile->user_id=$user->id;
@@ -144,6 +229,7 @@ class ProfileController extends Controller
             $user->save(['user_cfp']);
 
             $user_profile->save(['mobile', 'phone', 'twitter', 'facebook', 'instagram', 'linkedin']);
+           
             $zonas_all = Zonas::all();
             $zonas_new = request('zonas');
 
@@ -159,10 +245,8 @@ class ProfileController extends Controller
             
             Session::flash('message', 'El perfil se actualizado con éxito');
             return redirect('perfil');
-        
+            */
             //return redirect()->route('perfil');
-        
-
         
     }
 

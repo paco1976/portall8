@@ -174,6 +174,19 @@
                                     
                                 </div>
                             </div>
+                            @if($miszonas->count() > 0)
+                            <div class="form-group row">
+                                <!--<a href="#" class="btn btn-default fileupload-new" data-dismiss="fileupload">Zonas de trabajo </a>-->
+                                <label class="col-lg-3 col-form-label form-control-label line-height-9 pt-2 text-2">Zonas de trabajo </label>
+                                <div class="col-lg-9">
+                                    <p>
+                                        @foreach($miszonas as $zona)
+                                        {{$zona->name }} / 
+                                        @endforeach
+                                    </p>
+                                </div>
+                            </div>
+                            @endif
                             
                             
                             
