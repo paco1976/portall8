@@ -100,7 +100,7 @@ class ProfileController extends Controller
         $user_profile = User_Profile::where('user_id',$user->id)->first();
         $user_cfp = User_Cfp::where('id',$user->cfp_id)->first();
         $user_cfp_all = User_Cfp::all();
-
+        //dd($user->profile()->first()->mobile);
         //no esta en uso
         //$user->profiles = User::find(1)->user_profile();
         //$user->cfp = User::find(1)->user_cfp();
