@@ -43,7 +43,7 @@ class ToolController extends Controller
         $categoryId = "";
         // if($user->permisos->name == "Administrador"){
             $tools = $tools 
-            ->join('categoryTools AS c', 'c.id', '=', 'tools.categoryTool_id');
+            ->join('categorytools AS c', 'c.id', '=', 'tools.categoryTool_id');
 
             if ($request->get("categoryId")) { //Filtro de estado
                 $categoryId = $request->get("categoryId");             
@@ -89,7 +89,7 @@ class ToolController extends Controller
         $tool=null;
             $tool = ToolModel::query();
             $tool = $tool 
-            ->join('categoryTools AS c', 'c.id', '=', 'tools.categoryTool_id');
+            ->join('categorytools AS c', 'c.id', '=', 'tools.categoryTool_id');
             $tool = $tool
             ->where('tools.id', '=', $id);
             $tool = $tool
@@ -192,7 +192,7 @@ class ToolController extends Controller
 
                     //Solo si, La categoria adjudicada esta habilitada.
                     $tools = DB::table('tools')->select('tools.id')
-                    ->join('categoryTools AS c', 'c.id', '=', 'tools.categoryTool_id')
+                    ->join('categorytools AS c', 'c.id', '=', 'tools.categoryTool_id')
                     ->where('tools.id', $id)
                     ->where('c.active', 1)
                     ->first();
