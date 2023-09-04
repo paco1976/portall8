@@ -33,10 +33,10 @@
 								<ul class="nav nav-tabs">
 
 									<li class="active">
-										<a href="{{ route('prof_perfil', ['user_hash' => $user->hash]) }}" ><i class="fa fa-user"></i> Perfil</a>
+										<a href="{{ route('prof_perfil', ['hash_user' => $user->hash]) }}" ><i class="fa fa-user"></i> Perfil</a>
 									</li>
 									<li>
-										<a href="{{ route('prof_publicacion', ['user_hash' => $user->hash])  }}" ><i class="fa fa-file-powerpoint-o"></i> Publicaciones</a>
+										<a href="{{ route('prof_publicacion', ['hash_user' => $user->hash])  }}" ><i class="fa fa-file-powerpoint-o"></i> Publicaciones</a>
 									</li>
 
 
