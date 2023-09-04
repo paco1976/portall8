@@ -106,6 +106,7 @@ class AdminController extends Controller
         if (Auth::user()) {
             $user = User::find(Auth::user()->id);
             $user_prof = User::where("id", $id_prof)->first();
+            $user_prof->avatar = Storage::disk('avatares')->url($user_prof->avatar);
             $user->avatar = Storage::disk('avatares')->url($user->avatar);
             $user_profile = User_Profile::where('user_id',$user->id)->first();
             //$public_path = public_path();
@@ -231,16 +232,15 @@ class AdminController extends Controller
     }
 
     public function prof_edit($hash_user){
-        
         $user = User::where("hash", $hash_user)->first();
-
+        $user->profile = $user->profile()->first();
         if($user->avatar == '/img/team/perfil_default.jpg'){
             //no convierte la url
         }else{
             $user->avatar = Storage::disk('avatares')->url($user->avatar);
             //disk('avatares')
         }
-        $user_profile = User_Profile::where('user_id',$user->id)->first();
+        //$user_profile = User_Profile::where('user_id',$user->id)->first();
         $user_cfp = User_Cfp::where('id',$user->cfp_id)->first();
         $user_cfp_all = User_Cfp::all();
 
@@ -249,8 +249,9 @@ class AdminController extends Controller
         //$user->cfp = User::find(1)->user_cfp();
         $zonas_all = Zonas::all();
         $miszonas = $user->zonas()->get();
-            //{{ route('publicacion', ['id'=> $user->id]) }}
-        return view('admin.prof_perfil_edit', compact('user', 'user_cfp', 'user_profile', 'user_cfp_all', 'miszonas', 'zonas_all'));
+        //{{ route('publicacion', ['id'=> $user->id]) }}    
+        
+        return view('admin.prof_perfil_edit', compact('user', 'user_cfp', 'user_cfp_all', 'miszonas', 'zonas_all'));
         
          //return redirect()->route('perfil');
     }
@@ -259,52 +260,104 @@ class AdminController extends Controller
         //$user = User::find($id);
         $user = User::where("hash", $hash_user)->first();
         
-            $user_profile = User_Profile::where('user_id',$user->id)->first();
-            $data = request()->validate([
-                'mobile'=> 'required',
-                'user_cfp'=>'required',
-                'phono'=> '',
-                'twitter' => '',
-                'facebook' => '',
-                'instagram' => '',
-                'linkedin' => '',
-                'zonas[]'=>'',
-                
-            ],[
-                'mobile.required'=>'El campo celular es obligatorio',
-                'user_cfp.required'=>'El campo cfp es obligatorio',
-            ]);
-
+            $profile = User_Profile::where('user_id',$user->id)->first();
+            if ($user->email == request()->input('email')) {
+                $data = request()->validate([
+                    'name' => ['required', 'string', 'max:255'],
+                    'last_name' => ['required', 'string', 'max:255'],
+                    'email' => ['required', 'string', 'email', 'max:255'],
+                    'mobile'=> ['required'],
+                    'dni' => ['required', 'string', 'max:255'],
+                    'avatar' => ['image','max:2048'],
+                    'phone'=> '',
+                    'facebook' => '',
+                    'instagram' => '',
+                    'user_cfp'=>'',
+                ],[
+                    'mobile.required'=>'El campo celular es obligatorio',
+                    'name' => 'El campo Nombre es obligatorio',
+                    'last_name' => 'El campo Apellido es obligatorio',
+                    'mobile'=> 'El campo celular es obligatorio',
+                    'dni' => 'El campo DNI es obligatorio'                
+                ]);
+            }
+            else{
+                $data = request()->validate([
+                    'name' => ['required', 'string', 'max:255'],
+                    'last_name' => ['required', 'string', 'max:255'],
+                    'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                    'mobile'=> ['required'],
+                    'dni' => ['required', 'string', 'max:255'],
+                    'avatar' => ['image','max:2048'],
+                    'phone'=> '',
+                    'facebook' => '',
+                    'instagram' => '',
+                    'user_cfp'=>'',
+                ],[
+                    'mobile.required'=>'El campo celular es obligatorio',
+                    'name' => 'El campo Nombre es obligatorio',
+                    'last_name' => 'El campo Apellido es obligatorio',
+                    'mobile'=> 'El campo celular es obligatorio',
+                    'dni' => 'El campo DNI es obligatorio'                
+                ]);
+            }
+            $user->name = $data['name'];
+            $user->last_name = $data['last_name'];
+            $user->dni = $data['dni'];
+            $user->email = $data['email'];
             $user->cfp_id = $data['user_cfp'];
 
-            $user_profile->user_id=$user->id;
-            $user_profile->mobile= $data['mobile'];
-            $user_profile->phone= $data['phono'];
-            $user_profile->twitter= $data['twitter'];
-            $user_profile->facebook= $data['facebook'];
-            $user_profile->instagram= $data['instagram'];
-            $user_profile->linkedin= $data['linkedin'];
-            $user->save(['user_cfp']);
-
-            $user_profile->save(['mobile', 'phone', 'twitter', 'facebook', 'instagram', 'linkedin']);
-            $zonas_all = Zonas::all();
-            $zonas_new = request('zonas');
-
-            if(is_array($zonas_new)){
-                foreach($zonas_all as $zona) {
-                    $user->zonas()->detach(Zonas::where('name', $zona)->first());
+            if ($user->save(['name','last_name','dni','email','cfp_id'])) {
+                $profile->mobile= $data['mobile'];
+                $profile->phone= $data['phone'];
+                $profile->facebook= $data['facebook'];
+                $profile->instagram= $data['instagram'];
+                $profile->save(['mobile', 'phone','facebook','instagram']);
+    
+                if (request()->hasfile('avatar')) {
+                    $carpetas = Storage::disk('avatares')->directories();
+                    $directorio_existe = false;
+                    foreach($carpetas as $carpeta){
+                        if($carpeta == $user->id){   
+                            $directorio_existe = true;
+                        }
+                    }
+                    if($directorio_existe == false){
+                        $resultado = Storage::disk('avatares')->makeDirectory($user->id, 0777, true);
+                    }
+    
+                    $image = request()->file('avatar');
+                    $input['imagename'] = time().'.'.$image->extension();
+                    $destinationPath = Storage::disk('avatares')->path($user->id);
+                    $img = Image::make($image->path());
+                    $img->resize(300, 300, function ($constraint) {
+                        $constraint->aspectRatio();
+                    })->save($destinationPath.'/'.$input['imagename']);
+                    $path = $user->id.'/'.$input['imagename'];
+                    $user->avatar = $path;
+                    $user->save(['avatar']);
                 }
-                foreach($zonas_new as $zona) {
-                    $user->zonas()->attach(Zonas::where('name', $zona)->first());
+
+                $zonas_all = Zonas::all();
+                $zonas_new = request('zonas');
+
+                if(is_array($zonas_new)){
+                    foreach($zonas_all as $zona) {
+                        $user->zonas()->detach(Zonas::where('name', $zona)->first());
+                    }
+                    foreach($zonas_new as $zona) {
+                        $user->zonas()->attach(Zonas::where('name', $zona)->first());
+                    }
                 }
-            }
-                        
             
-            Session::flash('message', 'El perfil se actualizado con éxito');
-            return back();
-
-        
+                Session::flash('message', 'El perfil se actualizado con éxito');
+                return back();
+            } else {
+                Session::flash('error', 'El perfil no se pudo actualizar, revise los datos');
+                return back();
+            }
     }
+
     //tengo que seguir de acá!
     public function prof_publicacion_edit($publicacion_hash, $hash_user){
         $publicacion = Publicacion::where('hash', $publicacion_hash)->first();
@@ -325,8 +378,6 @@ class AdminController extends Controller
         //$titulo_all = Titulo::all()->sortBy('name');
         
         return view('/admin.prof_publicacion_edit', compact('publicacion','user','titulos_asociados'));
-        
-        
     }
 
     public function prof_publicacion_update($hash_user){

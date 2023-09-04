@@ -371,7 +371,8 @@
 														
 														<ul class="dropdown-menu">
 															<li class="dropdown">
-																<a class="dropdown-item" href="{{ route('admin_profesionales') }}"><i class="fa fa-users"> </i>  Profesionales</a></li>
+																<a class="dropdown-item" href="{{ route('admin_profesionales') }}"><i class="fa fa-users"> </i>  Profesionales</a>
+																<a class="dropdown-item" href="{{ route('admin_publicaciones') }}"><i class="fa fa-list-ul"></i> Publiaciones</a>
 															</li>
 															<li class="dropdown-submenu">
 																<a class="dropdown-item" href="#"><i class="fa fa-cog"></i> Sitio</a>
