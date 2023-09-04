@@ -57,7 +57,7 @@
                                         </div>
                                         <br>
                                         @if ($user->avatar == '/img/team/perfil_default.jpg')
-                                        <form action="{{ route('prof_avatarupload', ['user_hash' => $user->hash])  }}" method="POST" enctype="multipart/form-data" >
+                                        <form action="{{ route('prof_avatarupload', ['hash_user' => $user->hash])  }}" method="POST" enctype="multipart/form-data" >
                                             {{ method_field('PUT') }}
                                             @csrf
                                             <input type="file" name="avatar" class="form-control" required>
