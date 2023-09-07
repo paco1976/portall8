@@ -53,15 +53,6 @@
 							</div>
 							<div class="col-lg-4">
 								{{ $user_all->Links() }}
-								<!--
-								<ul class="pagination">
-									<li class="page-item"><a href="#" class="page-link"><i class="fas fa-angle-left"></i></a></li>
-									<li class="page-item active"><a href="#" class="page-link">1</a></li>
-									<li class="page-item"><a href="#" class="page-link">2</a></li>
-									<li class="page-item"><a href="#" class="page-link">3</a></li>
-									<li class="page-item"><a href="#" class="page-link"><i class="fas fa-angle-right"></i></a></li>
-								</ul>
-								-->
 							</div>
 							<div class="col-lg-3">
 							</div>
