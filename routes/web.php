@@ -165,6 +165,7 @@ Route::put('/prof_publicacion_update/{hash_user}', 'AdminController@prof_publica
 Route::get('/prof_publicacion/{hash_user}','AdminController@prof_publicaciones' )->name('prof_publicacion'); //ve las problicaciones del profesional desde el admin
 Route::get('/prof_publicacion_new/{hash_user}','AdminController@prof_publicacion_new')->name('prof_publicacion_new'); //alta de publicación desde el admin
 Route::put('/prof_publicacion_new/{hash_user}', 'AdminController@prof_publicacion_save')->name('prof_publicacion_save'); //guardar de publicación desde el admin
+Route::get('/prof_publicacion_imagen_delete/{id}', 'AdminController@prof_publicacion_imagen_delete')->name('prof_publicacion_imagen_delete');//borrado de una imagen de una publicación desde el panel admin
 
 
 

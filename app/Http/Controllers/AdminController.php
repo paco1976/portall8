@@ -49,8 +49,7 @@ class AdminController extends Controller
         return view('/admin.prof_reg', compact('user_type_all', 'user_cfp_all','user'));
     }
 
-    public function create_profesional()
-    {
+    public function create_profesional(){
         $data = request()->validate([
             'name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
@@ -224,6 +223,8 @@ class AdminController extends Controller
             $publicacion->categoria =  $publicacion->categoria()->first();
             $publicacion->titulo = $publicacion->titulo()->first();
             $publicacion->cant_consultas = $publicacion->interactions()->count();
+            $publicacion->cant_visitas = $publicacion->visita()->count();
+            $publicacion->cant_whatsapp = $publicacion->whatsapp()->count();
             //dd($publicacion->titulo);
             
         }
@@ -365,6 +366,7 @@ class AdminController extends Controller
         //$user = User::find(Auth::user()->id);
         $user = User::where("hash", $hash_user)->first();
         $publicacion->user = $publicacion->users()->first();
+        $publicacion->user->avatar = Storage::disk('avatares')->url($publicacion->user->avatar);
         $titulos_asociados = Titulo::where('categoria_id', $publicacion->categoria->id)->orderBy('name', 'DESC')->get();
         $publicacion->imagenes = $publicacion->imagenes()->get();
         $publicacion->cant_images = 0 ;
@@ -492,6 +494,7 @@ class AdminController extends Controller
 
     public function prof_publicacion_new($hash_user){
         $user = User::where("hash", $hash_user)->first();
+        $user->avatar = Storage::disk('avatares')->url($user->avatar);
         $categoria_all = Categoria::all();
         //ascendente
         $titulo_all = Titulo::all()->sortBy('name');
@@ -751,6 +754,15 @@ class AdminController extends Controller
         }
     }
 
+    public function prof_publicacion_imagen_delete($imagen_id){
+        $publicacion_image = Publicacion_image::where('id', $imagen_id)->first();
+        $publicacion = Publicacion::where('id',$publicacion_image->publicacion_id)->first();
+        Storage::disk('publicaciones')->delete($publicacion_image->url);
+        $publicacion_image->delete();
+        Session::flash('message', 'La imagen se a eliminado con éxito');
+        //return redirect()->route('publicacion_edit', ['head' => $publicacion->hash ]);
+        return back();
+    }
 
     Public function admin_publicaciones_user($user_hash){
         $user = User::find(Auth::user()->id);
@@ -1148,6 +1160,7 @@ class AdminController extends Controller
         $user->avatar = Storage::disk('avatares')->url($user->avatar);
         $publicacion = Publicacion::where('hash', $publicacion_hash)->first();
         $publicacion->user = $publicacion->user()->first();
+        $publicacion->user->avatar = Storage::disk('avatares')->url($publicacion->user->avatar);
         $user->permisos = $user->user_type()->first();
         if($user->permisos->name == "Administrador" ){
             //$evento_all = Evento::where('fecha_evento', '<=',$date)->orderby('fecha_evento')->paginate(10);
@@ -1176,6 +1189,7 @@ class AdminController extends Controller
         $publicacion->titulo = Titulo::where('id', $publicacion->titulo_id)->first();
         $publicacion->categoria = Categoria::where('id', $publicacion->categoria_id)->first();
         $publicacion->user = $publicacion->user()->first();
+        $publicacion->user->avatar = Storage::disk('avatares')->url($publicacion->user->avatar);
         $publicacion->visitas_all = $publicacion->visita()->get();
         $user->permisos = $user->user_type()->first();
         if($user->permisos->name == "Administrador" ){
@@ -1199,6 +1213,7 @@ class AdminController extends Controller
         $publicacion->titulo = Titulo::where('id', $publicacion->titulo_id)->first();
         $publicacion->categoria = Categoria::where('id', $publicacion->categoria_id)->first();
         $publicacion->user = $publicacion->user()->first();
+        $publicacion->user->avatar = Storage::disk('avatares')->url($publicacion->user->avatar);
         $publicacion->whatsapp_all = $publicacion->visita()->get();
         $user->permisos = $user->user_type()->first();
         if($user->permisos->name == "Administrador" ){

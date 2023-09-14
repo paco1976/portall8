@@ -68,6 +68,7 @@
 						<p>{{ Session::get('error') }}</p>
 					</div>
 					@endif
+					
 					@if($user_all->count() > 0)
 					<table class="table table-bordered table-striped mb-0" id="datatable-editable">
 						<thead>
