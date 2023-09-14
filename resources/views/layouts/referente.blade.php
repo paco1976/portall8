@@ -284,14 +284,15 @@
 				<div class="footer-copyright">
 					<div class="container">
 						<div class="row">
-							<div class="col-md-8">
+							<div class="col-md-6">
 								<p><a href="http://www.tecnoarte.com.ar" target="_blank"><img src="https://www.serviciosprofesionales.com.ar/tecnoarte.png" alt="logo" width="118" height="16"></a></p>
 							</div>
-							<div class="col-md-4">
+							<div class="col-md-6">
 								<nav id="sub-menu">
 									<ul>
 										<li><a href="http://cfp24.com.ar/">Desarrollado x CFP 24</a></li>
 										<li><a href="{{ asset('/condiciones') }}">Condiciones de uso</a></li>
+										<li><a href="{{ url('/privacidad') }}">Política de Privacidad</a></li>
 										<li><a href="{{ asset('/contacto') }}">Contacto</a></li>
 									</ul>
 								</nav>

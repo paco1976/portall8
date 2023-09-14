@@ -274,6 +274,7 @@ Route::get('/contacto',function(){return view('contacto');})->name('contacto');
 Route::put('/contacto', 'PublicController@contact_send')->name('contact_send');
 Route::get('/condiciones',function(){return view('condiciones');});
 Route::get('/comunidad',function(){return view('comunidad');});
+Route::get('/privacidad',function(){return view('privacidad');});
 
 //a partir de acá voy a hacer el panel de referentes
 
