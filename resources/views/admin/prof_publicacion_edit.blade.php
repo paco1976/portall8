@@ -184,7 +184,7 @@
 					
 					<div class="form-group row">
 						<div class="form-group col-lg-9">
-							<a href="{{ route('prof_publicacion', ['hash_user' => $user->hash]) }}" class="btn btn-dark btn-modern float-end" >Volver</a>
+							<a href="{{ route('prof_publicacion', ['hash_user' => $publicacion->user->hash]) }}" class="btn btn-dark btn-modern float-end" >Volver</a>
 						</div>
 						<div class="form-group col-lg-3">
 							<button type="submit" class="btn btn-primary btn-modern float-end">Guardar publicación</button>

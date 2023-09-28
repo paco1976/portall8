@@ -196,7 +196,10 @@ class PublicacionController extends Controller
 
         //aviso al referente
         $cfp = $user->user_cfp()->first();
-        $interactionhead->url = url('mensajes/' . $interactionhead->hash);
+        //url referente
+        //$interactionhead->url = url('mensajes/' . $interactionhead->hash);
+        //url admin
+        $interactionhead->url = url('admin_mensajes/' . $interactionhead->hash);
         Mail::to($cfp->email)->send(new Interaction_notificacion_referente($interactionhead));
 
         return redirect()->route('publicacion_mensajes', ['head_hash' => $interactionhead->hash ]);

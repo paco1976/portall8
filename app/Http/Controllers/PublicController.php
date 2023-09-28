@@ -407,8 +407,10 @@ class PublicController extends Controller
         // prueba de mail return new NewInteraction($interactionhead);
 
         
-        //Referente - el referente tiene una url diferente
-        $interactionhead->url = url('mensajes/' . $interactionhead->hash);
+        //Referente - el referente tiene una url diferente - url para referente
+        //$interactionhead->url = url('mensajes/' . $interactionhead->hash);
+        //url para admin
+        $interactionhead->url = url('admin_mensajes/' . $interactionhead->hash);
 
         Mail::to($cfp->email)->send(new Interaction_notificacion_referente($interactionhead));
 
@@ -514,14 +516,17 @@ class PublicController extends Controller
         $interactionhead->categoria = $categoria->name;
         $interactionhead->url = url('publicacion_mensajes/' . $interactionhead->hash);
 
-        //notificar al cliente
+        //notificar al profesional
         Mail::to($profesional->email)->send(new Interaction_notificacion_profesional($interactionhead));
 
         //aviso al referente
         //falta cambiar la url para el referente
         $cfp = $profesional->user_cfp()->first();
-        //Referente - el referente tiene una url diferente
-        $interactionhead->url = url('mensajes/' . $interactionhead->hash);
+        //Referente - el referente tiene una url diferente - url refente
+        //$interactionhead->url = url('mensajes/' . $interactionhead->hash);
+        //url admin
+        $interactionhead->url = url('admin_mensajes/' . $interactionhead->hash);
+
         Mail::to($cfp->email)->send(new Interaction_notificacion_referente($interactionhead));
 
         return redirect()->route('homeinteraction', ['hash' => $interactionhead->hash ]);
