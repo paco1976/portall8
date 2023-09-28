@@ -31,25 +31,23 @@
 			</div>
 		</section>
 
-		<div role="main" class="main" id="ver">
-			<div class="container">
-			<div class="row">
-				<div class="col-md-12">
-					@if (Session::has('message'))
-						<div class="alert alert-success" style="display:flex; flex-direction:row; justify-content:space-between">
-							<p >{{ Session::get('message') }}</p>
-							<button type="button" style="float:right; border-radius: 2px;" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span>
-							</button>
-						</div>									
-					@endif
-					@if (Session::has('error'))
-						<div class="alert alert-danger" style="display:flex; flex-direction:row; justify-content:space-between">
-							<p >{{ Session::get('error') }}</p>
-							<button type="button" style="float:right; border-radius: 2px;" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span>
-							</button>
-						</div>									
-					@endif	
-
+		<div class="container">
+		<div class="row">
+		<div class="col-md-12">
+		@if (Session::has('message'))
+            <div class="alert alert-success" style="display:flex; flex-direction:row; justify-content:space-between">
+                <p >{{ Session::get('message') }}</p>
+				<button type="button" style="float:right; border-radius: 2px;" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span>
+				</button>
+            </div>									
+		@endif
+		@if (Session::has('error'))
+            <div class="alert alert-danger" style="display:flex; flex-direction:row; justify-content:space-between">
+                <p >{{ Session::get('error') }}</p>
+				<button type="button" style="float:right; border-radius: 2px;" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span>
+				</button>
+            </div>									
+		@endif	
 			@if(Auth::user()->user_type()->first()->name=='Administrador')			
 			<div >
 							<form  id="contactForm" action="{{route('loans')}}" method="get" style="display:flex; flex-direction:row;justify-content: space-between;">
@@ -198,7 +196,7 @@
 	</div>
 	</div>
 	</div>
-</div>
+	</div>
 
 
 	<div class="modal fade" id="defaultModal" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel" aria-hidden="true">

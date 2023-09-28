@@ -373,6 +373,10 @@
 															<li class="dropdown">
 																<a class="dropdown-item" href="{{ route('admin_profesionales') }}"><i class="fa fa-users"> </i>  Profesionales</a>
 																<a class="dropdown-item" href="{{ route('admin_publicaciones') }}"><i class="fa fa-list-ul"></i> Publiaciones</a>
+																<a class="dropdown-item" href="{{ route('loans') }}"><i class="fa fa-list-ul"></i> Préstamos</a>
+																<a class="dropdown-item" href="{{ route('toolsList') }}"><i class="fa fa-list-ul"></i> Herramientas</a>
+																<a class="dropdown-item" href="{{ route('admin_categorias') }}"><i class="fa fa-list"></i> Categorías</a>
+																<a class="dropdown-item" href="#"><i class="fa fa-list"></i> Títulos</a></li>
 															</li>
 															<li class="dropdown-submenu">
 																<a class="dropdown-item" href="#"><i class="fa fa-cog"></i> Sitio</a>
@@ -384,7 +388,7 @@
 																	<li><a href=""><i class="fa fa-address-book" aria-hidden="true"></i> Datos Contacto</a></li>
 																	<li><a href=""><i class="fa fa-link" aria-hidden="true"></i> Links de interes</a></li>
 																	<li><a href=""><i class="fa fa-list"></i> Quienes Somos</a></li>
-																	<li><a href=""><i class="fa fa-list"></i>  Super Categorias</a></li>
+																	<li><a href=""><i class="fa fa-list"></i> Super Categorias</a></li>
 																	<li><a href=""><i class="fa fa-list"></i> Categorias</a></li>
 																</ul>
 															</li>
@@ -403,6 +407,18 @@
 															</li>
 															<li class="dropdown">
 																<a href="{{ url('/publicacion') }}"><i class="fas fa-book"></i> Mis publicaciones</a>
+															</li>
+															<li class="dropdown">
+																<a href="{{ url('/beneficios') }}"><i class="fa fa-gift"></i> Beneficios</a>
+															</li>
+															<li class="dropdown">
+																<a href="{{ url('/foro') }}"><i class="fa fa-comments"></i> Foro</a>
+															</li>
+															<li class="dropdown">
+																<a href="{{ route('toolsList') }}"><i class="bi bi-tools"></i> Pañol</a>
+															</li>
+															<li class="dropdown">
+																<a href="{{ route('loans') }}"><i class="fa fa-list-ul"></i> Mis préstamos</a>
 															</li>
 															<!--
 															<li class="dropdown-submenu">
