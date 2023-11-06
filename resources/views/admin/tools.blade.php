@@ -28,9 +28,25 @@
 		</button>
 	</div>
 	@endif
+	@if(Auth::user()->user_type()->first()->name=='Administrador')
+	<div class="container" style="margin-bottom:30px">
+		<div class="row" >
+			<div class="col-sm-2" >
+				<a href="{{ route('admin_tool_new') }}">
+					<button id="addToTable" class="btn btn-primary">Nueva herramienta</button>
+				</a>
+			</div>
+			<div class="col-sm-2">
+				<a href="{{ route('admin_categoryTools') }}">
+					<button id="addToTable" class="btn btn-secondary">Administrar categorías</button>
+				</a>
+			</div>
+		</div>
+	</div>
+	@endif
 	<div class="container">
 	<div class="row">
-	<div class="col-sm-4">
+		<div class="col-sm-4">
 		<form id="contactForm" action="{{route('toolsList')}}" method="get" >
 			<div>
 				<select class="form-control @error('category') is-invalid @enderror" name="categoryId" id="categoryId" onchange="this.form.submit();" required>
@@ -44,7 +60,7 @@
 				<button id="addToTable" type="submit" class="btn btn-secondary">Filtrar</button>
 			</div> -->
 		</form>
-	</div>
+		</div>
 		<!-- Botón de cómo funciona con modal -->
 	@if(Auth::user()->user_type()->first()->name!='Administrador')
 	<div class="col-sm-2">
@@ -102,20 +118,7 @@
 	
 
 	</div>
-	@if(Auth::user()->user_type()->first()->name=='Administrador')
-	<div class="row" style=" padding:10px;">
-		<div class="col-sm-2" style="margin-top:20px">
-			<a href="{{ route('admin_tool_new') }}">
-				<button id="addToTable" class="btn btn-primary">Nueva herramienta</button>
-			</a>
-		</div>
-		<div class="col-sm-2" style="margin-top:20px">
-			<a href="{{ route('admin_categoryTools') }}">
-				<button id="addToTable" class="btn btn-secondary">Administrar categorías</button>
-			</a>
-		</div>
-	</div>
-	@endif
+	
 	<br><br>
 	@if($tools)
 	<div class="container" style="padding:10px;flex-wrap: wrap;display:flex;flex-direction:row; justify-content:space-arround; ">

@@ -144,5 +144,8 @@ class User extends Authenticatable
         return array_keys($topWords);
     }
 
-
+    public function routeNotificationForMail()
+    {
+        return $this->email;
+    }
 }
