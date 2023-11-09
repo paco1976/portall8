@@ -25,11 +25,11 @@
 				</section>
 
 				<div class="container" style="margin-bottom: 10px">
-				<div class="row" style="background-color: #f2f2f2; margin: 1px; padding: 20px; border-radius: 5px;">
-				<div class="col-md-4" >
-				<h5>Calificación promedio</h5>
-				<h1>{{$publicacion->rating}}</h1>
-				</div>	
+					<div class="row" style="background-color: #f2f2f2; margin: 1px; padding: 20px; border-radius: 5px;">
+						<div class="col-md-4" >
+						<h5>Calificación promedio</h5>
+						<h1>{{$publicacion->rating}}</h1>
+						</div>	
 				<div class="col-md-4" >
 						<h5>Palabras positivas más usadas</h5>
 						<ol>

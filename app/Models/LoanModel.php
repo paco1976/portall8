@@ -17,9 +17,15 @@ class LoanModel extends Model
 
     
 
-    // public function users(){
-    //     return $this->belongsTo('App\Models\User');
-    // }
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    public function tool()
+    {
+        return $this->belongsTo(ToolModel::class, 'tool_id', 'id');
+    }
 
     // public function herramientas(){//tiene muchas
     //     return $this->belongsTo('App\Models\Tools');
