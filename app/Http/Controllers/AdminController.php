@@ -658,7 +658,7 @@ class AdminController extends Controller
         }
 
     }
-
+//
     public function admin_publicaciones(Request $request){
 
         $user = User::find(Auth::user()->id);

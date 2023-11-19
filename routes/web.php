@@ -93,6 +93,10 @@ Route::get('/mensajes/{hash}', 'ReferenteController@mensajes')->name('mensajes')
 
 //panel de control del administrador general
 
+//Estadisticas
+// Route::post('/estadisticas','StatisticsController@generalStatistics' )->name('loan_save');
+Route::get('/estadisticas','StatisticsController@getLoansFiltered' )->name('estadisticas');
+
 //Prestamos
 Route::post('/loan_save','LoanController@loanSave' )->name('loan_save');
 Route::get('/loan_new','LoanController@loanGetForm' )->name('loan_new');
