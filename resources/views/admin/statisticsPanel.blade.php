@@ -71,15 +71,15 @@
 						</button>
 						@endif
 
-						@if(request('expired'))
-						<button onclick="toggleFilter('expired')" id="expiredButton" style="border: none; background-color: #dedede; margin: 1px; padding: 20px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease;">
+						@if(request('category_visits'))
+						<button onclick="toggleFilter('category_visits')" id="category_visits_btn" style="border: none; background-color: #dedede; margin: 1px; padding: 20px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease;">
 							<caption>Categoria mas visitadas con perfiles</caption>
-							<h2 style="margin-bottom: 0px">{{ $expiredCount }}</h2>		
+							<h2 style="margin-bottom: 0px">{{ $categoryVisits }}</h2>		
 						</button>
 						@else
-						<button onclick="toggleFilter('expired')" id="expiredButton" style="border: none; background-color: #f2f2f2; margin: 1px; padding: 20px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease;">
+						<button onclick="toggleFilter('category_visits')" id="category_visits_btn" style="border: none; background-color: #f2f2f2; margin: 1px; padding: 20px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease;">
 							<caption>Categoria mas visitadas con perfiles</caption>
-							<h2 style="margin-bottom: 0px">{{ $expiredCount }}</h2>
+							<h2 style="margin-bottom: 0px">{{ $categoryVisits }}</h2>
 						</button>
 						@endif
 
@@ -113,7 +113,7 @@
 		} else {
 			// Clear all other filters
 			urlParams.delete('expiring_today');
-			urlParams.delete('expired');
+			urlParams.delete('category_visits');
 			urlParams.delete('visits');
 			urlParams.delete('pending');
 
