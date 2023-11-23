@@ -9,7 +9,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 class CategoryToolsModel  extends Model
 {
     use Notifiable;
-    protected $table ='categoryTools';
+    protected $table ='categorytools';
 
     protected $fillable = [
         'name', 'created_at', 'update_at'

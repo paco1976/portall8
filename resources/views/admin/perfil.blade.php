@@ -2,7 +2,7 @@
 
 @section('main')
 
-<div role="main" class="main">
+
 
     <div role="main" class="main">
 

@@ -16,6 +16,11 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
+        // Todos los días controla los préstamos sin retirar
+        $schedule->call('App\Http\Controllers\LoanController@liberateLoans')->dailyAt('00:00');
+
+        // Para testear reemplazar por esta linea
+        // $schedule->call('App\Http\Controllers\LoanController@liberateLoans')->everyMinute();
     }
 
     /**

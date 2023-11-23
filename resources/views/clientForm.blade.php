@@ -22,7 +22,7 @@
         <div class="form-check">
           <input type="checkbox" class="form-check-input" name="terms" id="terms" required checked>
         </div>
-        <label class="form-check-label" for="terms">Acepto los <a href="{{ url('/condiciones') }}">términos y condiciones del sitio</a>. *</label>
+        <label class="form-check-label" for="terms">Acepto los <a href="{{ url('/condiciones') }}">Términos y Condiciones</a> y la <a href="{{ url('/privacidad') }}">Política de Privacidad</a> del sitio. *</label>
       </div>
       <div class="invalid-feedback" id="terms_error"></div>
     </div>

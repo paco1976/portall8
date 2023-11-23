@@ -13,7 +13,7 @@ class CreateCategoryToolsTable extends Migration
      */
     public function up()
     {
-        Schema::create('categoryTools', function (Blueprint $table) {
+        Schema::create('categorytools', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name')->nullable();
             $table->timestamps();
@@ -27,6 +27,6 @@ class CreateCategoryToolsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('categoryTools');
+        Schema::dropIfExists('categorytools');
     }
 }

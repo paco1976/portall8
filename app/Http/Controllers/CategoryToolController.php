@@ -71,7 +71,7 @@ class CategoryToolController extends Controller
         $user->permisos = $user->user_type()->first();
 
         $tools = DB::table('tools')->select('tools.id')
-        ->join('categoryTools AS c', 'c.id', '=', 'tools.categoryTool_id')
+        ->join('categorytools AS c', 'c.id', '=', 'tools.categoryTool_id')
         ->where('tools.active', 1)
         ->where('c.id', $id)
         ->first();

@@ -5,8 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\ToolModel;
 use App\Models\LoanModel;
-
-use Barryvdh\Debugbar\Facade as Debugbar;
+use App\Notifications\LoanLiberatedNotification;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -25,7 +24,6 @@ class LoanController extends Controller
     {
         // $this->middleware('auth');
     }
- 
     public function admin_loan_removedTool($loan_id){
 
         $user = User::find(Auth::user()->id);
@@ -50,7 +48,6 @@ class LoanController extends Controller
             session::flash('message', 'No está autorizado para esta acción');
             return redirect('/');
         }
-
     }
 
     public function admin_loan_returnedTool($loan_id){
@@ -93,16 +90,16 @@ class LoanController extends Controller
                 }
                 $now = date_create(date('y-m-d'));
                 LoanModel::where('id',$loan_id)->update([
-                    'dateClose'=>$now , 
+                    'dateClose'=>$now,
                     'returned' =>$state_returned                                          
                 ]);
                           
             }
 
             if($state== 1 ){//Aprobado
-                session::flash('message', 'El prestamo esta dado de alta');
+                session::flash('message', 'El préstamo ha sido dado de alta');
             }else if ($state== 2 || $state== 4) {//Rechazado
-                session::flash('message', 'El prestamo esta dado de baja');
+                session::flash('message', 'El préstamo ha sido dado de baja');
             }
 
             $loan->state_id =$state;
@@ -128,46 +125,89 @@ class LoanController extends Controller
             $loans = $loans 
             ->join('users AS u', 'loans.user_id', '=', 'u.id')
             ->join('tools AS h', 'loans.tool_id', '=', 'h.id')
-            ->join('categoryTools AS c', 'h.categoryTool_id', '=', 'c.id');
+            ->join('categorytools AS c', 'h.categoryTool_id', '=', 'c.id');
 
             if($user->permisos->name == "Profesional"){
                 $loans=$loans->where('loans.user_id', '=', $user->id);
             }
                   
-            if ($request->get("date")) { //Filtro de nombre
-                $date = $request->get("date");
-                $year=substr($request->get("date"),0, 4);
-                $month=substr($request->get("date"),5,9);
+        // Filtro por ID
+        if ($request->has("id")) {
+            $loanId = $request->get("id");
+            $loans = $loans->where('loans.id', '=', $loanId);
+        }
 
-                $loans=$loans ->whereMonth('loans.dateInit' ,'=', $month);
-                $loans=$loans ->whereYear('loans.dateFinish' ,'=',  $year);
-            }
-            if ($request->get("name")) { //Filtro de nombre
-                $name = $request->get("name");
-                $loans=$loans->where('u.name', 'like', "%{$name}%");
-            }
+        // Filtro por fecha
+        if ($request->get("date")) {
+            $date = $request->get("date");
+            $year = substr($request->get("date"), 0, 4);
+            $month = substr($request->get("date"), 5, 9);
 
-            if ($request->get("state")) { //Filtro de estado
-                $state = $request->get("state");
-                if($state == "pending"){
-                    $loans = $loans->where('loans.state_id', 3);
-                }else if($state == "refused"){
-                    $loans = $loans->where('loans.state_id',  2);
-                }else if($state == "approved"){
-                    $loans = $loans->where('loans.state_id',  1);
-                }else if($state == "close"){
-                    $loans = $loans->whereNotNull('loans.dateClose');
+            $loans = $loans->whereMonth('loans.dateInit', '=', $month);
+            $loans = $loans->whereYear('loans.dateFinish', '=',  $year);
+        }
+
+        // Filtro por nombre de profesional
+        if ($request->get("name")) {
+            $name = $request->get("name");
+
+            $keywords = explode(" ", $name);
+
+            $loans = $loans->where(function ($query) use ($keywords) {
+                foreach ($keywords as $keyword) {
+                    $query->where(function ($query) use ($keyword) {
+                        $query->where('u.name', 'like', "%{$keyword}%")
+                            ->orWhere('u.last_name', 'like', "%{$keyword}%");
+                    });
                 }
-            }
+            });
+        }
 
-            $loans = $loans
+        // Filtro por estado de préstamo (pendiente, aprobado, no aprobado, cerrado)
+        if ($request->get("state")) {
+            $state = $request->get("state");
+            if ($state == "pending") {
+                $loans = $loans->where('loans.state_id', 3);
+            } else if ($state == "refused") {
+                $loans = $loans->where('loans.state_id',  2);
+            } else if ($state == "approved") {
+                $loans = $loans->where('loans.state_id',  1);
+            } else if ($state == "close") {
+                $loans = $loans->whereNotNull('loans.dateClose');
+            }
+        }
+
+        // Filtro de vencen hoy
+        if ($request->has("expiring_today")) {
+            $loans = $loans->whereDate('loans.dateFinish', now()->toDateString())
+                ->where('loans.state_id', '=', 1);
+        }
+
+        // Filtro de vendcido (retiró pero no devolvió)
+        if ($request->has("expired")) {
+            $loans = $loans->whereDate('loans.dateFinish', '<', now()->toDateString())
+                ->where('loans.removed', '=', 1);
+        }
+
+        // Filtro de retiran hoy. Solo muestra approved. 
+        if ($request->has("must_pick_up_today")) {
+            $loans = $loans->whereDate('loans.dateInit', '=', now()->toDateString())
+                ->where('loans.state_id', '=', 1);
+        }
+
+        if ($request->has("pending")) {
+            $loans = $loans->where('loans.state_id', '=', 3);
+        }
+
+
+        $loans = $loans
             ->select(
                 'loans.id as loanId',
                 'h.id as toolId',
                 'c.id as categoryToolId',
                 'c.name as categoryName',
                 'h.name as toolName',
-                'h.description as descirption',
+                'h.description as description',
                 'u.name as name',
                 'u.last_name as lastName',
                 'loans.dateInit as init',
@@ -176,15 +216,23 @@ class LoanController extends Controller
                 'loans.state_id as state_id',
                 'loans.returned as returned',
                 'loans.removed  as removed',
-               ) 
+            )
             ->orderBy('loans.dateInit', 'asc')
             ->paginate(15);
 
+        // Cantidades
+        $expiringTodayCount = LoanModel::whereDate('dateFinish', now()->toDateString())->where('loans.state_id', '=', 1)->count();
+        $expiredCount = LoanModel::whereDate('dateFinish', '<', now()->toDateString())->where('loans.removed', '=', 1)->count();
+        $mustPickUpTodayCount = LoanModel::whereDate('dateInit', '=', now()->toDateString())->where('loans.state_id', '=', 1)->count();
+        $pendingApproval = LoanModel::where('loans.state_id', '=', 3)->count();
 
-            return view('/loans', compact('user', 'loans'));
-
+        return view('/loans', compact('user', 'loans'))
+            ->with('expiringTodayCount', $expiringTodayCount)
+            ->with('expiredCount', $expiredCount)
+            ->with('mustPickUpTodayCount', $mustPickUpTodayCount)
+            ->with('pendingApproval', $pendingApproval);
     }
-    
+
     public function loanGetForm(){ 
         $user = User::find(Auth::user()->id);
         // $user->avatar = Storage::disk('avatares')->url($user->avatar);
@@ -200,7 +248,6 @@ class LoanController extends Controller
            }else{
             return view('/loan_new', compact( [] , 'tool_selectd', 'tools', 'dates_', 'user'));   //null? o vacio++??
            }
-
     }
 
     public function loanSave(Request $request){
@@ -265,7 +312,7 @@ class LoanController extends Controller
                }else{
                                        
                    if($this-> existLoans($myArray, $tool_selectd)){
-                       Session::flash('message', 'Ya existe el prestamo');
+                       Session::flash('message', 'Ya existe el préstamo');
                        return redirect()->route('loans');   
                    }
                    $loan = LoanModel::create([
@@ -294,7 +341,7 @@ class LoanController extends Controller
            return redirect()->route('toolsList');   
        }
 
-       
+
    }
 
     private function existLoans($myArray, $tool_id){
@@ -318,9 +365,8 @@ class LoanController extends Controller
         return false;
     }
 
-    private function greaterThanMax (Array $myArray){
-        
-               
+    private function greaterThanMax (array $myArray)
+    {
         $fecha1 = date('d-m-Y', strtotime($myArray[0]));
         $fecha2 = date('d-m-Y', strtotime($myArray[1]));
         $fecha1 = date_create($fecha1);
@@ -393,23 +439,45 @@ class LoanController extends Controller
 
             $currentDate;
             if(strtotime($fechados) == strtotime($fechauno)){
-                array_push($arrayDates ,date("Y-m-d H:i:s", strtotime($fechauno)));
+                array_push($arrayDates, date("Y-m-d H:i:s", strtotime($fechauno)));
             }else{
                 $currentDate = date("Y-m-d H:i:s", strtotime($fechauno));
-                array_push($arrayDates,$currentDate);
-    
+                array_push($arrayDates, $currentDate);
+
                 while(strtotime($fechados) > strtotime($fechauno)) { 
                     $currentDate = date("Y-m-d H:i:s", strtotime($fechauno . " + 1 day"));
     
-                    array_push($arrayDates,$currentDate);
+                    array_push($arrayDates, $currentDate);
                     $fechauno=$currentDate;       
                 }
             }
-
-           
         }
         return $arrayDates;
-
     }
 
+    public function liberateLoans()
+    {
+        $now = now()->toDateString();
+
+        $loansToLiberate = LoanModel::where('removed', 0)
+            ->where('dateInit', '<', $now)
+            ->where('state_id', 1)
+            ->get();
+
+
+        if ($loansToLiberate->count()) {
+            foreach ($loansToLiberate as $loan) {
+                $id = $loan->id;
+                LoanModel::where('id', $id)->update([
+                    'state_id' => 3,
+                    'dateClose' => now()
+                ]);
+            }
+            info('Loans liberated successfully');
+
+            // Enviar notificacion a admin 
+            $admin = User::where('type_id', 5)->first();
+            $admin->notify(new LoanLiberatedNotification($loansToLiberate));
+        }
+    }
 }

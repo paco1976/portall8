@@ -20,7 +20,7 @@ class CreateToolsTable extends Migration
             $table->string('nameImage')->nullable();
             $table->bigInteger('categoryTool_id')->unsigned();
 
-            $table->foreign('categoryTool_id')->references('id')->on('categoryTools');
+            $table->foreign('categoryTool_id')->references('id')->on('categorytools');
             $table->timestamps();
         });
     }
