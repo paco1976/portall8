@@ -51,6 +51,8 @@ class SurveyController extends Controller
         if ($request->has('agree')) {
             $survey->save();
 
+            info('1. Nuevo cliente registrado:');
+            info($data['client_name']);
             event(new ClientRegistered($survey->id, $data['user_id']));
         }
 
@@ -60,6 +62,7 @@ class SurveyController extends Controller
 
     public function sendWhatsAppMessage($survey, $type, $message, $step, $idReceived, $messageReceived, $action, $client_phone)
     {
+        info('6. Entra a sendWhatsAppMessage.');
         $recipient_phone = '';
         if ($survey) {
             $recipient_phone = $survey->client_cellphone;
@@ -141,6 +144,9 @@ class SurveyController extends Controller
 
             if ($sendMessage) {
                 // file_put_contents("text.txt", json_encode($surveyMessage));
+                info('7. Entra al if para mandar el mensaje:');
+                info($surveyMessage);
+
 
                 // Inicio de header y curl para envío del mensaje a la api
                 $header = array("Authorization: Bearer " . $token, "Content-Type: application/json",);
@@ -156,6 +162,11 @@ class SurveyController extends Controller
                 // Fin del curl
                 curl_close($curl);
 
+                info('8. Recibe la respuesta de la api:');
+                info("status code: $status_code");
+                info($response);
+
+
                 if($status_code == 200 && isset($response)){
                     $wa_id = $response['contacts'][0]['wa_id'];
 
@@ -165,6 +176,8 @@ class SurveyController extends Controller
     
                     // Si recibió el survey
                     if ($survey) {
+                        info('9. Envió la encuenta:');
+                        info($survey);
                         // En el step 1 quiero cambiar el campo contacted a true y reemplazar lo que se almacena como mensaje guardado.
                         if ($step === 1) {
                             $messageSent = 'Inicio encuesta';
@@ -461,6 +474,8 @@ class SurveyController extends Controller
     public function initSurvey($surveyId, $id)
     {
         global $surveyMessages;
+
+        info('5. Entra al controller initSurvey.');
         // Busca el nombre del profesional
         $user = User::find($id);
 
