@@ -11,6 +11,7 @@ class TriggerNewSurvey
 {
     public function handle(ClientRegistered $event)
     {
+        info('3. Entra al Listener TriggerNewSurvey');
         $surveyId = $event->surveyId;
         $userId = $event->userId;
 

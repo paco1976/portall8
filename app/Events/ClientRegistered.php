@@ -14,6 +14,7 @@ class ClientRegistered
 
     public function __construct($surveyId, $userId)
     {
+        info('2. Entra al Event ClientRegistered');
         $this->surveyId = $surveyId;
         $this->userId = $userId;
     }
