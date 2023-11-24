@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\ToolModel;
 use App\Models\LoanModel;
+use App\Notifications\DailySummaryNotification;
 use App\Notifications\LoanLiberatedNotification;
-
+use App\Notifications\PendingLoansNotification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -324,7 +325,7 @@ class LoanController extends Controller
                        ]);
 
                     $loan->save();                    
-                    Session::flash('message', 'Ingreso exitoso');                   
+                    Session::flash('message', 'Ingreso exitoso');
                     return redirect()->route('loans');  
                }
        }else{
@@ -457,13 +458,13 @@ class LoanController extends Controller
 
     public function liberateLoans()
     {
+        info('Checking for overdue loans...');
         $now = now()->toDateString();
 
         $loansToLiberate = LoanModel::where('removed', 0)
             ->where('dateInit', '<', $now)
             ->where('state_id', 1)
             ->get();
-
 
         if ($loansToLiberate->count()) {
             foreach ($loansToLiberate as $loan) {
@@ -478,6 +479,43 @@ class LoanController extends Controller
             // Enviar notificacion a admin 
             $admin = User::where('type_id', 5)->first();
             $admin->notify(new LoanLiberatedNotification($loansToLiberate));
+        } else {
+            info('No overdue loans');
         }
+    }
+
+    public function checkPending()
+    {
+        info('Checking loans pending approval...');
+
+        $loansPending = LoanModel::where('state_id', 3)
+            ->get();
+
+        if (!$loansPending->count()) {
+            info('No loans pending approval');
+            return;
+        } else {
+        // Enviar notificacion a admin 
+        $admin = User::where('type_id', 5)->first();
+        $admin->notify(new PendingLoansNotification($loansPending));
+        }
+    }
+
+    public function dailySummary()
+    {
+        info('Recolectando información del día sobre préstamos...');
+
+        $expiringToday = LoanModel::whereDate('dateFinish', now()->toDateString())->where('loans.state_id', '=', 1)->get();
+        $mustPickUpToday = LoanModel::whereDate('dateInit', now()->toDateString())->where('loans.state_id', '=', 1)->get();
+
+        if (!$expiringToday->count() && !$mustPickUpToday->count()) {
+            info('Daily summary not sent: no loans today');
+            return;
+        } else {
+            // Enviar notificacion a admin 
+            $admin = User::where('type_id', 5)->first();
+            $admin->notify(new DailySummaryNotification($expiringToday, $mustPickUpToday));
+        }
+
     }
 }
