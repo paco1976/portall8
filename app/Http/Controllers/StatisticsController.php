@@ -22,41 +22,51 @@ class StatisticsController extends Controller
     {
         // $this->middleware('auth');
     }
-    public function GetViewsByDate(Request $request){
+    public function getStaticstis(Request $request){
         //dd($request);
         $user = User::find(Auth::user()->id);
         // $user->avatar = Storage::disk('avatares')->url($user->avatar);
         $user->permisos = $user->user_type()->first();
       
-        $views = Publicacion_Visita::query();
+        $publicaciones_vistas = Publicacion_Visita::query();
+        $views = $publicaciones_vistas -> count();
 
-        // Filtro por fecha
-        if ($request->get("date")) {
-            $date = $request->get("date");
-            if($request->get("date"))
-            {
-                $month = substr($request->get("date"), 5, 9);
-                $views = $views->whereMonth('publicacion_vista.created_at', '=', $month);
-                $year = substr($request->get("date"), 0, 4);
-                $views = $views->whereYear('publicacion_vista.created_at', '=',  $year);
-            }
-        }
+        $allCategoryVisits = $publicaciones_vistas
+            ->join('publicacion AS p', 'p.id' , '=', 'publicacion_visita.publicacion_id')
+            ->join('categoria AS c', 'c.id', '=', 'p.categoria_id')
+            ->groupBy('c.id', 'c.name')
+            ->select('c.name', DB::raw('COUNT(*) as view_count'))
+            ->orderByDesc('view_count')
+            ->get();
+        $categoriesViews = $allCategoryVisits ->first();
 
-        $visitsCount=null;
-        //Filtro de vistas totales by year and month-
-        if ($request->has("visits")) {
-            $visitsCount=$views->count();
-        }
+        $perfilVisitado = Publicacion_Visita::query()//Unir query +
+        ->join('publicacion_user AS pu', 'pu.publicacion_id', '=', 'publicacion_visita.publicacion_id')
+        ->join('users AS u', 'u.id', '=', 'pu.user_id')
+        ->groupBy('u.id', 'u.name')
+        ->select('u.name', DB::raw('COUNT(*) as view_count'))
+        ->orderByDesc('view_count') 
+        ->first();
 
-        $expiringTodayCount=null;
-        $categoryVisits=null;
-        $pendingApproval=null;
-        
+        $recentView = Publicacion_Visita::query()//Unir Query + 
+        ->join('publicacion_user AS p_user', 'p_user.publicacion_id', '=', 'publicacion_visita.publicacion_id')
+        ->join('users AS us', 'us.id', '=', 'p_user.user_id')
+        ->join('publicacion AS publi', 'publi.id' , '=', 'publicacion_visita.publicacion_id')
+        ->join('categoria AS cat', 'cat.id', '=', 'publi.categoria_id')
+        ->groupBy('us.name','us.last_name','publi.hash','cat.name', 'cat.id', 'publicacion_visita.created_at')
+        ->select('cat.name as cat','us.last_name','us.name', 'publi.hash', 'publicacion_visita.created_at')
+        ->orderByDesc('publicacion_visita.created_at') 
+        ->take(10)
+        ->get();
+
+
         return view('/admin.statisticsPanel', compact('user'))
-            ->with('expiringTodayCount', $expiringTodayCount)
-            ->with('categoryVisits', $categoryVisits)
-            ->with('visitsCount', $visitsCount)
-            ->with('pendingApproval', $pendingApproval);
+            ->with('categoryVisits',  $categoriesViews)
+            ->with('visitsCount', $views)
+            // ->with('category_Profile', $categoryWithProfile)
+            ->with('perfilVisitado', $perfilVisitado)
+            ->with('allCategoryVisits',  $allCategoryVisits)
+            ->with('recentView',  $recentView);
     }
-
+    
 }

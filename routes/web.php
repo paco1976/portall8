@@ -95,7 +95,7 @@ Route::get('/mensajes/{hash}', 'ReferenteController@mensajes')->name('mensajes')
 
 //Estadisticas
 // Route::post('/estadisticas','StatisticsController@generalStatistics' )->name('loan_save');
-Route::get('/estadisticas','StatisticsController@GetViewsByDate' )->name('estadisticas');
+Route::get('/estadisticas','StatisticsController@getStaticstis' )->name('estadisticas');
 
 //Prestamos
 Route::post('/loan_save','LoanController@loanSave' )->name('loan_save');
