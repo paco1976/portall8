@@ -381,15 +381,15 @@
 															<li class="dropdown-submenu">
 																<a class="dropdown-item" href="#"><i class="fa fa-cog"></i> Sitio</a>
 																<ul class="dropdown-menu">
-																	<li><a href=""><i class="fa fa-picture-o" aria-hidden="true"></i> Diseño Web</a></li>
-																	<li><a href=""><i class="fa fa-picture-o" aria-hidden="true"></i> Logo header</a></li>
-																	<li><a href=""><i class="fa fa-sliders" aria-hidden="true"></i> Carrusel</a></li>
-																	<li><a href=""><i class="fa fa-facebook-square" aria-hidden="true"></i> Redes Sociales</a></li>
-																	<li><a href=""><i class="fa fa-address-book" aria-hidden="true"></i> Datos Contacto</a></li>
-																	<li><a href=""><i class="fa fa-link" aria-hidden="true"></i> Links de interes</a></li>
-																	<li><a href=""><i class="fa fa-list"></i> Quienes Somos</a></li>
-																	<li><a href=""><i class="fa fa-list"></i> Super Categorias</a></li>
-																	<li><a href=""><i class="fa fa-list"></i> Categorias</a></li>
+																	<li><a href="{{ route('skins.index') }}"><i class="fa fa-picture-o" aria-hidden="true"></i> Diseño Web</a></li>
+																	<li><a href="{{ route('logo.index') }}"><i class="fa fa-picture-o" aria-hidden="true"></i> Logo header</a></li>
+																	<li><a href="{{ route('carrusel.index') }}"><i class="fa fa-sliders" aria-hidden="true"></i> Carrusel</a></li>
+																	<li><a href="{{ route('SocialNetworks.index') }}"><i class="fa fa-facebook-square" aria-hidden="true"></i> Redes Sociales</a></li>
+																	<li><a href="{{ route('contacts.index') }}"><i class="fa fa-address-book" aria-hidden="true"></i> Datos Contacto</a></li>
+																	<li><a href="{{ route('links.index') }}"><i class="fa fa-link" aria-hidden="true"></i> Links de interes</a></li>
+																	<li><a href="{{ route('aboutus.index') }}"><i class="fa fa-list"></i> Quienes Somos</a></li>
+																	<li><a href="{{ route('categoria-tipos.index') }}"><i class="fa fa-list"></i> Super Categorias</a></li>
+																	<li><a href="{{ route('admin_categorias') }}"><i class="fa fa-list"></i> Categorias</a></li>
 																</ul>
 															</li>
 															

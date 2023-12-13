@@ -284,3 +284,13 @@ Route::get('/privacidad',function(){return view('privacidad');});
 /** Rutas para WhatsApp Api */
 Route::get('/whatsapp', [App\Http\Controllers\SurveyController::class, 'handleWebhook']);
 Route::post('/whatsapp', [App\Http\Controllers\SurveyController::class, 'handleResponse']);
+
+//rutas de configuración de sitio
+Route::resource('SocialNetworks', SocialNetworkController::class);
+Route::resource('contacts', ContactController::class);
+Route::resource('links', LinkController::class);
+Route::resource('aboutus', AboutusController::class);
+Route::resource('categoria-tipos', CategoriaTipoController::class);
+Route::resource('carrusel', CarruselController::class);
+Route::resource('logo', LogoController::class);
+Route::resource('skins', SkinController::class);

@@ -125,20 +125,7 @@
 	
 
 	</div>
-	@if(Auth::user()->user_type()->first()->name=='Administrador')
-	<div class="container" style="padding:10px;flex-wrap: wrap;display:flex;flex-direction:row; justify-content:space-arround; ">
-		<div class="col-sm-2" style="margin-top:20px">
-			<a href="{{ route('admin_tool_new') }}">
-				<button id="addToTable" class="btn btn-primary">Nueva herramienta</button>
-			</a>
-		</div>
-		<div class="col-sm-2" style="margin-top:20px">
-			<a href="{{ route('admin_categoryTools') }}">
-				<button id="addToTable" class="btn btn-secondary">Administrar categorías</button>
-			</a>
-		</div>
-	</div>
-	@endif
+
 
 	<br><br>
 
