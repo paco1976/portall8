@@ -57,6 +57,33 @@ return [
             'visibility' => 'public',
         ],
 
+        'supercategorias' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/supercategorias'),
+            'url' => env('APP_URL').'/storage/supercategorias',
+            'visibility' => 'public',
+        ],
+
+        'carrusel' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/carrusel'),
+            'url' => env('APP_URL').'/storage/carrusel',
+            'visibility' => 'public',
+        ],
+
+        'logo' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/logo'),
+            'url' => env('APP_URL').'/storage/logo',
+            'visibility' => 'public',
+        ],
+        'skin' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/skin'),
+            'url' => env('APP_URL').'/storage/skin',
+            'visibility' => 'public',
+        ],
+
         'avatares' => [
             'driver' => 'local',
             'root' => storage_path('app/public/avatares'),
