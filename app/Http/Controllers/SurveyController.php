@@ -213,6 +213,7 @@ class SurveyController extends Controller
         global $surveyMessages;
 
         $response = $request->all();
+        info($response);
         // Chequea si la respuesta tiene status (lo que quiere decir que no es un mensaje) y sale de la función si lo tiene.
         // Si se quiere verificar lectura o recepcion va por acá
         if (isset($response['entry'][0]['changes'][0]['value']['statuses'][0])) {
@@ -237,7 +238,7 @@ class SurveyController extends Controller
         if ($replyType === "interactive") {
             // Chequea qué tipo de mensaje interactivo es y obtiene el mensaje
             $type = $response['entry'][0]['changes'][0]['value']['messages'][0]['interactive']['type'];
-
+            info('10. Entro al IF de chequeo de mensaje interactivo');
             if ($type === "button_reply") {
                 $message = $response['entry'][0]['changes'][0]['value']['messages'][0]['interactive']['button_reply']['id'];
             } else if ($type === "list_reply") {
@@ -255,6 +256,8 @@ class SurveyController extends Controller
              /**
              * Respuesta a init NO - manda FIN2
              */
+            info('11. Recbió mensje');
+            info($message);
             if ($message === 'dontSendSurvey') {
                 $response = $surveyMessages['finalMessage2_text'];
                 
