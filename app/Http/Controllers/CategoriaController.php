@@ -13,7 +13,8 @@ use Illuminate\Validation\Rules\Unique;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\File;
 use Mail;
-use Intervention\Image\Facades\Image as Image;;
+use Intervention\Image\Facades\Image as Image;
+//use Intervention\Image\Image;
 
 class CategoriaController extends Controller
 {
