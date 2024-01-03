@@ -57,4 +57,10 @@ class Categoria extends Model
     {
         return $query->where('name', 'like', "%$description%")->where('active', 1);
     }
+
+    public function scopeBuscador_admin_cat($query, $description)
+    {
+        return $query->where('name', 'like', "%$description%");
+    }
+    
 }

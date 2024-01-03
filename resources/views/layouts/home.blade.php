@@ -98,20 +98,20 @@
 												<li class="list-inline-item me-4 mb-0">
 													<i class="icons icon-phone text-color-secondary text-4 position-relative top-4 me-1"></i>
 													<a href="tel:+1234567890" class="text-default text-hover-secondary font-weight-medium text-decoration-none text-2">
-														telefono
+														1125274751
 													</a>
 												</li>
 											
 												<li class="list-inline-item me-4 mb-0 d-none d-lg-inline-block">
 													<i class="icons icon-location-pin text-color-secondary text-4 position-relative top-4 me-1"></i>
 													<a href="#" class="text-default text-hover-secondary font-weight-medium text-decoration-none text-2">
-														Direccion
+														Morón 2453. Flores, CABA
 												</li>
 											
 												<li class="list-inline-item me-4 mb-0 d-none d-md-inline-block">
 													<i class="icons icon-envelope text-color-secondary text-4 position-relative top-4 me-1"></i>
 													<a href="mailto:info@correo.com.ar" class="text-default text-hover-secondary font-weight-medium text-decoration-none text-2">
-														email
+														info@cefeperes.com.ar
 													</a>
 												</li>
 											
@@ -471,7 +471,7 @@
 											
 											<ul class="header-social-icons social-icons social-icons-lg d-none d-sm-block social-icons-clean ms-0">
 												
-												<li class="social-icons-facebook"><a href="#" target="_blank" title="Facebook"><i class="text-4 fab fa-facebook-f"></i></a></li>
+												<li class="social-icons-facebook"><a href="https://www.facebook.com/Cefeperes/" target="_blank" title="Facebook"><i class="text-4 fab fa-facebook-f"></i></a></li>
 												
 												<li class="social-icons-twitter"><a href="#" target="_blank" title="Twitter"><i class="text-4 fab fa-twitter"></i></a></li>
 												
@@ -511,11 +511,11 @@
 							<div class="col-lg-8 text-center text-lg-start mb-2 mb-lg-0">
 								<p>
 								
-									<span class="pe-0 pe-md-3 d-block d-md-inline-block"><i class="far fa-dot-circle text-color-primary top-1 p-relative"></i><span class="text-color-light opacity-7 ps-1"> Direccion </span></span>
+									<span class="pe-0 pe-md-3 d-block d-md-inline-block"><i class="far fa-dot-circle text-color-primary top-1 p-relative"></i><span class="text-color-light opacity-7 ps-1"> Morón 2453. Flores, CABA </span></span>
 								
-									<span class="pe-0 pe-md-3 d-block d-md-inline-block"><i class="fab fa-whatsapp text-color-primary top-1 p-relative"></i><a href="tel:1234567890" class="text-color-light opacity-7 ps-1"> teléfono </a></span>
+									<span class="pe-0 pe-md-3 d-block d-md-inline-block"><i class="fab fa-whatsapp text-color-primary top-1 p-relative"></i><a href="tel:1234567890" class="text-color-light opacity-7 ps-1"> 1125274751 </a></span>
 								
-									<span class="pe-0 pe-md-3 d-block d-md-inline-block"><i class="far fa-envelope text-color-primary top-1 p-relative"></i><a href="mailto:info@correo.com.ar" class="text-color-light opacity-7 ps-1"> mail </a></span>
+									<span class="pe-0 pe-md-3 d-block d-md-inline-block"><i class="far fa-envelope text-color-primary top-1 p-relative"></i><a href="mailto:info@correo.com.ar" class="text-color-light opacity-7 ps-1"> info@cefeperes.com.ar </a></span>
 								
 								</p>
 							</div>

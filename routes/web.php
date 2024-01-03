@@ -137,9 +137,21 @@ Route::get('/admin_publicaciones_show_rating/{publicacion_hash}/origen/{origen}'
 
 Route::get('/admin_consultas/{publicacion_hash}', 'AdminController@admin_consultas')->name('admin_consultas');
 Route::get('/admin_mensajes/{hash}', 'AdminController@admin_mensajes')->name('admin_mensajes');
+/*
 Route::get('/admin_categorias','AdminController@admin_categorias' )->name('admin_categorias'); 
 Route::get('/admin_categoria_activar_desactivar/{id}','AdminController@admin_categoria_activar_desactivar' )->name('admin_categoria_activar_desactivar');
 Route::put('/admin_categoria_icon','AdminController@admin_categoria_icon' )->name('admin_categoria_icon');
+*/
+Route::get('/admin_categorias','CategoriaController@admin_categorias' )->name('admin_categorias'); // Ver categoría desde el panel de admin
+Route::get('/admin_categoria_activar_desactivar/{id}','CategoriaController@admin_categoria_activar_desactivar' )->name('admin_categoria_activar_desactivar'); // Activar desactivar categoria desde el panel de admin
+Route::put('/admin_categoria_icon','CategoriaController@admin_categoria_icon' )->name('admin_categoria_icon'); //cambiar icono de categoría desde el panel de admin
+Route::get('/admin_categoria_new', 'CategoriaController@admin_categoria_new')->name('admin_categoria_new'); // pantalla nueva categoria desde el panel de admin
+Route::put('/admin_categoria_save','CategoriaController@admin_categoria_save' )->name('admin_categoria_save'); //guardar nueva categoria desde el panel de admin
+Route::get('/admin_categoria_edit/{id}', 'CategoriaController@admin_categoria_edit')->name('admin_categoria_edit'); // pantalla nueva categoria desde el panel de admin
+Route::put('/admin_categoria_update','CategoriaController@admin_categoria_update' )->name('admin_categoria_update'); //guardar nueva categoria desde el panel de admin
+Route::get('/admin_categoria_delete/{id}','CategoriaController@admin_categoria_delete' )->name('admin_categoria_delete'); // Activar desactivar categoria desde el panel de admin
+
+
 Route::get('/admin_surveys/{publicacion_hash}', 'AdminController@admin_surveys')->name('admin_surveys');
 
 
