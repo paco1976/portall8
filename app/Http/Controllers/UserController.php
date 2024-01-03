@@ -9,6 +9,7 @@ use App\Models\User_Cfp;
 use App\Models\User_type;
 use App\Models\User_Profile;
 use App\Models\Zonas;
+use App\Models\Publicacion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -29,15 +30,6 @@ class UserController extends Controller
     //redirigue dependiendo el tipo de usuario
     public function index(){
         $user = User::find(Auth::user()->id);
-        //$fecha = date();
-        //date_default_timezone_set('America/Buenos_Aires');
-        //$fecha = date("Y-m-d");
-        /*encriptado y desencriptado
-        $prueba = encrypt('paco');
-        $prueba = decrypt($prueba);
-        dd($prueba);
-        */
-
         if($user->avatar == '/img/team/perfil_default.jpg'){
             //no convierte la url
         }else{
@@ -57,7 +49,19 @@ class UserController extends Controller
         }elseif(($user->type->name == "Referente")){
             return view('referente.perfil', compact('user'));
         }elseif(($user->type->name == "Administrador")){
-            return view('admin.perfil', compact('user'));
+            $publicaciones_all = Publicacion::all();
+            $visitas = 0;
+            $categorias = Categoria::get()->count();
+            $publicaciones = $publicaciones_all->count();
+            $mensajes = 0;
+            $whatsapp = 0;
+
+            foreach($publicaciones_all as $publicacion) {
+            $mensajes = $mensajes + $publicacion->interactions()->count();
+            $visitas = $visitas + $publicacion->visita()->count();
+            $whatsapp= $whatsapp + $publicacion->whatsapp()->count();
+            }
+            return view('admin.perfil', compact('user', 'categorias', 'publicaciones', 'visitas','mensajes', 'whatsapp'));
         }else{
             return redirect('/');
         }

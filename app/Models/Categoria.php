@@ -28,6 +28,10 @@ class Categoria extends Model
     public function categoria_tipo(){
         return $this->belongsTo('App\Models\categoria_tipo');
     }
+    
+    public function categoriatipo(){
+        return $this->belongsTo('App\Models\Categoria_Tipo', 'categoria_tipo_id');
+    }
 
     public function categorias(){
         return $this->belongsToMany('App\Models\Categoria');
@@ -53,4 +57,10 @@ class Categoria extends Model
     {
         return $query->where('name', 'like', "%$description%")->where('active', 1);
     }
+
+    public function scopeBuscador_admin_cat($query, $description)
+    {
+        return $query->where('name', 'like', "%$description%");
+    }
+    
 }

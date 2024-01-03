@@ -2,172 +2,201 @@
 
 @section('main')
 
-			<div role="main" class="main">
+<div role="main" class="main">
 
+    <div role="main" class="main">
 
-				<section class="page-top">
-					<div class="container">
-						<div class="row">
-							<div class="col-md-12">
-								<ul class="breadcrumb">
-									<li><a href="#">Inicio</a></li>
-									<li class="active">Panel de Control</li>
-								</ul>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-md-12">
-								<h1>MI PERFIL</h1>
-							</div>
+        <section class="section section-concept section-no-border section-dark section-angled section-angled-reverse pt-5 m-0 overlay overlay-show overlay-op-8" style="background-image: url({{asset('img/slides/slide-bg-4.jpg')}}); background-size: cover; background-position: center; min-height: 645px;">
+            <div class="section-angled-layer-bottom section-angled-layer-increase-angle bg-light" style="padding: 8rem 0;"></div>
+            <div class="container pt-lg-5 mt-5">
+                <div class="row pt-3 pb-lg-0 pb-xl-0">
+                    <div class="col-lg-6 pt-4 mb-5 mb-lg-0">
+                        <ul class="breadcrumb font-weight-semibold text-4 negative-ls-1">
+                            <li><a href="{{route('welcome')}}">Inicio</a></li>
+                            <li class="text-color-primary"><a href="#">Panel de control</a></li>
+                            
+                        </ul>
+                        <h1 class="font-weight-bold text-10 text-xl-12 line-height-2 mb-3">PERFIL EDICION</h1>
+                        
+                        <a href="#ver" data-hash data-hash-offset="0" data-hash-offset-lg="100" class="btn btn-gradient-primary border-primary btn-effect-4 font-weight-semi-bold px-4 btn-py-2 text-3">VER <i class="fas fa-arrow-down ms-1"></i></a>
+                        
+                    </div>
 
-						</div>
-					</div>
-				</section>
+                </div>
+            </div>
+        </section>
+        
+        
+        
+        <div role="main" class="main" id="ver">
 
+            <div class="container pt-3 pb-2">
 
+                <h2 class="font-weight-normal line-height-1">Hola, <strong class="font-weight-extra-bold">{{ $user->name }} {{ $user->last_name }}</strong></h2>
+                @if (Session::has('message'))
+                <div class="alert alert-success">
+                    <p>{{ Session::get('message') }}</p>
+                </div>
+                @endif
+                
+                <div class="row pt-2">
+                    <div class="col-lg-3 mt-4 mt-lg-0">
 
-				<div class="container">
-					<div class="row">
-						<div class="col-md-9">
-							<div class="tabs">
-								<ul class="nav nav-tabs">
-
-									<li class="active">
-										<a href="{{ Url('/perfil') }}" ><i class="fa fa-user"></i> Perfil</a>
-									</li>
-									<li>
-										<a href="{{ route('publicacion') }}" ><i class="fa fa-file-powerpoint-o"></i> Publicaciones</a>
-									</li>
-
-
-
-								</ul>
-                                <div class="tab-content">
-                                <div id="perfil" class="tab-pane active">
-
-                                <div class="row">
-                                    @if (Session::has('message'))
-                                    <div class="alert alert-success">
-                                        <p>{{ Session::get('message') }}</p>
-                                    </div>
+                        <div class="d-flex justify-content-center mb-4">
+                            <div class="profile-image-outer-container">
+                                <div class="profile-image-inner-container bg-color-primary">
+                                    @if ($user->avatar == '/img/team/perfil_default.jpg')
+                                    <img id="output" src="{{ asset('img/projects/bicicleta.jpg')}}">
+                                    @else
+                                    <img id="output" src="{{ asset($user->avatar) }}">
                                     @endif
 
-                                <div class="col-md-4">
-                                        <p class="text-primary">{{ $user->name }} {{ $user->last_name }}</p>
-                                        <div class="thumbnail">
-                                            <img alt="" height="300" class="img-responsive" src="{{ asset($user->avatar) }}">
-                                        </div>
+                                    <span class="profile-image-button bg-color-dark">
+                                        <i class="fas fa-camera text-light"></i>
+                                    </span>
                                 </div>
+                                <form action="{{ route('avatarupload') }}" method="POST" enctype="multipart/form-data" >
+                                    {{ method_field('PUT') }}
+                                    @csrf
+                                    <br>
+                                    <input type="file" id="file" name="avatar" class="form-control profile-image-input" accept='image/*' onchange="document.getElementById('output').src = window.URL.createObjectURL(this.files[0])" required>
+                                    <!-- <button type="submit" class="btn btn-default fileupload-new">Subir imagen</button>
+                                    <a href="#" class="btn btn-default fileupload-new" data-dismiss="fileupload">Subir imagen</a> -->
+                                
+                                
+                            </div>
+                            
+                        </div>
 
-                                <div class="col-md-8">
-                                    <div class="form-group">
-                                        <div class="col-md-9">
-                                        @if (!$user_profile)
-                                            <section class="form-group-vertical">
-                                                <div class="alert alert-danger" role="alert">
-                                                    Debe completar su perfil antes de continuar
-                                                </div>
-                                            </section>
-                                        </div>
-                                    </div>
-                                    <a href="{{ route('perfil_new') }}" class="btn btn-primary" data-dismiss="fileupload">Completar Perfil</a>
-                                    @else
-                                    <form action="{{ route('perfil_update') }}" method="post" enctype="multipart/form-data" >
-                                        {{ method_field('PUT') }}
-                                        @csrf
-                                        <section class="form-group-vertical">
+                        
+                        
+                        
+                        <aside class="sidebar mt-2" id="sidebar">
+                            
+                            
+                            <ul class="nav nav-list flex-column mb-5">
+                                <button type="submit" class="btn btn-primary btn-modern float-end mb-4" data-dismiss="fileupload">Subir imagen</button>
+                                <!-- <a href="{{ route('avatardelete') }}" class="btn btn-primary btn-modern float-end mb-4" data-dismiss="fileupload">Borrar imagen</a> -->
+                                </form>
+                                <!--
+                                <input type="submit" value="borrar imagen" class="btn btn-primary btn-modern float-end mb-4" data-loading-text="Cargando...">
+                                -->
+                                <li class="nav-item"><a class="nav-link text-3 text-dark active" href="{{route('perfil')}}">Mi Perfil</a></li>
+                                @if ($user_profile)
+                                <li class="nav-item"><a class="nav-link text-3" href="{{ route('publicacion') }}">Publicaciones</a></li>
+                                @endif
+                                <!--<li class="nav-item"><a class="nav-link text-3" href="#">Mensajes</a></li> -->
+                                <!-- <li class="nav-item"><a class="nav-link text-3" href="{{ url('/clave') }}">Contraseña</a></li>-->
+                                <!--<li class="nav-item"><a class="nav-link text-3" href="#">Salir</a></li>-->
+                            </ul>
+                        </aside>
 
-                                            <label>{{ __('Celular') }} Ej: 1155668899, sin guiones y sin cero delante.</label>
-                                            <input class="form-control" type="number" name="mobile" placeholder="" value="{{ old('mobile', $user_profile->mobile)  }}" required>
-                                            @error('mobile')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
-                                            <br>
+                    </div>
+                    <div class="col-lg-9">
 
+                        <form role="form" class="needs-validation" action="{{ route('perfil_update') }}" method="post" enctype="multipart/form-data">
+                            {{ method_field('PUT') }}
+                            @csrf
 
-                                            <label>{{ __('CFP') }}</label>
-                                            <select class="form-control" name="user_cfp"  id="subject" required>
-                                                    @if ($user_cfp->id)
-                                                    <option value='{{ old('user_cfp',$user_cfp->id) }}'>{{ old('name',$user_cfp->name) }}</option>
-                                                    @endif
+                            <div class="form-group row">
+                                <label class="col-lg-3 col-form-label form-control-label line-height-9 pt-2 text-2 required">Nombre (*)</label>
+                                <div class="col-lg-9">
+                                    <input class="form-control text-3 h-auto py-2 @error('name') is-invalid @enderror" type="text" name="name" value="{{ old('name', $user->name ) }}" required>
+                                    @error('name')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-3 col-form-label form-control-label line-height-9 pt-2 text-2 required">Apellido (*)</label>
+                                <div class="col-lg-9">
+                                    <input class="form-control text-3 h-auto py-2 @error('last_name') is-invalid @enderror" type="text" name="last_name" value="{{ old('last_name', $user->last_name ) }}" required>
+                                    @error('last_name')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-3 col-form-label form-control-label line-height-9 pt-2 text-2 required">Email (*)</label>
+                                <div class="col-lg-9">
+                                    <input class="form-control text-3 h-auto py-2 @error('email') is-invalid @enderror" type="email" name="email" value="{{ old('email', $user->email ) }}" required>
+                                    @error('email')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-3 col-form-label form-control-label line-height-9 pt-2 text-2 required">Celular (*)</label>
+                                <div class="col-lg-9">
+                                    <input class="form-control text-3 h-auto py-2" type="number" name="mobile" placeholder="Ej: 1155668899, sin guiones y sin cero delante." value="{{ old('mobile',$user->profile()->first()->mobile) }}" required>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-3 col-form-label form-control-label line-height-9 pt-2 text-2 required">D.N.I. (*)</label>
+                                <div class="col-lg-9">
+                                    <input class="form-control text-3 h-auto py-2 @error('dni') is-invalid @enderror" type="number" name="dni" value="{{ old('dni', $user->dni) }}" placeholder="Sin puntos, Ej: 22111333" required>
+                                    @error('dni')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                                </div>
+                            </div>
+        
+                            <div class="form-group row">
+                                <label class="col-lg-3 col-form-label form-control-label line-height-9 pt-2 text-2 required">{{ __('Imagen de pefil') }} </label>
+        
+                                <div class="col-md-6">
+                                    <input id="avatar" type="file" class="form-control text-3 h-auto py-2 @error('avatar') is-invalid @enderror" name="avatar" value="{{ old('avatar') }}" onchange="document.getElementById('output').src = window.URL.createObjectURL(this.files[0])">
+                                    @error('avatar')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
 
-                                                @foreach ($user_cfp_all as $user_cfpx)
-                                                    <option value='{{ $user_cfpx->id }}'>{{ $user_cfpx->name }}</option>
-                                                @endforeach
-                                            </select>
-                                            @error('user_cfp')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
-                                            <br>
+                            <div class="form-group row">
+                                <label class="col-lg-3 col-form-label form-control-label line-height-9 pt-2 text-2 ">Teléfono fijo</label>
+                                <div class="col-lg-9">
+                                    <input class="form-control text-3 h-auto py-2" type="number" name="phone" value="{{ old('phone',$user->profile()->first()->phone ) }}">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group row">
+                                <label class="col-lg-3 col-form-label form-control-label line-height-9 pt-2 text-2">Facebook</label>
+                                <div class="col-lg-9">
+                                    <input class="form-control text-3 h-auto py-2 @error('name') is-invalid @enderror" type="text" name="facebook" value="{{ old('facebook',$user->profile()->first()->facebook ) }}" >
+                                    @error('facebook')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
 
+                            <div class="form-group row">
+                                <label class="col-lg-3 col-form-label form-control-label line-height-9 pt-2 text-2">Instagram</label>
+                                <div class="col-lg-9">
+                                    <input class="form-control text-3 h-auto py-2 @error('name') is-invalid @enderror" type="text" name="instagram" value="{{ old('instagram',$user->profile()->first()->instagram) }}">
+                                    @error('instagram')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
 
-
-                                            <label>{{ __('Telefono fijo') }} Sin guiones</label>
-                                            <input class="form-control" type="number" name="phono" placeholder="" value="{{ old('phono', $user_profile->phone)  }}">
-
-                                            @error('phono')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
-                                            <br>
-
-                                            <!--REDES-->
-
-                                                <label>{{ __('Twitter') }}</label>
-                                                <input class="form-control" type="text" name="twitter" placeholder="" value="{{ old('twitter', $user_profile->twitter) }}">
-
-                                            @error('twitter')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
-                                            <br>
-
-
-                                                <label>{{ __('Facebook') }}</label>
-                                                <input class="form-control" type="text" name="facebook" placeholder="" value="{{ old('facebook',$user_profile->facebook) }}">
-
-                                            @error('facebook')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
-                                            <br>
-
-
-
-                                                <label>{{ __('Instagram') }}</label>
-                                                <input class="form-control" type="text" name="instagram" placeholder="" value="{{ old('instagram', $user_profile->instagram)  }}">
-
-                                            @error('instagram')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
-                                            <br>
-
-
-                                                <label>{{ __('Linkedin') }}</label>
-                                                <input class="form-control" type="text" name="linkedin" placeholder="" value="{{ old('linkedin', $user_profile->linkedin) }}"><br>
-
-                                            @error('linkedin')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
-                                            <br>
-
-                                        </section>
-                                    </div>
-                                    </div>
-                                    <a href="#" class="btn btn-default fileupload-new" data-dismiss="fileupload">Zonas de trabajo </a>
-                                    
-                                    
+                            <div class="form-group row">
+                                <!--<a href="#" class="btn btn-default fileupload-new" data-dismiss="fileupload">Zonas de trabajo </a>-->
+                                <label class="col-lg-3 col-form-label form-control-label line-height-9 pt-2 text-2">Zonas de trabajo </label>
+                                <div class="col-lg-9">
                                     <ul class="portfolio-list sort-destination" data-sort-id="portfolio">
                                         <li class="col-md-4 col-sm-6 col-xs-12 isotope-item websites">
                                             <label for="">
@@ -175,98 +204,77 @@
                                             </label><br>
                                         </li>
                                     
-                                    
-                                    @if($zonas_all)
-                                        @foreach($zonas_all as $zona)
-                                            <li class="col-md-4 col-sm-6 col-xs-12 isotope-item websites">
-                                            @if($user->hasZona($zona))
+                                        
+                                        @if($zonas_all)
+                                            @foreach($zonas_all as $zona)
+                                                <li class="col-md-4 col-sm-6 col-xs-12 isotope-item websites">
+                                                @if($user->hasZona($zona))
+                                                    <label for="">
+                                                    <input type="checkbox" name="zonas[]" value="{{ $zona->name }}" multiple ria-label="Radio button for following text input" checked> {{ $zona->name }}
+                                                    </label><br>
+                                                @else
                                                 <label for="">
-                                                <input type="checkbox" name="zonas[]" value="{{ $zona->name }}" multiple ria-label="Radio button for following text input" checked> {{ $zona->name }}
+                                                <input type="checkbox" name="zonas[]" value="{{ $zona->name }}" multiple ria-label="Radio button for following text input"> {{ $zona->name }}
                                                 </label><br>
-                                            @else
-                                            <label for="">
-                                            <input type="checkbox" name="zonas[]" value="{{ $zona->name }}" multiple ria-label="Radio button for following text input"> {{ $zona->name }}
-                                            </label><br>
-                                            @endif
-                                                
-                                            </li>
-                                        @endforeach
-                                    @else  
-                                        <p>Ups! Algo ocurrio con las zonas</p>
-                                    @endif
+                                                @endif
+                                                    
+                                                </li>
+                                            @endforeach
+                                        @else  
+                                            <p>Ups! Algo ocurrio con las zonas</p>
+                                        @endif
                                     </ul>
-
-                                    <button type="submit" class="btn btn-primary">Guardar Datos</button>
-
-                                    </form>
-                                    @endif
                                 </div>
                             </div>
-                        </div>
+                            
+                                                        
+
+                            
+                            <div class="form-group row">
+                                <div class="form-group col-lg-9">
+                                    <a href="{{route('perfil')}}"" class="btn btn-dark btn-modern float-end" data-loading-text="Cargando...">Volver</a>
+                                </div>
+                                <div class="form-group col-lg-3">
+                                    <button type="submit" value="Guardar Cambios" class="btn btn-primary btn-modern float-end" data-loading-text="Cargando...">Guardar </button>
+                                </div>
+                            </div>
+                        </form>
 
                     </div>
                 </div>
+
             </div>
 
-						<!--
-						<div class="col-md-3">
-						<button class="btn btn-info btn-small " data-toggle="modal" data-target="#myModal">
-								<i class="fa fa-question-circle"></i> ¿Como funciona?
-							</button>
+        </div>
 
-							<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-								<div class="modal-dialog">
-									<div class="modal-content">
-										<div class="modal-header">
-											<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-											<h4 class="modal-title" id="myModalLabel">Qué hago?</h4>
-										</div>
-										<div class="modal-body">
+        
+            
+    
+            
+        </div>
+        
 
-											<h4 class="panel-title">
-												<strong>Cómo cambio mis datos?</strong>
-										</h4>
-											<div class="panel-body">
-										  Entra en <a href="#">Modificar los detalles</a> y actualizá tu perfil. </div>
+        
 
 
-											<h4 class="panel-title">
-												<strong>Cómo creo mis publicaciones?</strong>
-										</h4>
-
-											<div class="panel-body">
-										  1. Agregá los cursos que hiciste en el CFP clickeando en el menú Títulos.<br>
-2. Una vez que hayas cargado tus tíulos, ya podés crear tus publicaciones clickeando en el menú Publicaciones. </div>
-
-                                    <div class="alert alert-info">
-								<strong>Las publicaciones no serán publicadas hasta que los títulos que cargaste sean validados por la administración del CFP.</strong>
-							</div>
-
-										</div>
-									<div class="modal-footer">
-											<button type="button" class="btn btn-primary" data-dismiss="modal">Entendido</button>
-
-										</div>
-									</div>
-								</div>
-							</div>
-
-
-						</div> -->
-
-
-
-
-
-					</div>
+        </div>
 
 
 
 
 
 
-				</div>
+    </div>
 
-			</div>
-
+</div>
+</div>
+<script>
+    function toggle(source) {
+        var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i] != source)
+                checkboxes[i].checked = source.checked;
+        }
+    }
+</script>
 @endsection

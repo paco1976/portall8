@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.home')
 
 @section('main')
 
@@ -42,5 +42,6 @@
         </div>
     </div>
 </div>
+
 
 @endsection

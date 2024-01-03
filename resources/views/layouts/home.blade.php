@@ -7,8 +7,6 @@
 
 		<!-- Basic -->
 		<meta charset="utf-8">
-		<!--<meta http-equiv="refresh" content="900">-->
-        <!-- <title>{{ config('app.name', 'Portal') }}</title> -->
 		<title>CEFEPERES - Servicios Profesionales de egresados de CFP</title>
 		<meta name="keywords" content="CEFEPERES, Servicios Profesionales, Carpintero, Electricista, Aire Acondicionado, Maquillaje, Estética, Herrero, Peluquería, Video, Sonido, Diseño, Marroquinería, Plomero, Tècnico" />
 		<meta name="description" content="CEFEPERES - CONTACTÁ PROFESIONALES CON CERTIFICACIÓN OFICIAL EN TU BARRIO. Responsabilidad, confianza y precios justos">
@@ -22,221 +20,470 @@
 
 		<!-- Whatsapp -->
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-		<link rel="stylesheet" href="{{ asset('css/whatsapp.css') }}">
+		<!-- <link rel="stylesheet" href="{{ asset('css/whatsapp.css') }}"> -->
 		
 		<!-- Icons -->
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 		
+		<!-- Favicon -->
+		<link rel="shortcut icon" href="{{ asset('favicon.ico')}}" type="image/x-icon" />
+		<link rel="apple-touch-icon" href="{{ asset('img/apple-touch-icon.png')}}">
+
+
+		<!-- Mobile Metas -->
+		<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, shrink-to-fit=no">
+
 		<!-- Web Fonts  -->
-        <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800%7CShadows+Into+Light" rel="stylesheet" type="text/css">
+		<link id="googleFonts" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800%7CShadows+Into+Light&display=swap" rel="stylesheet" type="text/css">
 
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/min/dropzone.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/min/dropzone.min.css">
+		
 
-        <!-- Vendor CSS -->
-        <link rel="stylesheet" href="{{ asset('vendor/bootstrap/bootstrap.css') }}">
-        <link rel="stylesheet" href="{{ asset('vendor/fontawesome/css/font-awesome.css') }}">
-        <link rel="stylesheet" href="{{ asset('vendor/owlcarousel/owl.carousel.min.css') }}" media="screen">
-        <link rel="stylesheet" href="{{ asset('vendor/owlcarousel/owl.theme.default.min.css') }}" media="screen">
-		<link rel="stylesheet" href="{{ asset('vendor/magnific-popup/magnific-popup.css') }}" media="screen">
-		<!-- para ver las imagenes de la mensajería -->
-		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
-        <!-- Theme CSS -->
-        <link rel="stylesheet" href="{{ asset('css/theme.css') }}">
-        <link rel="stylesheet" href="{{ asset('css/theme-elements.css') }}">
-        <link rel="stylesheet" href="{{ asset('css/theme-blog.css') }}">
-        <link rel="stylesheet" href="{{ asset('css/theme-shop.css') }}">
-		<link rel="stylesheet" href="{{ asset('css/theme-animate.css') }}">
-		<link rel="stylesheet" href="{{ asset('css/datos_profesional.css') }}">
+		<!-- Vendor CSS -->
+		<link rel="stylesheet" href="{{asset('ipp/vendor/bootstrap/css/bootstrap.min.css')}}">
+		<link rel="stylesheet" href="{{asset('ipp/vendor/fontawesome-free/css/all.min.css')}}">
+		<link rel="stylesheet" href="{{asset('ipp/vendor/animate/animate.compat.css')}}">
+		<link rel="stylesheet" href="{{asset('ipp/vendor/simple-line-icons/css/simple-line-icons.min.css')}}">
+		<link rel="stylesheet" href="{{asset('ipp/vendor/owl.carousel/assets/owl.carousel.min.css')}}">
+		<link rel="stylesheet" href="{{asset('ipp/vendor/owl.carousel/assets/owl.theme.default.min.css')}}">
+		<link rel="stylesheet" href="{{asset('ipp/vendor/magnific-popup/magnific-popup.min.css')}}">
+		<!-- Theme CSS -->
+		<link rel="stylesheet" href="{{asset('ipp/css/theme.css')}}">
+		<link rel="stylesheet" href="{{asset('ipp/css/theme-elements.css')}}">
 
+		<!-- Demo CSS -->
+		<link rel="stylesheet" href="{{asset('ipp/css/demos/demo-tecnoarte-cian.css')}}">
+		
         <!-- Current Page CSS -->
         <link rel="stylesheet" href="{{ asset('vendor/rs-plugin/css/settings.css') }}" media="screen">
         <link rel="stylesheet" href="{{ asset('vendor/circle-flip-slideshow/css/component.css') }}" media="screen">
 
         <!-- Skin CSS -->
-        <link rel="stylesheet" href="{{ asset('css/skins/default.css') }}">
+        <link rel="stylesheet" href="{{ asset('ipp/css/skins/azul.css') }}">
 
-        <!-- Theme Custom CSS -->
-        <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
+		<!-- Head Libs -->
+		<script src="{{asset('ipp/vendor/modernizr/modernizr.min.js')}}"></script>
 
-        <!-- Head Libs -->
-        <script src="{{ asset('vendor/modernizr/modernizr.js') }}"></script>
+		<!-- Editor de texto en textarea de quienes somos -->
+		<script src="//cdn.ckeditor.com/4.16.0/basic/ckeditor.js"></script>
 
 
-
-		<!--[if IE]>
-			<link rel="stylesheet" href="css/ie.css">
-		<![endif]-->
-
-		<!--[if lte IE 8]>
-			<script src="vendor/respond/respond.js"></script>
-			<script src="vendor/excanvas/excanvas.js"></script>
-		<![endif]-->
 		
 		@stack('style')
 		
 	</head>
-	<body>
-		<!-- Google Tag Manager (noscript) -->
-		<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NDX4K44"
-			height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-	<!-- End Google Tag Manager (noscript) -->
-		<div class="body">
-			<header id="header">
-				<div class="container">
-					<div class="logo">
-						<a href="{{ url('/') }}">
-							<img alt="CFP" width="278" height="67" data-sticky-width="227" data-sticky-height="55" src="{{ asset('img/logo.png')}}">
-						</a>
-					</div>
-
-					<div class="search">
-						<form id="searchForm" action="{{route('publicacion_buscar')}}" method="get">
-							<div class="input-group">
-								<input type="text" name="data" class="form-control search" id="q" placeholder="Buscar..." required>
-								<span class="input-group-btn">
-									<button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
-								</span>
-							</div>
-						</form>
-					</div>
-
-					<ul class="social-icons">
-						<li class="facebook"><a href="https://www.facebook.com/Cefeperes/" target="_blank" title="Facebook">Facebook</a></li>
-						<!--
-						<li class="instagram"><a href="https://www.instagram.com/" target="_blank" title="Instagram">Instagram</a></li>
-						<li class="linkedin"><a href="https://www.linkedin.com/" target="_blank" title="Linkedin">Linkedin</a></li>
-						-->
-					</ul>
-
-					<button class="btn btn-responsive-nav btn-inverse" data-toggle="collapse" data-target=".nav-main-collapse">
-						<i class="fa fa-bars"></i>
-					</button>
-				</div>
-				<div class="navbar-collapse nav-main-collapse collapse">
-					<div class="container">
-						<nav class="nav-main mega-menu">
-							<ul class="nav nav-pills nav-main" id="mainMenu">
-								<li>
-									<a href="{{ url('/') }}"> Inicio</a> <!--<i class="fa fa-home"> </i>-->
-								</li>
-
-
-
-								<li class="dropdown active">
-									<a class="dropdown-toggle" href="">
-										Servicios
-										<i class="fa fa-angle-down"></i>
-									</a>
-									<ul class="dropdown-menu">
-                                    @foreach($categoria_servicios_all as $categoria)
-                                        <li><a href="{{ route('homepublicaciones', ['id'=> $categoria->id]) }} ">{{ $categoria->name }}</a></li>
-                                    @endforeach
-
-									</ul>
-                                </li>
-								<!--
-                                <li class="dropdown active">
-                                    <a class="dropdown-toggle" href="">
-                                        Productos
-                                        <i class="fa fa-angle-down"></i>
-                                    </a>
-                                    <ul class="dropdown-menu">
-                                    @foreach($categoria_productos_all as $categoria)
-                                        <li><a href="{{ route('homepublicaciones', ['id'=> $categoria->id]) }}">{{ $categoria->name }}</a></li>
-                                    @endforeach
-
-                                    </ul>
-                                </li>
-								-->
-								<li>
-									<a href="{{ url('/comunidad') }}">comunidad CFP</a>
-								</li>
-								<li>
-									<a href="{{ url('/contacto') }}">Contacto</a>
-								</li>
-
-
-
-								@guest
-								<li>
-
-									<a href="{{ url('/login') }}">Ingresar</a>
-								</li>
-
-
-								@else
-									@if(Auth::user()->user_type()->first()->name=='Administrador')
-									<!--  menú admnistrador -->
-									<li class="dropdown active">
-										<a class="dropdown-toggle" href="#">
-											<i class="fa-wrench"></i> Herramientas
-											<i class="fa fa-angle-down"></i>
-										</a>
-										<ul class="dropdown-menu">
-
-											<li><a href="{{ route('admin_profesionales') }}"><i class="fa fa-users"></i> Lista de profesionales</a></li>
-											<li><a href="{{ route('admin_publicaciones') }}"><i class="fa fa-list-ul"></i> Lista de publicaciones</a></li>
-											<li><a href="{{ route('loans') }}"><i class="fa fa-list-ul"></i> Préstamos</a></li>
-											<li><a href="{{ route('toolsList') }}"><i class="fa fa-list-ul"></i> Herramientas</a></li>
-											<li><a href="{{ route('admin_categorias') }}"><i class="fa fa-list"></i> Categorías</a></li>
-											<li><a href="#"><i class="fa fa-list"></i> Títulos</a></li>
+	<body class="loading-overlay-showing" data-loading-overlay data-plugin-options="{'hideDelay': 500}">
+		<div class="loading-overlay">
+			<div class="bounce-loader">
+				<div class="bounce1"></div>
+				<div class="bounce2"></div>
+				<div class="bounce3"></div>
+			</div>
+		</div>
+	<div class="body">
+			<header id="header" class="header-effect-shrink" data-plugin-options="{'stickyEnabled': true, 'stickyEffect': 'shrink', 'stickyEnableOnBoxed': true, 'stickyEnableOnMobile': false, 'stickyChangeLogo': true, 'stickyStartAt': 120, 'stickyHeaderContainerHeight': 70}">
+				<div class="header-body border-top-0">
+					<div class="header-top">
+						<div class="container">
+							<div class="header-row py-2">
+								<div class="header-column justify-content-start">
+									<div class="header-row">
 										
-										</ul>
-									</li>
-									<!--  fin menú admnistrador -->
-									@else
-									<!--Menu de profesional -->
-									<li class="dropdown active">
-										<a class="dropdown-toggle" href="#">
-											<i class="fa fa-comments"></i> Panel de control
-											<i class="fa fa-angle-down"></i>
-										</a>
-										<ul class="dropdown-menu">
-											<li><a href="{{ url('/tarifario') }}"><i class="fa fa-calculator"></i> Tarifarios</a></li>
-											<li><a href="{{ url('/beneficios') }}"><i class="fa fa-gift"></i> Beneficios</a></li>
-											<li><a href="{{ url('/foro') }}"><i class="fa fa-comments"></i> Foro</a></li>
-											<li><a href="{{ route('toolsList') }}"><i class="bi bi-tools"></i>  Pañol de herramientas</a></li>
-											<li><a href="{{ route('loans') }}"><i class="fa fa-list-ul"></i> Mis préstamos</a></li>
-										</ul>
-									</li>
-									<!--fin Menu de profesional -->
-									@endif
-										<li class="dropdown">
-											<a class="dropdown-toggle" href="">
-												<i class="fa fa-sign-out"></i> {{ Auth::user()->name }}
-												<i class="fa fa-angle-down"></i>
-											</a>
-											<ul class="dropdown-menu">
-												<li><a href="{{ url('/perfil') }}">Mi Panel</a></li>
-												<li><a href="{{ url('/clave') }}">Contraseña</a></li>
-												<li>
+										<nav class="header-nav-top">
 
-													<a href="{{ route('logout') }}"
-													onclick="event.preventDefault();
-																	document.getElementById('logout-form').submit();">
-														{{ __('Salir') }}
+											
+											<ul class="list list-unstyled list-inline mb-0">
+											
+												<li class="list-inline-item me-4 mb-0">
+													<i class="icons icon-phone text-color-secondary text-4 position-relative top-4 me-1"></i>
+													<a href="tel:+1234567890" class="text-default text-hover-secondary font-weight-medium text-decoration-none text-2">
+														1125274751
 													</a>
-
-													<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-														@csrf
-													</form>
-
 												</li>
-
+											
+												<li class="list-inline-item me-4 mb-0 d-none d-lg-inline-block">
+													<i class="icons icon-location-pin text-color-secondary text-4 position-relative top-4 me-1"></i>
+													<a href="#" class="text-default text-hover-secondary font-weight-medium text-decoration-none text-2">
+														Morón 2453. Flores, CABA
+												</li>
+											
+												<li class="list-inline-item me-4 mb-0 d-none d-md-inline-block">
+													<i class="icons icon-envelope text-color-secondary text-4 position-relative top-4 me-1"></i>
+													<a href="mailto:info@correo.com.ar" class="text-default text-hover-secondary font-weight-medium text-decoration-none text-2">
+														info@cefeperes.com.ar
+													</a>
+												</li>
+											
 											</ul>
-										</li>
-										<!-- Fin de la vista del autenticado -->								
-									@endguest
+											
+										</nav>
 
+										
+										
+										
+									</div>
+								</div>
+								@auth
+								<div class="header-nav-features header-nav-features-no-border header-nav-features-lg-show-border order-1 order-lg-2">
+									<div class="header-nav-feature header-nav-features-user header-nav-features-user-logged d-inline-flex mx-2 pe-2" id="headerAccount">
+										<a href="#" class="header-nav-features-toggle">
+											<i class="far fa-user"></i> {{ Auth::user()->name }} {{ Auth::user()->last_name }}
+										</a>
+										<div class="header-nav-features-dropdown header-nav-features-dropdown-mobile-fixed header-nav-features-dropdown-force-right" id="headerTopUserDropdown">
+											<div class="row">
+												<div class="col-8">
+													<p class="mb-0 pb-0 text-2 line-height-1 pt-1">Hola,</p>
+													<p><strong class="text-color-dark text-4">{{ Auth::user()->name }} {{ Auth::user()->last_name }}</strong></p>
+												</div>
+												<div class="col-4">
+													<div class="d-flex justify-content-end">
+														<img class="rounded-circle" width="40" height="40" alt="" src="{{ asset('storage/avatares/'. Auth::user()->avatar) }}">
 													</div>
 												</div>
 											</div>
-										</li>
-									</ul>
-								</li>
-							</ul>
-						</nav>
+											<div class="row">
+												<div class="col">
+													<ul class="nav nav-list-simple flex-column text-3">
+														<li class="nav-item"><a class="nav-link" href="{{ url('/perfil') }}"> <i class="fa-solid fa-user"></i> Mi Perfil</a></li>
+														<li class="nav-item"><a class="nav-link" href="{{ url('/clave') }}"><i class="fas fa-key"></i>  Contraseña</a></li>
+														@if ( Auth::user()->user_type()->first()->name == 'Profesional')
+														<!--<li class="nav-item"><a class="nav-link" href="{{ route('publicacion') }}"><i class="fas fa-book"></i> Mis Publicaciones</a></li>-->
+														<!--<li class="nav-item"><a class="nav-link border-bottom-0" href="{{ route('logout') }}"><i class="fas fa-sign-out-alt"></i>Salir</a></li>-->
+														@endif
+														<li class="nav-item"><a class="nav-link border-bottom-0" href="{{ route('logout') }}"
+															onclick="event.preventDefault();
+															document.getElementById('logout-form').submit();">
+																<i class="fas fa-sign-out-alt"></i> {{ __('Salir') }}
+															</a></li>
+															<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+																@csrf
+															</form>
+													</ul>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+									
+								@endauth
+
+								@guest
+								
+								<div class="header-column justify-content-end">
+									<div class="header-row">
+										<div class="header-nav-features header-nav-features-no-border header-nav-features-lg-show-border order-1 order-lg-2">
+										<div class="header-nav-feature header-nav-features-user d-inline-flex mx-2 pe-2 signin" id="headerAccount">
+											<a href="#" class="header-nav-features-toggle">
+												<i class="far fa-user"></i> INGRESAR
+											</a>
+											<div class="header-nav-features-dropdown header-nav-features-dropdown-mobile-fixed header-nav-features-dropdown-force-right" id="headerTopUserDropdown">
+												<div class="signin-form">
+													<h5 class="text-uppercase mb-4 font-weight-bold text-3">INGRESAR</h5>
+													<form method="POST" action="{{ route('login') }}">
+													@csrf
+														<div class="form-group">
+															<label class="form-label mb-1 text-2 opacity-8">Email * </label>
+															<input type="email" name="email" value="{{ old('email') }}" class="form-control form-control-lg @error('email') is-invalid @enderror" required>
+															@error('email')
+																<span class="invalid-feedback" role="alert">
+																	<strong>{{ $message }}</strong>
+																</span>
+															@enderror
+														</div>
+														<div class="form-group">
+															<label class="form-label mb-1 text-2 opacity-8">Contraseña *</label>
+															<input type="password" class="form-control form-control-lg @error('password') is-invalid @enderror"  name="password" required>
+															@error('password')
+																<span class="invalid-feedback" role="alert">
+																	<strong>{{ $message }}</strong>
+																</span>
+															@enderror
+														</div>
+														<div class="row pb-2">
+															<div class="form-group form-check col-lg-6 ps-1">
+																<div class="custom-control custom-checkbox">
+																	<input type="checkbox" class="custom-control-input" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+																	<label class="form-label custom-control-label text-2" for="rememberMeCheck">Recordarme</label>
+																</div>
+															</div>
+															<div class="form-group col-lg-6 text-end">
+																<a class="text-uppercase text-1 font-weight-bold text-color-dark" id="headerRecover" href="{{ route('password.request') }}">OLVIDASTE TU CONTRASEÑA?</a>
+															</div>
+														</div>
+														<div class="actions">
+															<div class="row">
+																<div class="col d-flex justify-content-end">
+																	<!--<a class="btn btn-primary" href="#">Ingresar</a>-->
+																	<button type="submit" class="btn btn-primary">{{ __('Ingresar') }}</button>
+																</div>
+															</div>
+														</div>
+														@if (Route::has('register'))
+														<div class="extra-actions">
+															<p>Todavía no tenés una cuenta? <a href="{{ route('register') }}"  class="text-uppercase text-1 font-weight-bold text-color-dark">Registrarme</a></p>
+														</div>
+														@endif
+													</form>
+												</div>
+											
+
+												<div class="recover-form">
+													<h5 class="text-uppercase mb-2 pb-1 font-weight-bold text-3">Restablecer mi contraseña</h5>
+													<p class="text-2 mb-4">Complete el siguiente formulario para recibir un correo electrónico con el código de autorización necesario para restablecer su contraseña.</p>
+
+													<form method="POST" action="{{ route('password.email') }}">
+														@csrf
+														<div class="form-group">
+															<label class="form-label mb-1 text-2 opacity-8">Email * </label>
+															<input type="email" class="form-control form-control-lg">
+														</div>
+														<div class="actions">
+															<div class="row">
+																<div class="col d-flex justify-content-end">
+																	
+																	<button type="submit" class="btn btn-primary">
+																		{{ __('Reestablecer') }}
+																	</button>
+																</div>
+															</div>
+														</div>
+														<div class="extra-actions">
+															<p>Ya tenés una cuenta? <a href="#" id="headerRecoverCancel" class="text-uppercase text-1 font-weight-bold text-color-dark">Ingresar</a></p>
+														</div>
+													</form>
+												</div>
+
+											</div>
+										</div>
+									</div>
+									</div>
+								</div>
+								@endguest
+							</div>
+						</div>
+					</div>
+					<div class="header-container container">
+						<div class="header-row">
+							<div class="header-column">
+								<div class="header-row">
+									<div class="header-logo">
+										<a href="{{route('welcome')}}">
+											<img alt="Tecnoarte" width="160" height="62" data-sticky-width="123" data-sticky-height="48" src="{{ asset('img/logo.png') }}">
+										</a>
+									</div>
+								</div>
+							</div>
+							<div class="header-column justify-content-end">
+								<div class="header-row">
+									<div class="header-nav header-nav-links order-2 order-lg-1">
+										<div class="header-nav-main header-nav-main-square header-nav-main-dropdown-no-borders header-nav-main-dropdown-modern header-nav-main-effect-2 header-nav-main-sub-effect-1">
+											<nav class="collapse">
+												<ul class="nav nav-pills" id="mainNav">
+													<li>
+														<a class="nav-link active" href="{{route('welcome')}}">
+															Inicio
+														</a>
+													</li>
+													@if ($categoria_tipo_all->count() > 0)
+													<li class="dropdown">
+														<a class="dropdown-item dropdown-toggle" href="#">
+															Servicios
+														</a>
+														<ul class="dropdown-menu">
+														@foreach ($categoria_tipo_all as $supercategoria )
+														
+															<li class="dropdown-submenu">
+																<a class="dropdown-item" href="#">{{ $supercategoria->name }}</a>
+																@if ($supercategoria->categorias->count() >0)
+																<ul class="dropdown-menu">
+																	@foreach ($supercategoria->categorias as $categoria )
+																	<li><a class="dropdown-item" href="{{ route('homepublicaciones', ['id'=> $categoria->id]) }}">{{$categoria->name}}</a></li>	
+																	@endforeach
+																</ul>	
+																@endif
+															</li>
+														
+														@endforeach
+														</ul>
+													</li>	
+													@endif
+													
+												
+													<li>
+														<a class="nav-link" href="{{ url('/comunidad') }}">
+															Comunidad CFP
+														</a>
+													</li>
+												
+													<li>
+														<a class="nav-link" href="{{ url('/contacto') }}">
+															Contacto
+														</a>
+													</li>
+													<li class="dropdown dropdown-mega" id="headerSearchProperties">
+														<a class="nav-link dropdown-toggle" href="#">
+															<i class="fas fa-search me-2"></i> Buscar
+														</a>
+														<ul class="dropdown-menu custom-fullwidth-dropdown-menu ms-0">
+															<li>
+																<div class="dropdown-mega-content mt-3 mt-lg-0">
+																	<form class="form-style-3" id="propertiesFormHeader" action="{{route('publicacion_buscar')}}" method="get">
+																		<div class="container p-0">
+																			<div class="row">
+																				<div class="col-lg-10 mb-2 mb-lg-0">
+																					<input type="text" name="data" class="form-control search" id="q" placeholder="Buscar..." required>
+																				</div>
+
+																				<div class="col-lg-2 mb-2 mb-lg-0">
+																					<div class="d-grid gap-2">
+																						<button class="btn btn-secondary font-weight-semibold border-0 p-relative bottom-3 text-1 text-uppercase mt-1 btn-px-4 btn-py-2" type="submit">Buscar</button>
+																					</div>
+																				</div>
+																			</div>
+																		</div>
+																	</form>
+																	
+																</div>
+															</li>
+														</ul>
+													</li>
+													<!-- principio menu logueado -->
+													@guest
+													<!--
+													<li>
+														<a class="nav-link" href="{{ url('/login') }}">Ingresar</a>
+													</li>
+													
+														@if (Route::has('register'))
+														<li>
+															<a class="nav-link" href="{{ route('register') }}"> {{ __('Registrar') }}</a>
+														</li>
+														@endif
+													-->
+														@else
+
+													@if ( Auth::user()->user_type()->first()->name == 'Administrador')
+													<li class="dropdown">
+														<a class="dropdown-item dropdown-toggle" href="#">
+															Panel
+														</a>
+														
+														<ul class="dropdown-menu">
+															<li class="dropdown">
+																<a class="dropdown-item" href="{{ route('admin_profesionales') }}"><i class="fa fa-users"> </i>  Profesionales</a>
+																<a class="dropdown-item" href="{{ route('admin_publicaciones') }}"><i class="fa fa-list-ul"></i> Publiaciones</a>
+																<a class="dropdown-item" href="{{ route('loans') }}"><i class="fa fa-list-ul"></i> Préstamos</a>
+																<a class="dropdown-item" href="{{ route('toolsList') }}"><i class="fa fa-list-ul"></i> Herramientas</a>
+																<a class="dropdown-item" href="{{ route('admin_categorias') }}"><i class="fa fa-list"></i> Categorías</a>
+																<a class="dropdown-item" href="#"><i class="fa fa-list"></i> Títulos</a></li>
+															</li>
+															<li class="dropdown-submenu">
+																<a class="dropdown-item" href="#"><i class="fa fa-cog"></i> Sitio</a>
+																<ul class="dropdown-menu">
+																	<li><a href="{{ route('skins.index') }}"><i class="fa fa-picture-o" aria-hidden="true"></i> Diseño Web</a></li>
+																	<li><a href="{{ route('logo.index') }}"><i class="fa fa-picture-o" aria-hidden="true"></i> Logo header</a></li>
+																	<li><a href="{{ route('carrusel.index') }}"><i class="fa fa-sliders" aria-hidden="true"></i> Carrusel</a></li>
+																	<li><a href="{{ route('SocialNetworks.index') }}"><i class="fa fa-facebook-square" aria-hidden="true"></i> Redes Sociales</a></li>
+																	<li><a href="{{ route('contacts.index') }}"><i class="fa fa-address-book" aria-hidden="true"></i> Datos Contacto</a></li>
+																	<li><a href="{{ route('links.index') }}"><i class="fa fa-link" aria-hidden="true"></i> Links de interes</a></li>
+																	<li><a href="{{ route('aboutus.index') }}"><i class="fa fa-list"></i> Quienes Somos</a></li>
+																	<li><a href="{{ route('categoria-tipos.index') }}"><i class="fa fa-list"></i> Super Categorias</a></li>
+																	<li><a href="{{ route('admin_categorias') }}"><i class="fa fa-list"></i> Categorias</a></li>
+																</ul>
+															</li>
+															
+														</ul>
+													</li>
+
+													@elseif ( Auth::user()->user_type()->first()->name == 'Profesional')
+													<li class="dropdown">
+														<a class="dropdown-item dropdown-toggle" href="#">
+															Panel
+														</a>
+														<ul class="dropdown-menu">
+															<li class="dropdown">
+																<a href="{{ url('/perfil') }}"><i class="fa-solid fa-user"></i> Mi Perifl </a>
+															</li>
+															<li class="dropdown">
+																<a href="{{ url('/publicacion') }}"><i class="fas fa-book"></i> Mis publicaciones</a>
+															</li>
+															<li class="dropdown">
+																<a href="{{ url('/beneficios') }}"><i class="fa fa-gift"></i> Beneficios</a>
+															</li>
+															<li class="dropdown">
+																<a href="{{ url('/foro') }}"><i class="fa fa-comments"></i> Foro</a>
+															</li>
+															<li class="dropdown">
+																<a href="{{ route('toolsList') }}"><i class="bi bi-tools"></i> Pañol</a>
+															</li>
+															<li class="dropdown">
+																<a href="{{ route('loans') }}"><i class="fa fa-list-ul"></i> Mis préstamos</a>
+															</li>
+															<!--
+															<li class="dropdown-submenu">
+																<a class="dropdown-item" href="#"><i class="fas fa-tools"></i>  Herramientas</a>
+																<ul class="dropdown-menu">
+																	<li><a href="{{ url('/perfil') }}"><i class="fa fa-calculator"></i> Mi Perifl </a></li>
+																	<li><a href="{{ url('/publicacion') }}"><i class="fa fa-calculator"></i> Mis publicaciones</a></li>
+																</ul>
+															</li>
+														
+															<li class="dropdown-submenu">
+																<a class="dropdown-item" href="#"><i class="fa fa-user"></i>  {{ Auth::user()->name }} </a>
+																<ul class="dropdown-menu">
+																	<li><a href="{{ url('/clave') }}"><i class="fas fa-key"></i> Contraseña</a></li>
+																	<li><a href="{{ route('logout') }}"
+																	onclick="event.preventDefault();
+																	document.getElementById('logout-form').submit();">
+																	<i class="fas fa-sign-out-alt"></i> {{ __('Salir') }}
+																	</a></li>
+																	<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+																		@csrf
+																	</form>
+																</ul>
+															</li>
+														-->
+														</ul>
+													</li>
+
+													</li>
+													
+													@endif
+
+													<!-- Fin de la vista del autenticado -->
+													@endguest
+
+												
+													<!-- -- fin de menu logueado-->
+												
+												
+													
+												</ul>
+											</nav>
+										</div>
+										<button class="btn header-btn-collapse-nav" data-bs-toggle="collapse" data-bs-target=".header-nav-main nav">
+											<i class="fas fa-bars"></i>
+										</button>
+									</div>
+									<div class="header-nav-features header-nav-features-no-border header-nav-features-lg-show-border order-1 order-lg-2">
+										<div class="header-nav-feature header-nav-features-search d-inline-flex">
+											
+											<ul class="header-social-icons social-icons social-icons-lg d-none d-sm-block social-icons-clean ms-0">
+												
+												<li class="social-icons-facebook"><a href="https://www.facebook.com/Cefeperes/" target="_blank" title="Facebook"><i class="text-4 fab fa-facebook-f"></i></a></li>
+												
+												<li class="social-icons-twitter"><a href="#" target="_blank" title="Twitter"><i class="text-4 fab fa-twitter"></i></a></li>
+												
+												<li class="social-icons-instagram"><a href="#" target="_blank" title="Instagram"><i class="text-4 fab fa-instagram"></i></a></li>
+												
+											</ul>
+											
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</header>
@@ -247,194 +494,102 @@
 
             <footer id="footer">
 				<div class="container">
-					<div class="row">
-						<!--
-						<div class="footer-ribbon">
-							<span>Estemos en contacto</span> 
-						</div>-->
-						<div class="col-md-6">
-							<div class="newsletter">
-								<h4>Red de CFP´s:</h4>
-								<p>
-									<a href="https://www.facebook.com/cfp.nro1/" target="_blank"><strong> CFP N° 01</strong> / Río Cuarto 1993, C1295 CABA Teléfono: 4301-8678 </a><br>
-									<a href="https://www.facebook.com/cfpcuatro/" target="_blank"><strong> CFP N° 04 </strong>/ Carhué 2970, C1440ERF CABA Teléfono: 4686-2196</a>  <br>
-									<a href="https://www.educaedu.com.ar/centros/centro-de-formacion-profesional-n-6-para-adoles-y-adultos--cifpa-uni2292" target="_blank"> <strong> CFP N° 06 </strong>/ Av. Asamblea 153, C1424COB CABA Teléfono: 4922-3683 </a><br>
-									<a href="https://centrosiete.wixsite.com/centro-siete?fbclid=IwAR3be32wBMSf1fQe75r5JqrlF19J7oaMm9HpkDsQAGoJPpmX4d4Rhzfnwbk" target="_blank"><strong> CFP N° 07 </strong>/ Ramsay 2250, C1428BAJ CABA Teléfono: 011 4783-8725 </a><br>
-									<a href="https://www.facebook.com/PoloEducativoBarracas" target="_blank"><strong> CFP N° 09 </strong>/ Av. Gral. Iriarte 3400, C1437 CABA Teléfono:  </a><br>
-									<a href="https://cfp24.com.ar/" target="_blank"><strong> CFP N° 24 </strong>/ Morón 2538, C1406FVF CABA Teléfono: 011 4611-5374 </a><br>
-									<a href="https://www.cfp36caba.edu.ar/" target="_blank"><strong> CFP N° 36 </strong>/ Zavaleta 204, Parque Patricios, CABA Teléfono: 4912-3792 </a>
-								</p>
-
-								<!--
-								<h4>Newsletter</h4>
-								<p>Manténgase al día con nuestras características y tecnología de productos en constante evolución. Ingrese su correo electrónico y suscríbase a nuestro boletín.</p>
-								
-								<div class="alert alert-success hidden" id="newsletterSuccess">
-									<strong>¡Éxito!</strong> Te han agregado a nuestra lista de correo electrónico.
-								</div>
-
-								<div class="alert alert-danger hidden" id="newsletterError"></div>
-
-								<form id="newsletterForm" action="php/newsletter-subscribe.php" method="POST">
-									<div class="input-group">
-										<input class="form-control" placeholder="Dirección de correo" name="newsletterEmail" id="newsletterEmail" type="text">
-										<span class="input-group-btn">
-											<button class="btn btn-default" type="submit">Ir!</button>
-										</span>
-									</div>
-								</form>
-							-->
-							</div>
-						</div>
-
-						<div class="col-md-4">
-							<div class="contact-details">
-								<h4>Contacto</h4>
-								<ul class="contact">
-									<li><p><i class="fa fa-map-marker"></i> <a href=""> <strong>Dirección:</strong> Morón 2453. Flores, CABA </a></p></li>
-									<li><p><i class="fa fa-phone"></i>  <a href=""><strong>Telefono:</strong> 1125274751 </a></p></li>
-									<li><p><i class="fa fa-envelope"></i> <a href=""><strong>Email:</strong></a> <a href="mailto:info@serviciosprofesionales.com.ar">info@cefeperes.com.ar</a></p></li>
-								</ul>
-							</div>
-						</div>
-						<div class="col-md-2">
-							<h4>Seguinos</h4>
-							<div class="social-icons">
-								<ul class="social-icons">
-									<li class="facebook"><a href="https://www.facebook.com/Cefeperes/" target="_blank" data-placement="bottom" data-tooltip title="Facebook">Facebook</a></li>
-									<!--
-									<li class="instagram"><a href="http://www.instagram.com/" target="_blank" data-placement="bottom" data-tooltip title="Instagram">Instagram</a></li>
-									<li class="linkedin"><a href="http://www.linkedin.com/" target="_blank" data-placement="bottom" data-tooltip title="Linkedin">Linkedin</a></li>
-									-->
-								</ul>
-
-							</div>
-
+					<div class="row py-5">
+						<div class="col text-center">
+							
+							<ul class="footer-social-icons social-icons social-icons-clean social-icons-big social-icons-opacity-light social-icons-icon-light mt-1">
+								<li class="social-icons-facebook"><a href="#" target="_blank" title="Facebook"><i class="fab fa-facebook-f text-2"></i></a></li>
+							</ul>
+							
 						</div>
 					</div>
 				</div>
-				<div class="footer-copyright">
-					<div class="container">
-						<div class="row">
-							<div class="col-md-6">
-								<p><a href="http://www.tecnoarte.com.ar" target="_blank"><img src="{{ asset('tecnoarte.png')}}" alt="logo" width="118" height="16"></a></p>
+
+				<div class="footer-copyright footer-copyright-style-2">
+					<div class="container py-2">
+						<div class="row py-4">
+							<div class="col-lg-8 text-center text-lg-start mb-2 mb-lg-0">
+								<p>
+								
+									<span class="pe-0 pe-md-3 d-block d-md-inline-block"><i class="far fa-dot-circle text-color-primary top-1 p-relative"></i><span class="text-color-light opacity-7 ps-1"> Morón 2453. Flores, CABA </span></span>
+								
+									<span class="pe-0 pe-md-3 d-block d-md-inline-block"><i class="fab fa-whatsapp text-color-primary top-1 p-relative"></i><a href="tel:1234567890" class="text-color-light opacity-7 ps-1"> 1125274751 </a></span>
+								
+									<span class="pe-0 pe-md-3 d-block d-md-inline-block"><i class="far fa-envelope text-color-primary top-1 p-relative"></i><a href="mailto:info@correo.com.ar" class="text-color-light opacity-7 ps-1"> info@cefeperes.com.ar </a></span>
+								
+								</p>
 							</div>
-							<div class="col-md-6">
-								<nav id="sub-menu">
-									<ul>
-										<li><a href="http://cfp24.com.ar/">Desarrollado x CFP 24</a></li>
-										<li><a href="{{ url('/condiciones') }}">Condiciones de uso</a></li>
-										<li><a href="{{ url('/privacidad') }}">Política de Privacidad</a></li>
-										<li><a href="{{ url('/contacto') }}">Contacto</a></li>
-									</ul>
-								</nav>
+							<div class="col-lg-4 d-flex align-items-center justify-content-center justify-content-lg-end mb-4 mb-lg-0 pt-4 pt-lg-0">
+								<p>© Copyright 2023. Diseño por <a href="http://www.tecnoarte.com.ar">TecnoARTE</a>.</p>
 							</div>
 						</div>
 					</div>
 				</div>
 			</footer>
+			</div>
 		</div>
 
-		<!-- Vendor -->
-		<script src="{{ asset('vendor/jquery/jquery.js') }}"></script>
-		<script src="{{ asset('vendor/jquery.appear/jquery.appear.js') }}"></script>
-		<script src="{{ asset('vendor/jquery.easing/jquery.easing.js') }}"></script>
-		<script src="{{ asset('vendor/jquery-cookie/jquery-cookie.js') }}"></script>
-		<script src="{{ asset('vendor/bootstrap/bootstrap.js') }}"></script>
-		<script src="{{ asset('vendor/common/common.js') }}"></script>
-		<script src="{{ asset('vendor/jquery.validation/jquery.validation.js') }}"></script>
-		<script src="{{ asset('vendor/jquery.stellar/jquery.stellar.js') }}"></script>
-		<script src="{{ asset('vendor/jquery.easy-pie-chart/jquery.easy-pie-chart.js') }}"></script>
-		<script src="{{ asset('vendor/jquery.gmap/jquery.gmap.js') }}"></script>
-		<script src="{{ asset('vendor/isotope/jquery.isotope.js') }}"></script>
-		<script src="{{ asset('vendor/owlcarousel/owl.carousel.js') }}"></script>
-		<script src="{{ asset('vendor/jflickrfeed/jflickrfeed.js') }}"></script>
-		<script src="{{ asset('vendor/magnific-popup/jquery.magnific-popup.js') }}"></script>
-        <script src="{{ asset('vendor/vide/vide.js') }}"></script>
-        <script src="{{ asset('vendor/dropzone/dropzone.js') }}"></script> 
+<!-- Vendor -->
+<script src="{{asset('ipp/vendor/plugins/js/plugins.min.js')}}"></script>
 
-		<!-- Paco -->
-		<!--
-		<script src="{{ asset('js/datos_profesional.js') }}"></script>
-		-->
-		<!-- Theme Base, Components and Settings -->
-		<script src="{{ asset('js/theme.js') }}"></script>
+<!-- Theme Base, Components and Settings -->
+<script src="{{asset('ipp/js/theme.js')}}"></script>
 
-		<!-- Specific Page Vendor and Views -->
-		<script src="{{ asset('vendor/rs-plugin/js/jquery.themepunch.tools.min.js') }}"></script>
-		<script src="{{ asset('vendor/rs-plugin/js/jquery.themepunch.revolution.min.js') }}"></script>
-		<script src="{{ asset('vendor/circle-flip-slideshow/js/jquery.flipshow.js') }}"></script>
-		<script src="{{ asset('js/views/view.home.js') }}"></script>
+<!-- Current Page Vendor and Views envio de mensajes-->
+<!-- <script src="{{asset('ipp/js/views/view.contact.js')}}"></script> -->
 
-		<!-- Theme Custom -->
-		<script src="{{ asset('js/custom.js') }}"></script>
+<!-- Demo -->
+<script src="{{asset('ipp/js/demos/demo-tecnoarte-cian.js')}}"></script>
 
-		<!-- Theme Initialization Files -->
-		<script src="{{ asset('js/theme.init.js') }}"></script>
+<!-- Theme Custom -->
+<script src="{{asset('ipp/js/custom.js')}}"></script>
 
-		<!-- Google Analytics: Change UA-XXXXX-X to be your site's ID. Go to http://www.google.com/analytics/ for more information.
-		<script type="text/javascript">
+<!-- Theme Initialization Files -->
+<script src="{{asset('ipp/js/theme.init.js')}}"></script>
 
-			var _gaq = _gaq || [];
-			_gaq.push(['_setAccount', 'UA-12345678-1']);
-			_gaq.push(['_trackPageview']);
+<!--Carrusel de fotos de trabajo de cada profesional -->
+<script src="{{asset('ipp/js/examples/examples.gallery.js')}}"></script>	
 
-			(function() {
-			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-			})();
-
-		</script>
-		 -->
-
-		 <!-- Global site tag (gtag.js) - Google Analytics old -->
-		 <!--
-		<script async src="https://www.googletagmanager.com/gtag/js?id=G-0FM2CN3R42"></script>
-		<script>
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZEK93B6CSE"></script>
+	<script>
 		window.dataLayer = window.dataLayer || [];
 		function gtag(){dataLayer.push(arguments);}
 		gtag('js', new Date());
 
-		gtag('config', 'G-0FM2CN3R42');
-		</script>
-		-->
-		<!-- Global site tag (gtag.js) - Google Analytics -->
-		<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZEK93B6CSE"></script>
-		<script>
-			window.dataLayer = window.dataLayer || [];
-			function gtag(){dataLayer.push(arguments);}
-			gtag('js', new Date());
+		gtag('config', 'G-ZEK93B6CSE');
+	</script>
+	<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+	new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+	j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+	'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+	})(window,document,'script','dataLayer','GTM-NDX4K44');</script>
+<!-- End Google Tag Manager -->
 
-			gtag('config', 'G-ZEK93B6CSE');
-		</script>
-		<!-- Google Tag Manager -->
-		<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-			new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-			j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-			'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-			})(window,document,'script','dataLayer','GTM-NDX4K44');</script>
-	<!-- End Google Tag Manager -->
-
-	<!-- Este script bloque el ingeso de letras en imput de whatsapp-->
-		<script> function validate(evt) {
-			var theEvent = evt || window.event;
-		
-			// Handle paste
-			if (theEvent.type === 'paste') {
-				key = event.clipboardData.getData('text/plain');
-			} else {
-			// Handle key press
-				var key = theEvent.keyCode || theEvent.which;
-				key = String.fromCharCode(key);
-			}
-			var regex = /[0-9]|\./;
-			if( !regex.test(key) ) {
-			theEvent.returnValue = false;
-			if(theEvent.preventDefault) theEvent.preventDefault();
-			}
-		}
-		</script>
-		@stack('script')
-	</body>
+<!-- Este script bloque el ingeso de letras en imput de whatsapp-->
+<script>
+function validate(evt) {
+	var theEvent = evt || window.event;
+  
+	// Handle paste
+	if (theEvent.type === 'paste') {
+		key = event.clipboardData.getData('text/plain');
+	} else {
+	// Handle key press
+		var key = theEvent.keyCode || theEvent.which;
+		key = String.fromCharCode(key);
+	}
+	var regex = /[0-9]|\./;
+	if( !regex.test(key) ) {
+	  theEvent.returnValue = false;
+	  if(theEvent.preventDefault) theEvent.preventDefault();
+	}
+  }
+</script>
+<!-- Editor de texto en textarea de quienes somos -->
+<script type="text/javascript">
+	$(document).ready(function () {
+		$('.ckeditor').ckeditor();
+</body>
 </html>

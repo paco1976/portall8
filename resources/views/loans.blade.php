@@ -2,29 +2,37 @@
 
 @section('main')
 
-<div role="main" class="main">
-	<section class="page-top">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-12">
-					<ul class="breadcrumb">
-						<li><a href="#">Inicio</a></li>
-						<li class="active">Panel de Control</li>
+<div role="main" class="main" >
+		
+	<section class="section section-concept section-no-border section-dark section-angled section-angled-reverse pt-5 m-0 overlay overlay-show overlay-op-8" style="background-image: url({{asset('img/slides/slide-bg-4.jpg')}}); background-size: cover; background-position: center; min-height: 645px;">
+		<div class="section-angled-layer-bottom section-angled-layer-increase-angle bg-light" style="padding: 8rem 0;"></div>
+		<div class="container pt-lg-5 mt-5">
+			<div class="row pt-3 pb-lg-0 pb-xl-0">
+				<div class="col-lg-6 pt-4 mb-5 mb-lg-0">
+					<ul class="breadcrumb font-weight-semibold text-4 negative-ls-1">
+						<li><a href="{{route('welcome')}}">Inicio</a></li>
+						<li class="text-color-primary"><a href="#">Panel de control</a></li>
+						
 					</ul>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-md-12">
-					@if(Auth::user()->user_type()->first()->name=='Administrador')
-					<h1>Préstamos</h1>
-					@else
-					<h1>Mis préstamos</h1>
-					@endif
+					<h1 class="font-weight-bold text-10 text-xl-12 line-height-2 mb-3">
+						@if(Auth::user()->user_type()->first()->name=='Administrador')
+							Préstamos
+						@else
+							Mis préstamos
+						@endif
+					</h1>
+					
+					<a href="#ver" data-hash data-hash-offset="0" data-hash-offset-lg="100" class="btn btn-gradient-primary border-primary btn-effect-4 font-weight-semi-bold px-4 btn-py-2 text-3">Ver <i class="fas fa-arrow-down ms-1"></i></a>
+					
+					<a href="#" class="btn btn-primary btn-outline btn-outline-thin btn-outline-light-opacity-2 btn-effect-5 font-weight-semi-bold px-4 btn-py-2 text-3 text-color-light text-color-hover-dark ms-2"   data-bs-toggle="modal" data-bs-target="#defaultModal">¿Como Funciona?<i class="icon-info icons ms-1"></i></a>
 				</div>
 
 			</div>
 		</div>
 	</section>
+
+	<div role="main" class="main" id="ver">
+	
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
@@ -242,6 +250,38 @@
 			</div>
 		</div>
 	</div>
+
+	<div class="modal fade" id="defaultModal" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title" id="defaultModalLabel">Qué hago?</h4>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true">&times;</button>
+				</div>
+				<div class="modal-body">
+					<p><strong>Cómo creo una publicación</strong><br>
+						Clic en <a href="#">Agregar Publicación</a>.<br>
+						<strong>Completar los datos: </strong> <br>
+						1. Seleccionar categoría.<br>
+						2. Describir el servicio que va a ofrecer.<br>
+						3. Subir foto de los trabajos realizados.<br>
+						4. Subir certificado de estudios (formato PDF).<br>
+						</p>
+						
+		<hr class="solid my-4 appear-animation" data-appear-animation="fadeInUpShorter" data-appear-animation-delay="900">
+						<p><em>La publicación no serán visible hasta sea validada por la administración del Portal.</em></p>
+					
+					
+					
+					
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-light" data-bs-dismiss="modal">Entiendo</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
 </div>
 @endsection
 
@@ -268,3 +308,6 @@
 		window.location.href = newUrl;
 	}
 </script>
+
+
+

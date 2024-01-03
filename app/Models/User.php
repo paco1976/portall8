@@ -55,9 +55,13 @@ class User extends Authenticatable
 
     public function user_profile()
     {
-        return $this->hasMany('App\Models\User_Profile');
+        return $this->hasMany('App\Models\User_Profile', 'user_id');
     }
 
+    public function profile(){
+        return $this->hasMany('App\Models\User_Profile', 'user_id');
+    }
+    
     public function user_cfp()
     {
         $user_cfp = $this->belongsTo('App\Models\User_Cfp', 'cfp_id');

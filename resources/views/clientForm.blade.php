@@ -35,8 +35,11 @@
         <label class="form-check-label" for="agree">Acepto que el CEFEPERS almacene mis datos de contacto y acepto recibir encuestas o promociones.</label>
       </div>
     </div>
-
-    <button type="submit" class="btn btn-primary" id="submitBtn">Enviar</button>
+    
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-light" data-bs-dismiss="modal">Enviar</button>
+      
+    </div>
   </form>
 </div>
 

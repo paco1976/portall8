@@ -196,7 +196,10 @@ class PublicacionController extends Controller
 
         //aviso al referente
         $cfp = $user->user_cfp()->first();
-        $interactionhead->url = url('mensajes/' . $interactionhead->hash);
+        //url referente
+        //$interactionhead->url = url('mensajes/' . $interactionhead->hash);
+        //url admin
+        $interactionhead->url = url('admin_mensajes/' . $interactionhead->hash);
         Mail::to($cfp->email)->send(new Interaction_notificacion_referente($interactionhead));
 
         return redirect()->route('publicacion_mensajes', ['head_hash' => $interactionhead->hash ]);
@@ -218,6 +221,7 @@ class PublicacionController extends Controller
         $publicacion = Publicacion::where('hash', $publicacion_hash)->first();
         $publicacion->categoria = Categoria::where('id', $publicacion->categoria_id)->first();
         $user = User::find(Auth::user()->id);
+        $user->avatar = Storage::disk('avatares')->url($user->avatar);
         $publicacion->user = $publicacion->users()->first();
         $titulos_asociados = Titulo::where('categoria_id', $publicacion->categoria->id)->orderBy('name', 'DESC')->get();
         $publicacion->imagenes = $publicacion->imagenes()->get();
@@ -240,13 +244,13 @@ class PublicacionController extends Controller
 
     //"{{ route('avatardelete') }}"
 
-    public function imagen_delete($imagen_id){
-        $publicacion_image = Publicacion_image::where('id', $imagen_id)->first();
+    public function imagen_delete($id){
+        $publicacion_image = Publicacion_image::where('id', $id)->first();
         $publicacion = Publicacion::where('id',$publicacion_image->publicacion_id)->first();
         Storage::disk('publicaciones')->delete($publicacion_image->url);
         $publicacion_image->delete();
         Session::flash('message', 'La imagen se a eliminado con éxito');
-        return redirect()->route('publicacion_edit', ['head' => $publicacion->hash ]);
+        return redirect()->route('publicacion_edit', ['publicacion_hash' => $publicacion->hash ]);
     }
 
     public function publicacion_delete($publicacion_hash){
@@ -392,6 +396,7 @@ class PublicacionController extends Controller
 
     public function publicacion_new(){
         $user = User::find(Auth::user()->id);
+        $user->avatar = Storage::disk('avatares')->url($user->avatar);
         $categoria_all = Categoria::all();
         //ascendente
         $titulo_all = Titulo::all()->sortBy('name');

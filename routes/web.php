@@ -40,7 +40,7 @@ Route::get('/register', function () {
 })->name('register');
 
 
-//Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/perfil', 'UserController@index')->name('perfil');
 //rutas para crear el perfil
 Route::get('/perfil_new', 'ProfileController@nuevo')->name('perfil_new');
@@ -137,9 +137,21 @@ Route::get('/admin_publicaciones_show_rating/{publicacion_hash}/origen/{origen}'
 
 Route::get('/admin_consultas/{publicacion_hash}', 'AdminController@admin_consultas')->name('admin_consultas');
 Route::get('/admin_mensajes/{hash}', 'AdminController@admin_mensajes')->name('admin_mensajes');
+/*
 Route::get('/admin_categorias','AdminController@admin_categorias' )->name('admin_categorias'); 
 Route::get('/admin_categoria_activar_desactivar/{id}','AdminController@admin_categoria_activar_desactivar' )->name('admin_categoria_activar_desactivar');
 Route::put('/admin_categoria_icon','AdminController@admin_categoria_icon' )->name('admin_categoria_icon');
+*/
+Route::get('/admin_categorias','CategoriaController@admin_categorias' )->name('admin_categorias'); // Ver categoría desde el panel de admin
+Route::get('/admin_categoria_activar_desactivar/{id}','CategoriaController@admin_categoria_activar_desactivar' )->name('admin_categoria_activar_desactivar'); // Activar desactivar categoria desde el panel de admin
+Route::put('/admin_categoria_icon','CategoriaController@admin_categoria_icon' )->name('admin_categoria_icon'); //cambiar icono de categoría desde el panel de admin
+Route::get('/admin_categoria_new', 'CategoriaController@admin_categoria_new')->name('admin_categoria_new'); // pantalla nueva categoria desde el panel de admin
+Route::put('/admin_categoria_save','CategoriaController@admin_categoria_save' )->name('admin_categoria_save'); //guardar nueva categoria desde el panel de admin
+Route::get('/admin_categoria_edit/{id}', 'CategoriaController@admin_categoria_edit')->name('admin_categoria_edit'); // pantalla nueva categoria desde el panel de admin
+Route::put('/admin_categoria_update','CategoriaController@admin_categoria_update' )->name('admin_categoria_update'); //guardar nueva categoria desde el panel de admin
+Route::get('/admin_categoria_delete/{id}','CategoriaController@admin_categoria_delete' )->name('admin_categoria_delete'); // Activar desactivar categoria desde el panel de admin
+
+
 Route::get('/admin_surveys/{publicacion_hash}', 'AdminController@admin_surveys')->name('admin_surveys');
 
 
@@ -165,6 +177,7 @@ Route::put('/prof_publicacion_update/{hash_user}', 'AdminController@prof_publica
 Route::get('/prof_publicacion/{hash_user}','AdminController@prof_publicaciones' )->name('prof_publicacion'); //ve las problicaciones del profesional desde el admin
 Route::get('/prof_publicacion_new/{hash_user}','AdminController@prof_publicacion_new')->name('prof_publicacion_new'); //alta de publicación desde el admin
 Route::put('/prof_publicacion_new/{hash_user}', 'AdminController@prof_publicacion_save')->name('prof_publicacion_save'); //guardar de publicación desde el admin
+Route::get('/prof_publicacion_imagen_delete/{id}', 'AdminController@prof_publicacion_imagen_delete')->name('prof_publicacion_imagen_delete');//borrado de una imagen de una publicación desde el panel admin
 
 
 
@@ -283,3 +296,13 @@ Route::get('/privacidad',function(){return view('privacidad');});
 /** Rutas para WhatsApp Api */
 Route::get('/whatsapp', [App\Http\Controllers\SurveyController::class, 'handleWebhook']);
 Route::post('/whatsapp', [App\Http\Controllers\SurveyController::class, 'handleResponse']);
+
+//rutas de configuración de sitio
+Route::resource('SocialNetworks', SocialNetworkController::class);
+Route::resource('contacts', ContactController::class);
+Route::resource('links', LinkController::class);
+Route::resource('aboutus', AboutusController::class);
+Route::resource('categoria-tipos', CategoriaTipoController::class);
+Route::resource('carrusel', CarruselController::class);
+Route::resource('logo', LogoController::class);
+Route::resource('skins', SkinController::class);

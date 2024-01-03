@@ -5,9 +5,12 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
+use App\Models\User_Profile;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
+use Image;
 
 class RegisterController extends Controller
 {
@@ -52,12 +55,15 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
+            'mobile'=> ['required'],
             'dni' => ['required', 'string', 'max:255'],
             'avatar' => ['required','image','max:2048'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'user_type' => ['required'],
-            'user_cfp' => ['required'],
+            'phone' => '',
+            'facebook' => '',
+            'instagram' => '',
         ]);
     }
 
@@ -84,22 +90,45 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'type_id' => $data['user_type'],
-            'cfp_id' => $data['user_cfp'],
+            'cfp_id' => 13,
         ]);
-
+        //'cfp_id' => $data['user_cfp'],
         $user->hash = md5($user->id);
         $user->save();
         
-        
-        //creo la carpeta con el numero de id
-        $resultado = Storage::disk('avatares')->makeDirectory($user->id, 0777);
-        //subo el archivo y guardo el path
-        $path = Storage::disk('avatares')->putFILE($user->id, request()->file('avatar'));
-        //actualizo el path del avatar
-        $user->avatar = $path;
-        //guardo el path del avatar
-        $user->save(['avatar']);
-        //dd($user->avatar);
+         //subir foto nuevo metodo
+         if (request()->hasfile('avatar')) {
+            $carpetas = Storage::disk('avatares')->directories();
+            $directorio_existe = false;
+            foreach($carpetas as $carpeta){
+                if($carpeta == $user->id){   
+                    $directorio_existe = true;
+                }
+            }
+            if($directorio_existe == false){
+                $resultado = Storage::disk('avatares')->makeDirectory($user->id, 0777, true);
+            }
+
+            $image = request()->file('avatar');
+            $input['imagename'] = time().'.'.$image->extension();
+            $destinationPath = Storage::disk('avatares')->path($user->id);
+            $img = Image::make($image->path());
+            $img->resize(300, 300, function ($constraint) {
+                $constraint->aspectRatio();
+            })->save($destinationPath.'/'.$input['imagename']);
+            $path = $user->id.'/'.$input['imagename'];
+            $user->avatar = $path;
+            $user->save(['avatar']);
+        }
+                
+        User_Profile::create([
+            'user_id' => $user->id,
+            'mobile' => $data['mobile'],
+            'phone' => $data['phone'],
+            'facebook' => $data['facebook'],
+            'instagram' => $data['instagram'],
+        ]);
+
         return  $user;
 
     }
