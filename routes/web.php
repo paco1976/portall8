@@ -179,7 +179,7 @@ Route::get('/prof_publicacion_new/{hash_user}','AdminController@prof_publicacion
 Route::put('/prof_publicacion_new/{hash_user}', 'AdminController@prof_publicacion_save')->name('prof_publicacion_save'); //guardar de publicación desde el admin
 Route::get('/prof_publicacion_imagen_delete/{id}', 'AdminController@prof_publicacion_imagen_delete')->name('prof_publicacion_imagen_delete');//borrado de una imagen de una publicación desde el panel admin
 
-
+Route::get('/skin_select/{id}', 'SkinController@select')->name('skin_select');//Para seleccionar el diseño especifico
 
 //todas rutas estaticas por el momento
 Route::get('/tarifario',function(){
