@@ -12,7 +12,7 @@ include app_path('WhatsAppBot/surveyMessages.php');
 
 class SurveyController extends Controller
 {
-   
+
     /** 
      * Webhook para conectar con la API de WhatsApp
      * */
@@ -98,7 +98,6 @@ class SurveyController extends Controller
                 ]
             ]);
         } else if ($type === 'list') {
-
             $surveyMessage = json_encode([
                 "messaging_product" => "whatsapp",
                 "recipient_type" => "individual",
@@ -125,6 +124,15 @@ class SurveyController extends Controller
                     "body" => $message,
                     "preview_url" => true
                 ]
+            ]);
+        } else if ($type === 'template') {
+            $surveyMessage = json_encode([
+                "messaging_product" => "whatsapp",
+                "recipient_type" => "individual",
+                "to" => $recipient_phone,
+                "type" => "template",
+                "template" => $message
+
             ]);
         }
 
@@ -167,13 +175,13 @@ class SurveyController extends Controller
                 info($response);
 
 
-                if($status_code == 200 && isset($response)){
+                if ($status_code == 200 && isset($response)) {
                     $wa_id = $response['contacts'][0]['wa_id'];
 
                     $message_id = $response['messages'][0]['id'];
-    
+
                     $messageSent = $message;
-    
+
                     // Si recibió el survey
                     if ($survey) {
                         info('9. Envió la encuenta:');
@@ -181,7 +189,7 @@ class SurveyController extends Controller
                         // En el step 1 quiero cambiar el campo contacted a true y reemplazar lo que se almacena como mensaje guardado.
                         if ($step === 1) {
                             $messageSent = 'Inicio encuesta';
-    
+
                             $survey->contacted = true;
                             $survey->save();
                         }
@@ -191,7 +199,7 @@ class SurveyController extends Controller
                             'message_received' => $idReceived,
                             'message_sent' => $messageSent,
                             'id_wa' => $message_id,
-                            'phone' => $wa_id,                        
+                            'phone' => $wa_id,
                         ]);
                     } else {
                         // Para mensajes que no está asociados con un survey, los guardo igual.
@@ -222,7 +230,8 @@ class SurveyController extends Controller
 
         // Busca tipo de mensaje (interactive o text)
         $replyType = $response['entry'][0]['changes'][0]['value']['messages'][0]['type'];
-
+        info('Reply type');
+        info($replyType);
         // Inicializa variable del mensaje recibido
         $message = false;
 
@@ -232,8 +241,8 @@ class SurveyController extends Controller
         // Inicializa el survey
         $survey = false;
         $chat = Chatbot::where('phone', $client_phone)
-                ->where('message_sent', 'Inicio encuesta') // TODO
-                ->latest()->first();
+            ->where('message_sent', 'Inicio encuesta') // TODO
+            ->latest()->first();
         $survey = $chat->survey;
         if ($replyType === "interactive") {
             // Chequea qué tipo de mensaje interactivo es y obtiene el mensaje
@@ -243,24 +252,26 @@ class SurveyController extends Controller
                 $message = $response['entry'][0]['changes'][0]['value']['messages'][0]['interactive']['button_reply']['id'];
             } else if ($type === "list_reply") {
                 $message = $response['entry'][0]['changes'][0]['value']['messages'][0]['interactive']['list_reply']['id'];
-            }            
+            }
         } else if ($replyType === "text") {
             $message = $response['entry'][0]['changes'][0]['value']['messages'][0]['text']['body'];
+        } else if ($replyType === "button") {
+            $message = $response['entry'][0]['changes'][0]['value']['messages'][0]['button'][0]['payload'];
         }
 
         // Id del mensaje recibido
         $message_ID = $response['entry'][0]['changes'][0]['value']['messages'][0]['id'];
 
         // Si hay un mensaje continúa
-        if ($message != null) {    
-             /**
+        if ($message != null) {
+            /**
              * Respuesta a init NO - manda FIN2
              */
             info('11. Recbió mensje');
             info($message);
             if ($message === 'dontSendSurvey') {
                 $response = $surveyMessages['finalMessage2_text'];
-                
+
                 // Guarda la negativa de contestar la encuesta
                 if ($survey) {
                     $survey->accepts_survey = false;
@@ -269,7 +280,7 @@ class SurveyController extends Controller
 
                 // Envía mensaje de agradecimiento
                 $this->sendWhatsAppMessage($survey, "text", $response, 2, $message_ID,  $message, '', $client_phone);
-            }       
+            }
             /**
              * Respuesta a init SI - manda 1a (concretó?)
              */
@@ -287,49 +298,49 @@ class SurveyController extends Controller
 
                 $this->sendWhatsAppMessage($survey, "buttons", $response, 2, $message_ID, $message, $dataToSend, $client_phone);
             }
-           /**
-            * Recibe 'no concretó' -> manda por qué no?
-            */
-            else if ($message === "message2a") {                   
+            /**
+             * Recibe 'no concretó' -> manda por qué no?
+             */
+            else if ($message === "message2a") {
                 $response = $surveyMessages['message2a_text'];
-                
+
                 $dataToSend = $surveyMessages['message2a_buttons'];
-                
-                if($survey){                
-                  // Guarda en la tabla de survey que no se concretó un acuerdo de trabajo 
-                  $survey->service_provided = false;
-                  $survey->save();
+
+                if ($survey) {
+                    // Guarda en la tabla de survey que no se concretó un acuerdo de trabajo 
+                    $survey->service_provided = false;
+                    $survey->save();
                 }
 
-              $this->sendWhatsAppMessage($survey, "list", $response, 3, $message_ID, $message, $dataToSend, $client_phone);  
+                $this->sendWhatsAppMessage($survey, "list", $response, 3, $message_ID, $message, $dataToSend, $client_phone);
             }
             /**
              * Recibe 'concretó' -> manda calificar
              */
-            else if ($message === 'message1b') {                   
-              if($survey){                
-                $user = $survey->user()->first();
-                $profileName = $user->name . ' ' . $user->last_name;
-           
-                $response = str_replace(':profileName', $profileName, $surveyMessages['message1b_text']);
-                
-                $dataToSend = $surveyMessages['message1b_buttons'];
+            else if ($message === 'message1b') {
+                if ($survey) {
+                    $user = $survey->user()->first();
+                    $profileName = $user->name . ' ' . $user->last_name;
 
-                // Guarda en la tabla de survey que se concretó un acuerdo de trabajo 
-                $survey->service_provided = true;
-                $survey->save();
+                    $response = str_replace(':profileName', $profileName, $surveyMessages['message1b_text']);
+
+                    $dataToSend = $surveyMessages['message1b_buttons'];
+
+                    // Guarda en la tabla de survey que se concretó un acuerdo de trabajo 
+                    $survey->service_provided = true;
+                    $survey->save();
+                }
+
+                $this->sendWhatsAppMessage($survey, "list", $response, 3, $message_ID, $message, $dataToSend, $client_phone);
             }
-
-            $this->sendWhatsAppMessage($survey, "list", $response, 3, $message_ID, $message, $dataToSend, $client_phone);
-            }    
             /**
              * Recibe respuestas de por qué no concretó -- manda FIN2            * 
-             */   
-            else if (strpos($message, 'noAgree:') !== false)  {
+             */
+            else if (strpos($message, 'noAgree:') !== false) {
                 // Guarda la palabra en el tabla de survey
                 $firstWord = true;
 
-                if ($survey) {                
+                if ($survey) {
 
                     $word = substr($message, strpos($message, "noAgree:") + strlen("noAgree:"));
 
@@ -346,14 +357,13 @@ class SurveyController extends Controller
                     $survey->no_agreement = $noAgreement;
 
                     $survey->save();
-
                 }
-                if($firstWord){
+                if ($firstWord) {
                     $response = $surveyMessages['finalMessage2_text'];
                     // Envía mensaje de agradecimiento
-                     $this->sendWhatsAppMessage($survey, "text", $response, 4, $message_ID, $message, '', $client_phone);
+                    $this->sendWhatsAppMessage($survey, "text", $response, 4, $message_ID, $message, '', $client_phone);
                 }
-            }   
+            }
             /**
              * Recibe calificación -- responde según calificación (3 opciones)
              */
@@ -381,18 +391,18 @@ class SurveyController extends Controller
                 /**
                  * Opción b: rating 3 -> manda message1d (pregunta)
                  */
-                else if($rating == 3) {
+                else if ($rating == 3) {
                     $response = $surveyMessages['message1d_text'];
                     $this->sendWhatsAppMessage($survey, "text", $response, 4, $message_ID, $message, '', $client_phone);
                 }
                 /**
                  * Opción c: rating 1 o 2 -> manda message1e (pregunta)
                  */
-                else if($rating < 3) {
+                else if ($rating < 3) {
                     $response = $surveyMessages['message1e_text'];
                     $this->sendWhatsAppMessage($survey, "text", $response, 4, $message_ID, $message, '', $client_phone);
                 }
-            } 
+            }
             /**
              * Recibe palabra positiva --- manda FIN
              */
@@ -400,7 +410,7 @@ class SurveyController extends Controller
 
                 $firstWord = true;
                 // Guarda la palabra en el tabla de survey
-                if ($survey) {                   
+                if ($survey) {
 
                     $word = substr($message, strpos($message, "word:") + strlen("word:"));
 
@@ -416,30 +426,26 @@ class SurveyController extends Controller
 
                     $survey->descriptive_words = $descriptiveWords;
 
-                    $survey->save();                      
+                    $survey->save();
                 }
 
-                if($firstWord){
+                if ($firstWord) {
                     $response = $surveyMessages['message1f_text'];
                     $dataToSend = $surveyMessages['message1f_buttons'];
                     $this->sendWhatsAppMessage($survey, "buttons", $response, 5, $message_ID, $message, $dataToSend, $client_phone);
-                } 
-
-            }
-            else if($message === 'no_review'){
+                }
+            } else if ($message === 'no_review') {
                 $response = $surveyMessages['finalMessage1_text'];
                 $this->sendWhatsAppMessage($survey, "text", $response, 5, $message_ID, $message, '', $client_phone);
-
-            }
-            else if($message === 'review'){
+            } else if ($message === 'review') {
                 $response = $surveyMessages['message1g_text'];
                 $this->sendWhatsAppMessage($survey, "text", $response, 5, $message_ID, $message, '', $client_phone);
             }
             /**
              * Recibe texto -- Manda mensaje final o soy robot
              */
-            else{
-                if($survey){
+            else {
+                if ($survey) {
 
                     // Chequear si no se calificó 
                     if ($survey->isRatingEmpty()) {
@@ -447,7 +453,7 @@ class SurveyController extends Controller
                         // Mandar mensaje soy robot
                         $response = $surveyMessages['aRobot'];
                         $this->sendWhatsAppMessage($survey, "text", $response, 5, $message_ID, $message, '', $client_phone);
-                    } else{
+                    } else {
                         //Si se calificó, chequear si no se completó encuesta
                         if ($survey->isReviewEmpty()) {
                             // Almacenar texto enviado como review
@@ -460,13 +466,13 @@ class SurveyController extends Controller
                             // La encuesta ya se completó. Mandar soy un robot
                             $response = $surveyMessages['aRobot'];
                             $this->sendWhatsAppMessage($survey, "text", $response, 5, $message_ID, $message, '', $client_phone);
-                        } 
-                    } 
-                } else{
+                        }
+                    }
+                } else {
                     $response = $surveyMessages['aRobot'];
                     $this->sendWhatsAppMessage($survey, "text", $response, 5, $message_ID, $message, '', $client_phone);
                 }
-            }            
+            }
         }
     }
 
@@ -488,15 +494,54 @@ class SurveyController extends Controller
 
         if ($user && $client_phone) {
 
-                $profileName = $user->name . ' ' . $user->last_name;
+            $profileName = $user->name . ' ' . $user->last_name;
 
-                // Mensaje inicial
-                $initialMessage = str_replace(':profileName', $profileName, $surveyMessages['initialMessage_text']);;
+            // Mensaje inicial
+            // $initialMessage = str_replace(':profileName', $profileName, $surveyMessages['initialMessage_text']);;
 
-                $dataToSend = $surveyMessages['initialMessage_buttons'];
+            // $dataToSend = $surveyMessages['initialMessage_buttons'];
 
-                $this->sendWhatsAppMessage($survey, "buttons", $initialMessage, 1, "", "", $dataToSend, $client_phone);
-            
+            $template = [
+                "name" => "encuesta",
+                "language" => [
+                    "code" => "es_AR"
+                ],
+                "components" => [
+                    [
+                        "type" => "body",
+                        "parameters" => [
+                            [
+                                "type" => "text",
+                                "text" => $profileName
+                            ]
+                        ]
+                    ],
+                    [
+                        "type" => "button",
+                        "sub_type" => "quick_reply",
+                        "index" => "0",
+                        "parameters" => [
+                            [
+                                "type" => "payload",
+                                "payload" => "message1a"
+                            ]
+                        ]
+                    ],
+                    [
+                        "type" => "button",
+                        "sub_type" => "quick_reply",
+                        "index" => "1",
+                        "parameters" => [
+                            [
+                                "type" => "payload",
+                                "payload" => "dontSendSurvey"
+                            ]
+                        ]
+                    ]
+                ]
+            ];
+
+            $this->sendWhatsAppMessage($survey, "template", $template, 1, "", "", "", $client_phone);
         }
-    }  
+    }
 }
