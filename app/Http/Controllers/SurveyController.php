@@ -256,7 +256,7 @@ class SurveyController extends Controller
         } else if ($replyType === "text") {
             $message = $response['entry'][0]['changes'][0]['value']['messages'][0]['text']['body'];
         } else if ($replyType === "button") {
-            $message = $response['entry'][0]['changes'][0]['value']['messages'][0]['button'][0]['payload'];
+            $message = $response['entry'][0]['changes'][0]['value']['messages'][0]['button']['payload'];
         }
 
         // Id del mensaje recibido
@@ -544,4 +544,23 @@ class SurveyController extends Controller
             $this->sendWhatsAppMessage($survey, "template", $template, 1, "", "", "", $client_phone);
         }
     }
-}
+
+    public function test_survey()
+    {
+        $surveys = Survey::latest()->take(3)->get();
+
+        return view('admin.testSurvey', compact('surveys'));
+    }
+
+    public function initTestSurvey(Request $request)
+    {
+        $user = User::find($request->input('user_id'));
+        $surveyId = $request->input('survey_id');
+
+        $surveyController = new SurveyController();
+        $surveyController->initSurvey($surveyId, $user->id);
+
+        return redirect()->route('test_survey');
+    }
+};
+

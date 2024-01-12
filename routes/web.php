@@ -42,6 +42,8 @@ Route::get('/register', function () {
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/perfil', 'UserController@index')->name('perfil');
+Route::get('/encuesta', 'SurveyController@test_survey')->name('test_survey');
+Route::post('/encuesta/init', 'SurveyController@initTestSurvey')->name('survey.init');
 //rutas para crear el perfil
 Route::get('/perfil_new', 'ProfileController@nuevo')->name('perfil_new');
 Route::put('/perfil/store', 'ProfileController@store')->name('store');
