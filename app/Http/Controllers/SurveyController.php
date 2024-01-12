@@ -71,12 +71,12 @@ class SurveyController extends Controller
         }
 
         // API configuration
-        // TODO: get permanent token
         $token = env('WHATSAPP_TOKEN');
 
-        // ID de nuestro teléfono. TODO: cambiarlo al hacer el cambio de número
         $phoneID = env('PHONE_ID');
 
+        info('phone id');
+        info($phoneID);
         // Api url
         $url = 'https://graph.facebook.com/v17.0/' . $phoneID . '/messages';
 
