@@ -234,4 +234,10 @@ return [
         'Image' => Intervention\Image\Facades\Image::class,
     ],
 
+    'PHONE_ID' => env('PHONE_ID'),
+
+    'WHATSAPP_TOKEN' => env('WHATSAPP_TOKEN'),
+
+    'WA_WEBHOOK_TOKEN' => env('WA_WEBHOOK_TOKEN'),
+
 ];
