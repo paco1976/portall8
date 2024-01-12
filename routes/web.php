@@ -42,6 +42,8 @@ Route::get('/register', function () {
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/perfil', 'UserController@index')->name('perfil');
+Route::get('/encuesta', 'SurveyController@test_survey')->name('test_survey');
+Route::post('/encuesta/init', 'SurveyController@initTestSurvey')->name('survey.init');
 //rutas para crear el perfil
 Route::get('/perfil_new', 'ProfileController@nuevo')->name('perfil_new');
 Route::put('/perfil/store', 'ProfileController@store')->name('store');
@@ -179,7 +181,7 @@ Route::get('/prof_publicacion_new/{hash_user}','AdminController@prof_publicacion
 Route::put('/prof_publicacion_new/{hash_user}', 'AdminController@prof_publicacion_save')->name('prof_publicacion_save'); //guardar de publicación desde el admin
 Route::get('/prof_publicacion_imagen_delete/{id}', 'AdminController@prof_publicacion_imagen_delete')->name('prof_publicacion_imagen_delete');//borrado de una imagen de una publicación desde el panel admin
 
-
+Route::get('/skin_select/{id}', 'SkinController@select')->name('skin_select');//Para seleccionar el diseño especifico
 
 //todas rutas estaticas por el momento
 Route::get('/tarifario',function(){
