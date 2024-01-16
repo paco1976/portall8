@@ -19,7 +19,7 @@ class SurveyController extends Controller
     public function handleWebhook(Request $request)
     {
         // Verificación del token
-        $token = config('WA_WEBHOOK_TOKEN');
+        $token = config('app.WA_WEBHOOK_TOKEN');
         $hubChallenge = $request->input('hub_challenge');
         $hubVerifyToken = $request->input('hub_verify_token');
         if ($token === $hubVerifyToken) {
@@ -71,9 +71,9 @@ class SurveyController extends Controller
         }
 
         // API configuration
-        $token = config('WHATSAPP_TOKEN');
+        $token = config('app.WHATSAPP_TOKEN');
 
-        $phoneID = config('PHONE_ID');
+        $phoneID = config('app.PHONE_ID');
 
         info('phone id');
         info($phoneID);
