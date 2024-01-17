@@ -94,7 +94,7 @@ Route::get('/mensajes/{hash}', 'ReferenteController@mensajes')->name('mensajes')
 
 
 //panel de control del administrador general
-
+Route::get('/statistics','StatisticsController@getStatistics' )->name('statistics');
 //Prestamos
 Route::post('/loan_save','LoanController@loanSave' )->name('loan_save');
 Route::get('/loan_new','LoanController@loanGetForm' )->name('loan_new');

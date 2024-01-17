@@ -13,9 +13,9 @@ class AddReturnedLoans extends Migration
      */
     public function up()
     {
-        Schema::table('loans', function($t) {
-            DB::statement("ALTER TABLE `loans` add column  `returned` boolean default 0 ");
-        });
+        // Schema::table('loans', function($t) {
+        //     DB::statement("ALTER TABLE `loans` add column  `returned` boolean default 0 ");
+        // });
     }
 
     /**
@@ -25,8 +25,8 @@ class AddReturnedLoans extends Migration
      */
     public function down()
     {
-        Schema::table('loans', function($t) {
-            DB::statement("ALTER TABLE `loans` add column  `returned` boolean default 0 ");
-        });
+        // Schema::table('loans', function($t) {
+        //     DB::statement("ALTER TABLE `loans` add column  `returned` boolean default 0 ");
+        // });
     }
-}
+} 
