@@ -41,13 +41,13 @@
 								@endif
 								<div class="col-md-12" style="margin-bottom:5%">
 									<h3>Visitas</h3>
-									<!-- Botones Visitas -->
+						<!-- Botones Generales -->
 									<div class=" container" style="display: flex; justify-content: space-between;">
 										<button onclick="showHide('totalVistas')" style="border: none; background-color: #dedede; margin: 1px; padding: 20px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease;">
 										  <caption>Total Vistas</caption>
 										  <h2 style="margin-bottom: 0px">{{ $visitsCount }}</h2>
 										</button>
-										<button onclick="showHide('visits')" style="border: none; background-color: #dedede; margin: 1px; padding: 20px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease;">
+										<button onclick="showHide('visits')" style="pointer-events: none;border: none; background-color: #dedede; margin: 1px; padding: 20px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease;">
 												<caption> Vistas del mes</caption>
 												<h2 style="margin-bottom: 0px">{{ $visitsMonth }}</h2>
 										</button>
@@ -60,33 +60,33 @@
 											<h2 style="margin-bottom: 0px">{{$perfilVisitado['view_count']}} visitas</h2>
 										</button>
 									</div>										
+							</div>
+
+
+						<!-- Detalle Vistas por categorias-->
+							@if($allCategoryVisits)
+							<div class=" col-md-10 info" id="category_visits" style="text-aligne:center; display:none;width:90%" >
+								<h2>Vistas por categorias</h2>
+								<div style="display:flex; flex-direction:row; overflow: auto; white-space: nowrap;">
+								@foreach($allCategoryVisits as $category)
+											<div class="col-md-4">
+												<div class="card">
+													<div class="card-body">
+													<h5 class="card-title">Categoria <small style="padding-left:auto;" class="text-muted">{{$category->name}}</small></h5>
+													<h4><small style="padding-left:auto; margin-top:none" class="text-muted">Profesional</small></h4>
+													<h3 class="card-text">{{$category->user}} {{$category->last_name}}</h3>
+
+													<h2 class="card-text">Vistas <small style="padding-left:auto;" class="text-muted">{{$category->view_count}}</small></h2>
+													</div>
+												</div>
+											</div>	
+									@endforeach
 								</div>
+									
+										
+							</div>
+							@endif
 
-
-								<!-- Detalle info-->
-									<div class="row col-md-12 info" id="category_visits" style="text-aligne:center; display:none" >
-										@if($allCategoryVisits)
-										<h2>Vistas por categorias</h2>
-										<table class="table table-bordered table-striped mb-none" id="myTable">
-											<thead>
-											<tr align="center">
-												<th style="text-align:center" onclick="sortTable(0, 'str')" ><a class="link" href="#">Categoria</a></th>
-												<th style="text-align:center" onclick="sortTable(0, 'str')" ><a class="link" href="#">Profesional</a></th>
-												<th style="text-align:center" onclick="sortTable(0, 'str')" ><a class="link" href="#">Visitas</a></th>
-											</tr>
-											</thead>
-											<tbody>
-												@foreach($allCategoryVisits as $category)
-													<tr class="gradeX" align="center">
-														<td>{{$category->name}}</td>
-														<td>{{$category->user}} {{$category->last_name}}</td>		
-														<td>{{$category->view_count}}</td>														
-													</tr>
-												@endforeach
-											</tbody>
-										</table>
-										@endif
-									</div>
 									<div id="totalVistas" class="row info" style="text-aligne:center; display:none" class="col-md-12">
 									  @if($recentView) 
 										<h2>Visitas mas recientes</h2>
@@ -138,27 +138,56 @@
 									<div class="col-md-12" style="margin-bottom:5%; margin-top:5%">
 										<h3>PROFESIONALES</h3>
 										<div class=" container" style="display: flex; justify-content: space-between;">
-												<div style="border: none; background-color: #dedede; margin: 1px; padding: 20px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease;">
-													<caption>Total Vistas</caption>
-													<h2 style="margin-bottom: 0px">{{ $visitsCount }}</h2>
-												</div>
-												<div style="border: none; background-color: #dedede; margin: 1px; padding: 20px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease;">
-													<caption>Total Vistas</caption>
-													<h2 style="margin-bottom: 0px">{{ $visitsCount }}</h2>
-												</div>
-												<div style="border: none; background-color: #dedede; margin: 1px; padding: 20px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease;">
-													<caption>Total Vistas</caption>
-													<h2 style="margin-bottom: 0px">{{ $visitsCount }}</h2>
-												</div>
+											<button style="pointer-events: none;border: none; background-color: #dedede; margin: 1px; padding: 20px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease;">
+												<caption>Total Encuestados</caption>
+												<h2 style="text-aligne:center">{{ $SurveyTotal }}</h2>
+											</button>		
+											<button onclick="showHide('profesionalMorequalified')"  style="border: none; background-color: #dedede; margin: 1px; padding: 20px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease;">
+												<caption>Perfil Mejor Calificado</caption>
+												<h2 style="margin-bottom: 0px">{{ $profesionalMorequalified['name']}}  {{$profesionalMorequalified['last_name']}} </h2>		
+											</button>
+										
 										</div>
 										
 									</div>
-								</div>
+
+									<!--Detalle Profesionales-->
+
+									@if($profesionalMorequalified)
+									<div class=" col-md-12 info" id="profesionalMorequalified" style="text-aligne:center; display:none;width:90%" >
+										<h2>Profesional</h2>
+										<div style="justify-content: center;">
+											<div class="col-md-8" >
+												<div class="card" style=" border-color: #dedede;">
+													<div class="card-body">
+													<h5 class="card-title">Profesional</h5>
+													<h3 class="card-text">{{$profesionalMorequalified->name}} {{$profesionalMorequalified->last_name}}</h3>
+													<h4><small style="padding-left:auto; margin-top:none" class="text-muted">Cliente</small></h4>
+													<h3 class="card-text">{{$profesionalMorequalified->client_name}} {{$profesionalMorequalified->client_email}}</h3>
+
+													<h3 class="card-text">Categoria <small style="padding-left:auto;" class="text-muted">{{$category->name}}</small></h3>
+													<h3 class="card-text">Staisfaccion <small style="padding-left:auto;" class="text-muted">{{$profesionalMorequalified->satisfaction}}</small></h3>
+													<h3 class="card-text">Encuestas <small style="padding-left:auto;" class="text-muted">{{$profesionalMorequalified->surveys}}</small></h3>
+
+													</div>
+												</div>
+											</div>	
+									</div>
+									
+										
+							</div>
+							@endif
+
+
+						<!-- </div> -->
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+	<p>{{$profesionalMorequalified}} </p>
+	<p>{{$SurveyByProfesional}}</p>
+
 </div>
 @endsection
 
