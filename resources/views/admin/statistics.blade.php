@@ -39,13 +39,15 @@
 									<p>{{ Session::get('error') }}</p>
 								</div>
 								@endif
-								<div class="col-md-12" style="margin-bottom:5%">
+
+							</div>
+							<!-- Botones Generales Visitas -->
+							<div class="col-md-12" style="margin-bottom:5%">
 									<h3>Visitas</h3>
-						<!-- Botones Generales -->
 									<div class=" container" style="display: flex; justify-content: space-between;">
-										<button onclick="showHide('totalVistas')" style="border: none; background-color: #dedede; margin: 1px; padding: 20px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease;">
-										  <caption>Total Vistas</caption>
-										  <h2 style="margin-bottom: 0px">{{ $visitsCount }}</h2>
+										<button  onclick="showHide('totalVistas')" style=" border: none; background-color: #dedede; margin: 1px; padding: 20px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease;">
+										<caption>Total Vistas</caption>
+										<h2 style="margin-bottom: 0px">{{ $visitsCount }}</h2>
 										</button>
 										<button onclick="showHide('visits')" style="pointer-events: none;border: none; background-color: #dedede; margin: 1px; padding: 20px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease;">
 												<caption> Vistas del mes</caption>
@@ -62,8 +64,7 @@
 									</div>										
 							</div>
 
-
-						<!-- Detalle Vistas por categorias-->
+							<!-- Detalle Vistas por categorias-->
 							@if($allCategoryVisits)
 							<div class=" col-md-10 info" id="category_visits" style="text-aligne:center; display:none;width:90%" >
 								<h2>Vistas por categorias</h2>
@@ -81,80 +82,77 @@
 												</div>
 											</div>	
 									@endforeach
-								</div>
-									
-										
+								</div>																	
 							</div>
 							@endif
-
-									<div id="totalVistas" class="row info" style="text-aligne:center; display:none" class="col-md-12">
-									  @if($recentView) 
-										<h2>Visitas mas recientes</h2>
-														<table class="table table-bordered table-striped mb-none" id="myTable">
-															<thead>
-																<tr align="center">
-																	<th style="text-align:center" onclick="sortTable(0, 'str')" ><a class="link" href="#">Profesional</a></th>
-																	<th style="text-align:center">Publicacion</th>
-																	<th style="text-align:center">Categoria</th>
-																	<th style="text-align:center">Fecha</th>
-																</tr>
-															</thead>
-															<tbody>
-															@foreach($recentView as $rv)
-																<tr class="gradeX" align="center">
-																	<td>{{$rv->name}} {{$rv->last_name}}</td>
-																	<td style="text-align:center">
-																		<a href="{{ route('admin_publicacion_user', ['publicacion_hash' => $rv->hash, 'origen'=>'publicaciones' ]) }}" class="btn btn-primary"><i class="fa fa-eye"></i></a></a>
-																	</td>		
-																	<td>{{$rv->cat}}</td>								
-																	<td> {{ date('d/m/Y H:i:s', strtotime($rv->created_at)) }} </td>								
-																</tr>
-															@endforeach
-															</tbody>
-														</table>
-									  @endif
-									</div>
-									<div class="row col-md-12 info" id="perfilVisitado" style="text-aligne:center; display:none" >
-									@if($perfilVisitado) 
-										<h2>Perfil Mas Visitado</h2>
-										<table class="table table-bordered table-striped mb-none" id="myTable">
-											<thead>
-												<tr align="center">
-													<th style="text-align:center" onclick="sortTable(0, 'str')" ><a class="link" href="#">Profesional</a></th>
-													<th style="text-align:center" onclick="sortTable(0, 'str')" ><a class="link" href="#">Visitas</a></th>
-												</tr>
-											</thead>
-											<tbody>
-												<tr class="gradeX" align="center">
-													<td>{{$perfilVisitado->name}} {{$perfilVisitado->last_name}}</td>
-													<td>{{$perfilVisitado->view_count}}</td>														
-												</tr>
-											</tbody>
-										</table>
-										@endif
-									</div>
-									<!--PROFESIONALES-->
-									<!-- Botones Visitas -->
-									<div class="col-md-12" style="margin-bottom:5%; margin-top:5%">
-										<h3>PROFESIONALES</h3>
-										<div class=" container" style="display: flex; justify-content: space-between;">
-											<button style="pointer-events: none;border: none; background-color: #dedede; margin: 1px; padding: 20px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease;">
-												<caption>Total Encuestados</caption>
-												<h2 style="text-aligne:center">{{ $SurveyTotal }}</h2>
-											</button>		
-											<button onclick="showHide('profesionalMorequalified')"  style="border: none; background-color: #dedede; margin: 1px; padding: 20px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease;">
-												<caption>Perfil Mejor Calificado</caption>
-												<h2 style="margin-bottom: 0px">{{ $profesionalMorequalified['name']}}  {{$profesionalMorequalified['last_name']}} </h2>		
-											</button>
-										
-										</div>
-										
-									</div>
-
-									<!--Detalle Profesionales-->
-
-									@if($profesionalMorequalified)
-									<div class=" col-md-12 info" id="profesionalMorequalified" style="text-aligne:center; display:none;width:90%" >
+							<div id="totalVistas" class="row info" style="text-aligne:center; display:none" class="col-md-12">
+								@if($recentView) 
+								<h2>Visitas mas recientes</h2>
+								<table class="table table-bordered table-striped mb-none" id="myTable">
+									<thead>
+										<tr align="center">
+											<th style="text-align:center" onclick="sortTable(0, 'str')" ><a class="link" href="#">Profesional</a></th>
+											<th style="text-align:center">Publicacion</th>
+											<th style="text-align:center">Categoria</th>
+											<th style="text-align:center">Fecha</th>
+										</tr>
+									</thead>
+									<tbody>
+									@foreach($recentView as $rv)
+										<tr class="gradeX" align="center">
+											<td>{{$rv->name}} {{$rv->last_name}}</td>
+											<td style="text-align:center">
+												<a href="{{ route('admin_publicacion_user', ['publicacion_hash' => $rv->hash, 'origen'=>'publicaciones' ]) }}" class="btn btn-primary"><i class="fa fa-eye"></i></a></a>
+											</td>		
+											<td>{{$rv->cat}}</td>								
+											<td> {{ date('d/m/Y H:i:s', strtotime($rv->created_at)) }} </td>								
+										</tr>
+									@endforeach
+									</tbody>
+								</table>
+							  @endif
+							</div>
+								@if($perfilVisitado) 
+								<div class="row col-md-12 info" id="perfilVisitado" style="text-aligne:center; display:none" >
+								<h2>Perfil Mas Visitado</h2>
+								<table class="table table-bordered table-striped mb-none" id="myTable">
+									<thead>
+										<tr align="center">
+											<th style="text-align:center" onclick="sortTable(0, 'str')" ><a class="link" href="#">Profesional</a></th>
+											<th style="text-align:center" onclick="sortTable(0, 'str')" ><a class="link" href="#">Visitas</a></th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr class="gradeX" align="center">
+											<td>{{$perfilVisitado->name}} {{$perfilVisitado->last_name}}</td>
+											<td>{{$perfilVisitado->view_count}}</td>														
+										</tr>
+									</tbody>
+								</table>
+								</div>
+								@endif
+							<!--PROFESIONALES-->
+							<!-- navegacion Principal profesionales -->
+							<div class="col-md-12" style="margin-bottom:5%; margin-top:5%">
+								<h3>PROFESIONALES</h3>
+								<div class=" container" style="display: flex; justify-content: space-between;">
+									<button style="pointer-events: none;border: none; background-color: #dedede; margin: 1px; padding: 20px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease;">
+										<caption>Total Encuestados</caption>
+										<h2 style="text-aligne:center">{{ $SurveyTotal }}</h2>
+									</button>		
+									<button onclick="showHide('profesionalMorequalified')"  style="border: none; background-color: #dedede; margin: 1px; padding: 20px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease;">
+										<caption>Perfil Mejor Calificado</caption>
+										<h2 style="margin-bottom: 0px">{{ $profesionalMorequalified['name']}}  {{$profesionalMorequalified['last_name']}} </h2>		
+									</button>
+									<button onclick="showHide('surveyByProfesional_')" style="border: none; background-color: #dedede; margin: 1px; padding: 20px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease;">
+										<caption>Encuestas Por Profesional</caption>
+									</button>
+								</div>
+								
+							</div>
+							<!--Detalle Profesionales-->
+							@if($profesionalMorequalified)
+							<div class=" col-md-12 info" id="profesionalMorequalified" style="text-aligne:center; display:none;width:90%" >
 										<h2>Profesional</h2>
 										<div style="justify-content: center;">
 											<div class="col-md-8" >
@@ -169,24 +167,39 @@
 													<h3 class="card-text">Staisfaccion <small style="padding-left:auto;" class="text-muted">{{$profesionalMorequalified->satisfaction}}</small></h3>
 													<h3 class="card-text">Encuestas <small style="padding-left:auto;" class="text-muted">{{$profesionalMorequalified->surveys}}</small></h3>
 
-													</div>
 												</div>
-											</div>	
-									</div>
-									
-										
+											</div>
+										</div>	
 							</div>
-							@endif
+							@endif				
+							</div>
 
 
-						<!-- </div> -->
-					</div>
+
+							<div class=" col-md-10 info" id="surveyByProfesional_" style="text-aligne:center; display:none;width:90%" >
+							@if($SurveyByProfesional)
+								<h2>Encuestas Por Profesional</h2>
+								<div style="display:flex; flex-direction:row; overflow: auto; white-space: nowrap;">
+								@foreach($SurveyByProfesional as $surveyByProf)
+									<div class="col-md-4" style="margin-right: 10px">
+										<div class="card">
+											<div class="card-body" >
+												<h3 class="card-title">Profesional</h3>
+												<h4 class="card-text">{{$surveyByProf->name}} {{$surveyByProf->last_name}}</h4>
+												<h5 class="card-text">Vistas  {{$surveyByProf->Survays}}</h5>
+												<h5 class="card-text">Cliente {{$surveyByProf->client_name}}</h5>
+												<h5 class="card-text"> {{$surveyByProf->client_email}}</h5>
+											</div>
+										</div>
+									</div>	
+									@endforeach
+								</div>	
+								@endif																	
+							</div>	
 				</div>
 			</div>
 		</div>
 	</div>
-	<p>{{$profesionalMorequalified}} </p>
-	<p>{{$SurveyByProfesional}}</p>
 
 </div>
 @endsection
