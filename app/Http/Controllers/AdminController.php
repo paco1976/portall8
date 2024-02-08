@@ -1362,5 +1362,23 @@ class AdminController extends Controller
         }
     }
   
+   
+    public function admin_profesional_detalle($user_hash){
+        $user = User::find(Auth::user()->id);
+        $user->avatar = Storage::disk('avatares')->url($user->avatar);
+        
+        $user->permisos = $user->user_type()->first();
+        if($user->permisos->name == "Administrador"){
 
+            $user = User::where("hash", $user_hash)->first();
+            $user->profile = $user->user_profile()->first();
+            
+            return view('/admin.profesional_detalle', compact('user'));
+        }
+        else{
+            session::flash('message', 'No está autorizado para esta acción');
+            return redirect('/');
+        }
+
+    }
 }

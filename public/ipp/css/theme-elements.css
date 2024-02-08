@@ -19105,3 +19105,51 @@ ul.team-list .team-item .thumb-info-social-icons {
 		line-height: 100px;
 	}
 }
+
+/* Estilo para la ficha de profesionales */
+.ficha-tecnica {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.ficha-tecnica h2 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.ficha-tecnica ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.ficha-tecnica li {
+    margin-bottom: 5px;
+}
+
+.ficha-tecnica li strong {
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.ficha-tecnica .acciones a {
+    display: block;
+    background-color: #1c5fa8;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    padding: 5px 10px;
+    margin-right: 5px;
+	margin-top: 5px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.ficha-tecnica .acciones a:hover {
+    background-color: #007bff;
+}
+
+.ficha-tecnica .acciones .button-icon {
+	margin-right: 5px;
+}

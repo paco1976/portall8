@@ -42,12 +42,12 @@
 						<div class="col-sm-6">
 							<div class="mb-3">
 								<a href="{{ route('register_profesional') }}">
-									<button id="addToTable" class="btn btn-primary">Nuevo Usuario<i class="fas fa-plus"></i></button>
+									<button id="addToTable" class="btn btn-primary"><i class="fas fa-plus"></i>&nbsp;&nbsp;Nuevo usuario</button>
 								</a>
 							</div>
 						</div>
 					</div>
-					<div class="container pt-3 pb-2">
+					<!-- <div class="container pt-3 pb-2">
 						<div class="row">
 							<div class="col-lg-5">
 							</div>
@@ -57,7 +57,7 @@
 							<div class="col-lg-3">
 							</div>
 						</div>
-					</div>
+					</div> -->
 					@if (Session::has('message'))
 					<div class="alert alert-success">
 						<p>{{ Session::get('message') }}</p>
@@ -95,7 +95,7 @@
 						<tbody>
 							@foreach($user_all as $usr)
 							<tr data-item-id="1">
-								<td>{{$usr->name}} {{$usr->last_name}}</td>	
+								<td><a href="{{ route('admin_profesional_detalle', ['user_hash' => $usr->hash]) }}">{{$usr->name}} {{$usr->last_name}}</a></td>	
 								<td>{{$usr->dni}}</td>
 								<td>{{$usr->email}}</td>
 								<td>

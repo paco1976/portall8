@@ -129,6 +129,7 @@ Route::get('/admin_profesionales','AdminController@admin_profesionales' )->name(
 Route::get('/admin_publicaciones','AdminController@admin_publicaciones' )->name('admin_publicaciones');
 Route::get('/admin_publicacion/{hash}','AdminController@admin_publicacion' )->name('admin_publicacion');
 Route::get('/admin_publicaciones_user/{user_hash}','AdminController@admin_publicaciones_user' )->name('admin_publicaciones_user');
+Route::get('/admin_profesional_detalle/{user_hash}','AdminController@admin_profesional_detalle' )->name('admin_profesional_detalle');
 
 Route::get('/admin_publicacion_user/{publicacion_hash}/origen/{origen}','AdminController@admin_publicacion_user' )->name('admin_publicacion_user');
 Route::get('/admin_publicacion_delete/{publicacion_hash}/origen/{origen}','AdminController@admin_publicacion_delete' )->name('admin_publicacion_delete');
