@@ -39,10 +39,10 @@
 	<p>{{ Session::get('error') }}</p>
 </div>
 @endif
-	<div class="row pt-2">
-		<div class="col-lg-3 mt-4 mt-lg-0">
+<div class="row pt-2">
+		{{-- <div class="col-lg-3 mt-4 mt-lg-0"> --}}
 
-			<div class="d-flex justify-content-center mb-4">
+			{{-- <div class="d-flex justify-content-center mb-4">
 				<div class="profile-image-outer-container">
 					<div class="profile-image-inner-container bg-color-primary">
 						<img src="{{ $user->avatar }}">
@@ -51,12 +51,12 @@
 					
 				</div>
 				
-			</div>
+			</div> --}}
 
 			
 			
 			
-			<aside class="sidebar mt-2" id="sidebar">
+			{{-- <aside class="sidebar mt-2" id="sidebar">
 				
 				
 				<ul class="nav nav-list flex-column mb-5">
@@ -76,21 +76,17 @@
 					-->
 					
 				</ul>
-			</aside>
+			</aside> --}}
 
-		</div>
-		<div class="col-lg-9">
-
-			
-			
-			<div class="container">
+		{{-- </div> --}}
+<div class="container">
 	<section class="card card-admin">
 		
 		<div class="card-body">
 			<div class="row">
 				<div class="col-sm-6">
 					<div class="mb-3">
-						<a href="{{ route('prof_publicacion_new', ['hash_user' => $user->hash] ) }}" class="btn btn-primary">Agregar publicación <i class="fas fa-plus"></i></a>
+						<a href="{{ route('prof_publicacion_new', ['hash_user' => $user->hash] ) }}" class="btn btn-primary"><i class="fas fa-plus"></i> Agregar publicación </a>
 						
 					</div>
 				</div>
@@ -103,10 +99,14 @@
 					<tr>			
 						<th>Categoría</th>
 						<th>Título Relacionado</th>
-						<th>Consultas</th>
+						<th>Estado</th>
+						<th>Rating</th>
+						<th>Visibilidad del rating</th>
 						<th>Visitas</th>
-						<th>WhatsApp</th>
-						<th>Acción</th>
+						<th>Ver</th>
+						<th>Editar</th>
+						<th>Eliminar</th>
+
 					</tr>
 				</thead>
 				<tbody>
@@ -116,14 +116,26 @@
 						<td>
 							{{$publicacion->titulo->name}}
 						</td>
-						<td>
-							@if($publicacion->cant_consultas>0)
-							<a href="{{ route('admin_consultas', ['publicacion_hash' => $publicacion->hash]) }}" class="btn btn-info"><strong>{{$publicacion->cant_consultas}}</strong></a>
-							@else
-							<a href="#" class="btn btn-primary"><i class="fa fa-read"><strong>NO</strong></i></a>
-							@endif
+
+					
+						<td class="actions text-center">
+						@if($publicacion->aprobado)
+								<a href="{{ route('admin_publicaciones_aprobar_desaprobar', ['publicacion_hash' => $publicacion->hash, 'origen' => 'publicaciones']) }}" class="btn btn-success"><i class="fas fa-check-circle"></i></a>
+						@else
+								<a href="{{ route('admin_publicaciones_aprobar_desaprobar', ['publicacion_hash' => $publicacion->hash, 'origen' => 'publicaciones']) }}" class="btn btn-danger"><i class="fas fa-times-circle"></i></a>
+						@endif
 						</td>
 						
+						<td class="actions text-center">
+							{{$publicacion->rating}}
+						</td>
+						<td class="actions text-center">
+							@if($publicacion->show_rating==0)
+								<a href="{{ route('admin_publicaciones_show_rating', ['publicacion_hash' => $publicacion->hash, 'origen' => 'profesionales']) }}" class="btn btn-warning"><i class="fa fa-eye-slash"></i></a>
+								@else
+								<a href="{{ route('admin_publicaciones_show_rating', ['publicacion_hash' => $publicacion->hash, 'origen' => 'profesionales']) }}" class="btn btn-success"><i class="fa fa-eye"></i></a>
+							@endif		
+						</td>
 						<td class="actions text-center">
 							@if ($publicacion->cant_visitas < 1 )
 								<a href="" class="btn btn-info"> {{$publicacion->cant_visitas}} </a>		
@@ -132,6 +144,30 @@
 							@endif
 						</td>
 						<td class="actions text-center">
+							<a href="{{ route('admin_publicacion_user', ['publicacion_hash' => $publicacion->hash, 'origen'=>'profesionales' ]) }}" class="btn btn-primary"><i class="fa fa-eye"></i></a></a>
+						</td>
+						<td class="actions text-center">
+							<a href="{{ route('prof_publicacion_edit', ['publicacion_hash'=> $publicacion->hash, 'hash_user'=>$user->hash]) }}" class="btn btn-primary"><i class="fas fa-pencil-alt"></i></a>
+						</td>
+						<td class="actions text-center">
+							<a href="{{ route('admin_publicacion_delete', ['publicacion_hash' => $publicacion->hash, 'origen'=>'profesionales' ]) }}" class="btn btn-danger" onclick="return confirm('Está seguro que quiere borrar la publicación?')" ><i class="far fa-trash-alt"></i></a>
+						</td>
+
+
+							
+
+
+						
+						{{-- <td>
+							@if($publicacion->cant_consultas>0)
+							<a href="{{ route('admin_consultas', ['publicacion_hash' => $publicacion->hash]) }}" class="btn btn-info"><strong>{{$publicacion->cant_consultas}}</strong></a>
+							@else
+							<a href="#" class="btn btn-primary"><i class="fa fa-read"><strong>NO</strong></i></a>
+							@endif
+						</td>
+						
+						
+						<td class="actions text-center">
 							@if ($publicacion->cant_whatsapp < 1 )
 								<a href="" class="btn btn-info"> {{$publicacion->cant_whatsapp}} </a>		
 							@else
@@ -139,19 +175,12 @@
 							@endif
 						</td>
 						<td class="actions">
-							<a href="{{ route('prof_publicacion_edit', ['publicacion_hash'=> $publicacion->hash, 'hash_user'=>$user->hash]) }}" class="btn btn-primary"><i class="fas fa-pencil-alt"></i></a>
-							@if($publicacion->aprobado)
-								<a href="{{ route('admin_publicaciones_aprobar_desaprobar', ['publicacion_hash' => $publicacion->hash, 'origen' => 'publicaciones']) }}" class="btn btn-success">SI</a>
-							@else
-								<a href="{{ route('admin_publicaciones_aprobar_desaprobar', ['publicacion_hash' => $publicacion->hash, 'origen' => 'publicaciones']) }}" class="btn btn-danger"> NO </a>
-							@endif
-							<a href="{{ route('admin_publicacion_user', ['publicacion_hash' => $publicacion->hash, 'origen'=>'profesionales' ]) }}" class="btn btn-primary"><i class="fa fa-eye"></i></a></a>
-							<a href="{{ route('admin_publicacion_delete', ['publicacion_hash' => $publicacion->hash, 'origen'=>'profesionales' ]) }}" class="btn btn-danger" onclick="return confirm('Está seguro que quiere borrar la publicación?')" ><i class="far fa-trash-alt"></i></a>
+							
 							<!--
 							<button class="btn btn-primary"><i class="fas fa-pencil-alt"></i></button>
 							<button class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
 							-->
-						</td>
+						</td> --}}
 					</tr>
 					
 					@endforeach
@@ -171,14 +200,9 @@
 			</div>
 	</section>
 </div>
-			
-			
-			
-			
-			
+</div>
 
-		</div>
-	</div>
+
 
 </div>
 
