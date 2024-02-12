@@ -72,60 +72,20 @@
 					@if($user_all->count() > 0)
 					<table class="table table-bordered table-striped mb-0" id="datatable-editable">
 						<thead>
-							<tr>
-								<th></th>
-								<th></th>
-								<th></th>
-								<th></th>
-								<th></th>
-								<th class="text-center" colspan="4">Usuario</th>
-								<th class="text-center" colspan="2">Publicaciones</th>
-							</tr>
-							<tr class="text-center">								  
-													
+							<tr class="text-center">							  			
 								<th>Nombre y Apellido</th>
-								<th>DNI</th>
-								<th>E-Mail</th>
-								<th>Celular</th>
-								<th>CFP</th>
-								<th class="text-1" >Activado</th><th class="text-1" >Borrar</th><th class="text-1" >Clave</th><th class="text-1"> Editar </th>
-								<th class="text-1" >Cantidad</th><th class="text-1" >Mensajes</th>
+								<th>Publicaciones</th>
+								<th>Mensajes</th>
+								<th>Consultas</th>
+								<th>Calificación</th>
 							</tr>
 						</thead>
 						<tbody>
 							@foreach($user_all as $usr)
 							<tr data-item-id="1">
 								<td><a href="{{ route('admin_profesional_detalle', ['user_hash' => $usr->hash]) }}">{{$usr->name}} {{$usr->last_name}}</a></td>	
-								<td>{{$usr->dni}}</td>
-								<td>{{$usr->email}}</td>
-								<td>
-									@if($usr->profile)
-										{{$usr->profile->mobile}}
-									@endif
-								</td>
-								<td>
-									{{ $usr->cfp_name($usr->cfp_id) }}
-								</td>
-
-								
-								<td class="actions text-center">
-									@if($usr->active == 0)
-										<a href="{{ route('admin_user_aprobar_desaprobar', ['user_hash' => $usr->hash, 'origen' => 'profesionales' ]) }}" class="btn btn-danger"><i class="fa-sharp fa-solid fa-thumbs-down"></i></a>
-									@else
-										<a href="{{ route('admin_user_aprobar_desaprobar', ['user_hash' => $usr->hash, 'origen' => 'profesionales']) }}" class="btn btn-success"><i class="fa-sharp fa-solid fa-thumbs-up"></i></a>
-									@endif
-								</td>
-								<td class="actions text-center">
-									<a href="{{ route('admin_user_delete', ['user_hash' => $usr->hash, 'origen' => 'profesionales']) }}" onclick="return confirm('Está seguro que quiere borrar el usuario y toda su informacón?')" class="btn btn-danger"><i class="fa-solid fa-trash"></i></i></a>
-								</td>
-								<td class="actions text-center">
-									<a href="{{ route('pass_prof', ['id_prof' => $usr->id]) }}" class="btn btn-primary"><i class="fa-solid fa-lock"></i></a>
-								</td>
-								
-								<td class="actions text-center">
-									<a href="{{ route('prof_perfil_edit', ['hash_user' => $usr->hash])  }}" class="btn btn-info"><i class="fa-solid fa-user"></i></a>
-								</td>
-								
+										
+								{{-- Cantidad de publicaciones y link a tabla de publicaciones --}}
 								<td class="actions text-center">
 									@if($usr->cant_publicaciones>0)
 										@if($usr->publi_sin_aprobar>0)
@@ -137,7 +97,10 @@
 										<a href="{{ route('prof_publicacion', ['hash_user' => $usr->hash]) }}" class="btn btn-danger"><strong>{{$usr->cant_publicaciones}}</strong></a>
 									@endif
 								</td>
-								<td class="actions text-center">
+
+
+
+								{{-- <td class="actions text-center">
 									@if($usr->menssage_total> 0)
 										@if($usr->menssage_not_read> 0 )
 											<a href="#" class="btn btn-danger"><strong>{{$usr->menssage_total}}</strong></a>
@@ -147,7 +110,7 @@
 									@else
 										<a href="" class="btn btn-info">0</a>
 									@endif
-								</td>
+								</td> --}}
 							</tr>
 							@endforeach
 						</tbody>
