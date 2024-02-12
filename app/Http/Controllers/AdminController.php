@@ -225,6 +225,7 @@ class AdminController extends Controller
             $publicacion->cant_consultas = $publicacion->interactions()->count();
             $publicacion->cant_visitas = $publicacion->visita()->count();
             $publicacion->cant_whatsapp = $publicacion->whatsapp()->count();
+            $publicacion->rating = $publicacion->rating();
             //dd($publicacion->titulo);
             
         }
@@ -351,7 +352,7 @@ class AdminController extends Controller
                     }
                 }
             
-                Session::flash('message', 'El perfil se actualizado con éxito');
+                Session::flash('message', 'El perfil se ha actualizado con éxito');
                 return back();
             } else {
                 Session::flash('error', 'El perfil no se pudo actualizar, revise los datos');
@@ -631,7 +632,7 @@ class AdminController extends Controller
         }
         //***************** FIN SUDIDA DE ARCHIVOS *********** */
 
-        Session::flash('message', 'La publicación se creo con éxito');
+        Session::flash('message', 'La publicación se creó con éxito');
         //$this->mispublicaciones($id);
         $publicacion_all = $user->publicaciones();
         $mispublicaciones = $user->publicaciones()->get();
@@ -759,7 +760,7 @@ class AdminController extends Controller
         $publicacion = Publicacion::where('id',$publicacion_image->publicacion_id)->first();
         Storage::disk('publicaciones')->delete($publicacion_image->url);
         $publicacion_image->delete();
-        Session::flash('message', 'La imagen se a eliminado con éxito');
+        Session::flash('message', 'La imagen se ha eliminado con éxito');
         //return redirect()->route('publicacion_edit', ['head' => $publicacion->hash ]);
         return back();
     }
@@ -857,11 +858,11 @@ class AdminController extends Controller
         if($user->permisos->name == "Administrador"){
 
             if($publicacion->aprobado == 0){
-                session::flash('message', 'La publicación se activo con éxito');
+                session::flash('message', 'La publicación se activó con éxito');
                 $publicacion->aprobado = 1;
                 $publicacion->save(['aprobado']);
             }else{
-                session::flash('message', 'La publicación se desactivo con éxito');
+                session::flash('message', 'La publicación se desactivó con éxito');
                 $publicacion->aprobado = 0;
                 $publicacion->save(['aprobado']);
             }
@@ -1372,6 +1373,7 @@ class AdminController extends Controller
 
             $user = User::where("hash", $user_hash)->first();
             $user->profile = $user->user_profile()->first();
+            $user->avatar = Storage::disk('avatares')->url($user->avatar);
             
             return view('/admin.profesional_detalle', compact('user'));
         }
