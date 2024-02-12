@@ -84,7 +84,7 @@ class ProfileController extends Controller
             'linkedin' => $data['linkedin'],
         ]);
 
-        Session::flash('message', 'El perfil se actualizado con éxito');
+        Session::flash('message', 'El perfil se ha actualizado con éxito');
         return redirect('perfil');
     }
 
@@ -208,7 +208,7 @@ class ProfileController extends Controller
                 }
             }
 
-            Session::flash('message', 'El perfil se actualizado con éxito');
+            Session::flash('message', 'El perfil se ha actualizado con éxito');
             return back();
         } else {
             Session::flash('error', 'El perfil no se pudo actualizar, revise los datos');
