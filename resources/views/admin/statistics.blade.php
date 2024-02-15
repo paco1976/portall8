@@ -66,71 +66,73 @@
 
 							<!-- Detalle Vistas por categorias-->
 							@if($allCategoryVisits)
-							<div class=" col-md-10 info" id="category_visits" style="text-aligne:center; display:none;width:90%" >
+							<div class=" col-md-10 info" id="category_visits" style="text-aligne:center; display:none;width:99%" >
 								<h2>Vistas por categorias</h2>
 								<div style="display:flex; flex-direction:row; overflow: auto; white-space: nowrap;">
-								@foreach($allCategoryVisits as $category)
-											<div class="col-md-4">
-												<div class="card">
-													<div class="card-body">
-													<h5 class="card-title">Categoria <small style="padding-left:auto;" class="text-muted">{{$category->name}}</small></h5>
-													<h4><small style="padding-left:auto; margin-top:none" class="text-muted">Profesional</small></h4>
-													<h3 class="card-text">{{$category->user}} {{$category->last_name}}</h3>
-
-													<h2 class="card-text">Vistas <small style="padding-left:auto;" class="text-muted">{{$category->view_count}}</small></h2>
-													</div>
+									@foreach($allCategoryVisits as $category)
+									<div class="col-md-4" style="margin: 5px;">
+											<div class="card text-center">
+												<div class="card-header" style="background-color:#17a2b8 ; color:white; font-size:18px" >
+												{{$category->name}}
 												</div>
-											</div>	
+												<div class="card-body">
+													<h5 class="card-title">Profesional</h5>
+													<p class="card-text">{{$category->user}} {{$category->last_name}}</p>
+												</div>
+												<div class="card-footer text-muted card-title">
+												<h5 class="card-title" style="font-size:18px">con {{$category->view_count}} visitas</h5>
+												</div>
+										</div>
+									</div>	
 									@endforeach
 								</div>																	
 							</div>
 							@endif
-							<div id="totalVistas" class="row info" style="text-aligne:center; display:none" class="col-md-12">
-								@if($recentView) 
+							<!-- Total de Visitas-->
+							@if($recentView)
+							<div class=" col-md-10 info" id="totalVistas" style="text-aligne:center; display:none;width:99%" >
 								<h2>Visitas mas recientes</h2>
-								<table class="table table-bordered table-striped mb-none" id="myTable">
-									<thead>
-										<tr align="center">
-											<th style="text-align:center" onclick="sortTable(0, 'str')" ><a class="link" href="#">Profesional</a></th>
-											<th style="text-align:center">Publicacion</th>
-											<th style="text-align:center">Categoria</th>
-											<th style="text-align:center">Fecha</th>
-										</tr>
-									</thead>
-									<tbody>
+								<div style="display:flex; flex-direction:row; overflow: auto; white-space: nowrap;">
 									@foreach($recentView as $rv)
-										<tr class="gradeX" align="center">
-											<td>{{$rv->name}} {{$rv->last_name}}</td>
-											<td style="text-align:center">
-												<a href="{{ route('admin_publicacion_user', ['publicacion_hash' => $rv->hash, 'origen'=>'publicaciones' ]) }}" class="btn btn-primary"><i class="fa fa-eye"></i></a></a>
-											</td>		
-											<td>{{$rv->cat}}</td>								
-											<td> {{ date('d/m/Y H:i:s', strtotime($rv->created_at)) }} </td>								
-										</tr>
+									<div class="col-md-4" style="margin: 5px;">
+											<div class="card text-center">
+												<div class="card-header" style="background-color:#17a2b8 ; color:white; font-size:18px">
+													{{$rv->cat}}
+												</div>
+											<div class="card-body" >
+												<h5 class="card-title">Profesional</h5>
+												<p class="card-text" >{{$rv->name}} {{$rv->last_name}}</p>
+												<p class="card-text" style="font-size:18px">El dia {{date('d/m/Y H:i:s',strtotime($rv->created_at))}}</p>
+
+											</div>
+											<div class="card-footer text-muted card-title">
+											    Publicacion -> <a class="btn btn-primary" href="{{ route('admin_publicacion_user', ['publicacion_hash' => $rv->hash, 'origen'=>'publicaciones' ]) }}" class="btn btn-primary"><i class="fa fa-eye"></i></a>
+											</div>
+										</div>
+									</div>	
 									@endforeach
-									</tbody>
-								</table>
-							  @endif
+								</div>																	
 							</div>
-								@if($perfilVisitado) 
-								<div class="row col-md-12 info" id="perfilVisitado" style="text-aligne:center; display:none" >
-								<h2>Perfil Mas Visitado</h2>
-								<table class="table table-bordered table-striped mb-none" id="myTable">
-									<thead>
-										<tr align="center">
-											<th style="text-align:center" onclick="sortTable(0, 'str')" ><a class="link" href="#">Profesional</a></th>
-											<th style="text-align:center" onclick="sortTable(0, 'str')" ><a class="link" href="#">Visitas</a></th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr class="gradeX" align="center">
-											<td>{{$perfilVisitado->name}} {{$perfilVisitado->last_name}}</td>
-											<td>{{$perfilVisitado->view_count}}</td>														
-										</tr>
-									</tbody>
-								</table>
-								</div>
-								@endif
+							@endif
+
+							<!-- Perfil mas Visitado-->
+							@if($perfilVisitado)
+							<div class=" col-md-10 info" id="perfilVisitado" style="text-aligne:center; display:none;width:99%" >
+							<h2 >Perfil Mas Visitado</h2>
+								<div class="col-md-5" style="margin: auto;">
+									<div class="card text-center">
+											<div class="card-header"  style="background-color:#1c5fa8; color:white; font-size:18px">
+											 Con {{$perfilVisitado->view_count}} visitas
+											</div>
+											<div class="card-body">
+												<h5 class="card-title">Profesional</h5>
+												<p class="card-text">{{$perfilVisitado->name}} {{$perfilVisitado->last_name}}</p>
+											</div>
+									</div>
+								</div>	
+							</div>
+							@endif
+
 							<!--PROFESIONALES-->
 							<!-- navegacion Principal profesionales -->
 							<div class="col-md-12" style="margin-bottom:5%; margin-top:5%">
@@ -150,52 +152,58 @@
 								</div>
 								
 							</div>
-							<!--Detalle Profesionales-->
+							<!--Detalle perfil mejor calificado-->
+
 							@if($profesionalMorequalified)
-							<div class=" col-md-12 info" id="profesionalMorequalified" style="text-aligne:center; display:none;width:90%" >
-										<h2>Profesional</h2>
-										<div style="justify-content: center;">
-											<div class="col-md-8" >
-												<div class="card" style=" border-color: #dedede;">
-													<div class="card-body">
-													<h5 class="card-title">Profesional</h5>
-													<h3 class="card-text">{{$profesionalMorequalified->name}} {{$profesionalMorequalified->last_name}}</h3>
-													<h4><small style="padding-left:auto; margin-top:none" class="text-muted">Cliente</small></h4>
-													<h3 class="card-text">{{$profesionalMorequalified->client_name}} {{$profesionalMorequalified->client_email}}</h3>
-
-													<h3 class="card-text">Categoria <small style="padding-left:auto;" class="text-muted">{{$category->name}}</small></h3>
-													<h3 class="card-text">Staisfaccion <small style="padding-left:auto;" class="text-muted">{{$profesionalMorequalified->satisfaction}}</small></h3>
-													<h3 class="card-text">Encuestas <small style="padding-left:auto;" class="text-muted">{{$profesionalMorequalified->surveys}}</small></h3>
-
-												</div>
+							<div class=" col-md-10 info" id="profesionalMorequalified" style="text-aligne:center; display:none;width:99%" >
+							<h2 >Perfil Mejor Calificado</h2>
+								<div class="col-md-5" style="margin: auto;">
+									<div class="card text-center">
+											<div class="card-header"  style="background-color:#1c5fa8; color:white; font-size:18px">
+											{{$profesionalMorequalified->name}} {{$profesionalMorequalified->last_name}}
 											</div>
-										</div>	
+											<div class="card-header">
+											{{$profesionalMorequalified->cat}}
+											</div>
+											<div class="card-body">
+												<h5 class="card-title">Por el cliente</h5>
+												<p class="card-text">{{$profesionalMorequalified->client_name}}</p>
+												<p class="card-text">Email: {{$profesionalMorequalified->client_email}}</p>
+												@for ($i = 0; $i <= $profesionalMorequalified->Satisfaction; $i++)
+												<i class="fa fa-star" style="color:yellow;"></i>
+												@endfor						
+											</div>
+											<div class="card-footer text-muted card-title">
+											   Total encuestas {{$profesionalMorequalified->Survays}}
+											</div>
+									</div>
+								</div>	
 							</div>
-							@endif				
-							</div>
+							@endif			
 
-
-
-							<div class=" col-md-10 info" id="surveyByProfesional_" style="text-aligne:center; display:none;width:90%" >
 							@if($SurveyByProfesional)
+							<div class=" col-md-10 info" id="surveyByProfesional_" style="text-aligne:center; display:none;width:99%" >
 								<h2>Encuestas Por Profesional</h2>
 								<div style="display:flex; flex-direction:row; overflow: auto; white-space: nowrap;">
 								@foreach($SurveyByProfesional as $surveyByProf)
-									<div class="col-md-4" style="margin-right: 10px">
-										<div class="card">
+									<div class="col-md-4" style="margin: 5px;">
+											<div class="card text-center">
+												<div class="card-header" style="background-color:#1c5fa8; color:white; font-size:18px">
+												{{$surveyByProf->name}} {{$surveyByProf->last_name}}
+												</div>
 											<div class="card-body" >
-												<h3 class="card-title">Profesional</h3>
-												<h4 class="card-text">{{$surveyByProf->name}} {{$surveyByProf->last_name}}</h4>
-												<h5 class="card-text">Vistas  {{$surveyByProf->Survays}}</h5>
-												<h5 class="card-text">Cliente {{$surveyByProf->client_name}}</h5>
-												<h5 class="card-text"> {{$surveyByProf->client_email}}</h5>
+												<h5 class="card-text">Cliente-> {{$surveyByProf->client_name}}</h5>
+												<h5 class="card-text">Email-> {{$surveyByProf->client_email}}</h5>
+											</div>
+											<div class="card-footer text-muted card-title">
+											    Visitas -> {{$surveyByProf->Survays}}
 											</div>
 										</div>
 									</div>	
 									@endforeach
-								</div>	
-								@endif																	
-							</div>	
+								</div>																	
+							</div>
+							@endif
 				</div>
 			</div>
 		</div>

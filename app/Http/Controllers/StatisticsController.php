@@ -79,7 +79,7 @@ class StatisticsController extends Controller
         ->join('publicacion AS publi', 'publi.id' , '=', 'p_user.publicacion_id')
         ->join('categoria AS cat', 'cat.id', '=', 'publi.categoria_id')
         ->groupBy('Surveys.user_id', 'us.name', 'us.last_name', 'client_name', 'client_email', 'Satisfaction', 'cat.name')
-        ->select('Surveys.user_id', 'us.name','us.last_name', DB::raw('COUNT(Surveys.user_id) as Survays'), 'client_name', 'client_email', 'Satisfaction', 'cat.name')
+        ->select('Surveys.user_id', 'us.name','us.last_name', DB::raw('COUNT(Surveys.user_id) as Survays'), 'client_name', 'client_email', 'Satisfaction', 'cat.name as cat')
         ->orderByDesc('Survays') 
         ->first();
         
