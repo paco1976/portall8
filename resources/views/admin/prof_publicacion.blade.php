@@ -96,12 +96,11 @@
 			@else
 			<table class="table table-bordered table-striped mb-0" id="datatable-editable">
 				<thead>
-					<tr>			
+					<tr class="actions text-center">			
 						<th>Categoría</th>
 						<th>Título Relacionado</th>
 						<th>Estado</th>
-						<th>Rating</th>
-						<th>Visibilidad del rating</th>
+						<th>Calificación</th>
 						<th>Visitas</th>
 						<th>Ver</th>
 						<th>Editar</th>
@@ -127,9 +126,15 @@
 						</td>
 						
 						<td class="actions text-center">
-							{{$publicacion->rating}}
-						</td>
-						<td class="actions text-center">
+							@if ($publicacion->rating > 0)
+                                @if ($publicacion->rating >= 3)
+                                <span class="btn btn-success"><strong>{{ $publicacion->rating }}</strong></span>
+                                @else
+                                <span class="btn btn-danger"><strong>{{ $publicacion->rating }}</strong></span>
+                                @endif
+                            @else
+                                <span class="btn btn-light"><strong>-</strong></span>
+                            @endif	
 							@if($publicacion->show_rating==0)
 								<a href="{{ route('admin_publicaciones_show_rating', ['publicacion_hash' => $publicacion->hash, 'origen' => 'profesionales']) }}" class="btn btn-warning"><i class="fa fa-eye-slash"></i></a>
 								@else
