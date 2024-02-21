@@ -78,62 +78,58 @@
                                     </thead>
                                     <tbody>
                                         @foreach ($publicaciones as $publicacion)
-                                            <tr data-item-id="1">
-                                                <td>{{ $publicacion->categoria->name }}</td>
-
-                                                @foreach ($publicaciones as $publicacion)
-                                                    @if ($publicacion->contacts)
-                                                        @foreach ($publicacion->contacts as $contact)
-                                                            @if ($contact)
-                                                                <td class="actions text-center"> </td>
-                                                                <td class="actions text-center">
-                                                                    {{ $contact->created_at->format('d/m/Y H:i:s') }}
-                                                                </td>
-                                                                {{-- Nombre del cliente --}}
-                                                                <td class="actions text-center">
-                                                                    {{ $contact->client_name }}
-                                                                </td>
-                                                                <td class="actions text-center">
-                                                                    {{ $contact->client_cellphone }}
-                                                                </td>
-                                                                <td class="actions text-center">
+                                            @if ($publicacion->contacts)
+                                                @foreach ($publicacion->contacts as $contact)
+                                                    <tr data-item-id="1">
+                                                        <td>{{ $publicacion->categoria->name }}</td>
+                                                        @if ($contact)
+                                                            <td class="actions text-center"> </td>
+                                                            <td class="actions text-center">
+                                                                {{ $contact->created_at->format('d/m/Y H:i:s') }}
+                                                            </td>
+                                                            {{-- Nombre del cliente --}}
+                                                            <td class="actions text-center">
+                                                                {{ $contact->client_name }}
+                                                            </td>
+                                                            <td class="actions text-center">
+                                                                {{ $contact->client_cellphone }}
+                                                            </td>
+                                                            <td class="actions text-center">
+                                                                @if ($contact->contacted == 0)
+                                                                    <span class="btn btn-light">No enviada</span>
+                                                                @else
+                                                                    <a class="btn btn-info">
+                                                                        <span>Ver</span>
+                                                                    </a>
+                                                                @endif
+                                                            </td>
+                                                            <td class="actions text-center">
+                                                                <form action="{{ route('survey.init') }}" method="post">
+                                                                    @csrf
+                                                                    <input type="hidden" name="user_id"
+                                                                        value="{{ $contact->user_id }}">
+                                                                    <input type="hidden" name="survey_id"
+                                                                        value="{{ $contact->id }}">
                                                                     @if ($contact->contacted == 0)
-                                                                        <span class="btn btn-light">No enviada</span>
+                                                                        <button class="btn btn-success"
+                                                                            type="submit">Enviar</button>
                                                                     @else
-                                                                        <a class="btn btn-info">
-                                                                            <span>Ver</span>
-                                                                        </a>
+                                                                        <button class="btn btn-warning"
+                                                                            type="submit">Volver a enviar</button>
                                                                     @endif
-                                                                </td>
-                                                                <td class="actions text-center">
-                                                                    <form action="{{ route('survey.init') }}"
-                                                                        method="post">
-                                                                        @csrf
-                                                                        <input type="hidden" name="user_id"
-                                                                            value="{{ $contact->user_id }}">
-                                                                        <input type="hidden" name="survey_id"
-                                                                            value="{{ $contact->id }}">
-                                                                        @if ($contact->contacted == 0)
-                                                                            <button class="btn btn-success"
-                                                                                type="submit">Enviar</button>
-                                                                        @else
-                                                                            <button class="btn btn-warning"
-                                                                                type="submit">Volver a enviar</button>
-                                                                        @endif
-                                                                    </form>
+                                                                </form>
 
-                                                                </td>
-                                                                <td class="actions text-center">
-                                                                    <a target="_blank"
-                                                                        href=" https://wa.me/{{ $contact->client_cellphone }}?text=Hola!%20Te%20contacto%20desde%20el%20portal%20de%20oficios%20para%20hacerte%20una%20consulta!"
-                                                                        class="btn btn-success">
-                                                                        <i class="fab fa-whatsapp"></i></a>
-                                                                </td>
-                                                            @endif
-                                                        @endforeach
-                                                    @endif
+                                                            </td>
+                                                            <td class="actions text-center">
+                                                                <a target="_blank"
+                                                                    href=" https://wa.me/{{ $contact->client_cellphone }}?text=Hola!%20Te%20contacto%20desde%20el%20portal%20de%20oficios%20para%20hacerte%20una%20consulta!"
+                                                                    class="btn btn-success">
+                                                                    <i class="fab fa-whatsapp"></i></a>
+                                                            </td>
+                                                        @endif
+                                                    </tr>
                                                 @endforeach
-                                            </tr>
+                                            @endif
                                         @endforeach
 
                                     </tbody>
