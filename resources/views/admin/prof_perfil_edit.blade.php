@@ -32,7 +32,7 @@
 
             <div class="container pt-3 pb-2">
 
-                <h2 class="font-weight-normal line-height-1">Hola, <strong class="font-weight-extra-bold">{{ $user->name }} {{ $user->last_name }}</strong></h2>
+                <h2 class="font-weight-normal line-height-1"><strong class="font-weight-extra-bold">{{ $user->name }} {{ $user->last_name }}</strong></h2>
                 @if (Session::has('message'))
                 <div class="alert alert-success">
                     <p>{{ Session::get('message') }}</p>
@@ -180,6 +180,13 @@
                                             <strong>{{ $message }}</strong>
                                         </span>
                                     @enderror
+                                </div>
+                            </div>
+                
+                            <div class="form-group row">
+                                <label class="col-lg-3 col-form-label form-control-label line-height-9 pt-2 text-2 ">Celular</label>
+                                <div class="col-lg-9">
+                                    <input class="form-control text-3 h-auto py-2" type="number" name="mobile" value="{{ old('mobile',$user->profile->mobile ) }}">
                                 </div>
                             </div>
 

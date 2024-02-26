@@ -550,9 +550,9 @@ class SurveyController extends Controller
         $surveys = Survey::latest()->take(3)->get();
 
         return view('admin.testSurvey', compact('surveys'));
-    }
+    } 
 
-    public function initTestSurvey(Request $request)
+    public function initSurveyManually(Request $request)
     {
         $user = User::find($request->input('user_id'));
         $surveyId = $request->input('survey_id');
@@ -560,7 +560,7 @@ class SurveyController extends Controller
         $surveyController = new SurveyController();
         $surveyController->initSurvey($surveyId, $user->id);
 
-        return redirect()->route('test_survey');
+        return back();
     }
 };
 
