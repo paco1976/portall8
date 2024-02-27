@@ -43,7 +43,7 @@
 							</div>
 							<!-- Botones Generales Visitas -->
 							<div class="col-md-12" style="margin-bottom:5%">
-									<h3>Visitas</h3>
+									<h3>Segun Visitas</h3>
 									<div class=" container" style="display: flex; justify-content: space-between;">
 										<button  onclick="showHide('totalVistas')" style=" border: none; background-color: #dedede; margin: 1px; padding: 20px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease;">
 										<caption>Total Vistas</caption>
@@ -55,7 +55,7 @@
 										</button>
 										<button onclick="showHide('category_visits')"  style="border: none; background-color: #dedede; margin: 1px; padding: 20px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease;">
 												<caption>Categoria mas visitadas</caption>
-												<h2 style="margin-bottom: 0px">{{ $categoryVisits['name']}} con {{$categoryVisits['view_count']}} visitas</h2>		
+												<h2 style="margin-bottom: 0px">{{ $categoryVisits['nameCat']}} con {{$categoryVisits['view_count']}} visitas</h2>		
 										</button>
 										<button onclick="showHide('perfilVisitado')" style="border: none; background-color: #dedede; margin: 1px; padding: 20px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease;">
 											<caption>Perfil mas visitado</caption>
@@ -73,7 +73,7 @@
 									<div class="col-md-4" style="margin: 5px;">
 											<div class="card text-center">
 												<div class="card-header" style="background-color:#17a2b8 ; color:white; font-size:18px" >
-												{{$category->name}}
+												{{$category->nameCat}}
 												</div>
 												<div class="card-body">
 													<h5 class="card-title">Profesional</h5>
@@ -136,7 +136,7 @@
 							<!--PROFESIONALES-->
 							<!-- navegacion Principal profesionales -->
 							<div class="col-md-12" style="margin-bottom:5%; margin-top:5%">
-								<h3>PROFESIONALES</h3>
+								<h3>Segun Profesionales</h3>
 								<div class=" container" style="display: flex; justify-content: space-between;">
 									<button style="pointer-events: none;border: none; background-color: #dedede; margin: 1px; padding: 20px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease;">
 										<caption>Total Encuestados</caption>
@@ -169,13 +169,14 @@
 												<h5 class="card-title">Por el cliente</h5>
 												<p class="card-text">{{$profesionalMorequalified->client_name}}</p>
 												<p class="card-text">Email: {{$profesionalMorequalified->client_email}}</p>
-												@for ($i = 0; $i <= $profesionalMorequalified->Satisfaction; $i++)
+												@for ($i = 0; $i < $profesionalMorequalified->Prom; $i++)
 												<i class="fa fa-star" style="color:yellow;"></i>
 												@endfor						
 											</div>
 											<div class="card-footer text-muted card-title">
 											   Total encuestas {{$profesionalMorequalified->Survays}}
 											</div>
+											{{$profesionalMorequalified}}
 									</div>
 								</div>	
 							</div>
@@ -196,7 +197,7 @@
 												<h5 class="card-text">Email-> {{$surveyByProf->client_email}}</h5>
 											</div>
 											<div class="card-footer text-muted card-title">
-											    Visitas -> {{$surveyByProf->Survays}}
+											    Encuestas -> {{$surveyByProf->Survays}}
 											</div>
 										</div>
 									</div>	

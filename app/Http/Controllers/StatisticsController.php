@@ -35,21 +35,53 @@ class StatisticsController extends Controller
         ->whereMonth('created_at', '=', now()->month)
         ->count();
 
+
         $allCategoryVisits = $publicaciones_vistas
-            ->join('publicacion AS p', 'p.id' , '=', 'publicacion_visita.publicacion_id')
-            ->join('publicacion_user AS pu', 'pu.publicacion_id', '=', 'publicacion_visita.publicacion_id')
-            ->join('users AS u', 'u.id', '=', 'pu.user_id')
-            ->join('categoria AS c', 'c.id', '=', 'p.categoria_id')
-            ->groupBy('c.id', 'c.name', 'u.name', 'u.last_name')
-            ->select('c.name', DB::raw('COUNT(*) as view_count'), 'u.name as user', 'u.last_name')
-            ->orderByDesc('view_count')
-            ->get();
-        $categoriesViews = $allCategoryVisits ->first();
+        ->join('publicacion AS p', 'p.id' , '=', 'publicacion_visita.publicacion_id')
+        ->join('publicacion_user AS pu', 'pu.publicacion_id', '=', 'publicacion_visita.publicacion_id')
+        ->join('users AS u', 'u.id', '=', 'pu.user_id')
+        ->join('categoria AS c', 'c.id', '=', 'p.categoria_id')
+        ->groupBy('c.id', 'c.name')
+        ->select('c.name', 
+        DB::raw( 'round(sum(c.id) / ( select count(cat2.id)  from `categoria` cat2  ),0 ) as view_count'), 
+        )
+        ->orderByDesc('view_count')
+        ->first();
+
+        $categoriesViews = $publicaciones_vistas
+        ->join('publicacion AS p2', 'p2.id' , '=', 'publicacion_visita.publicacion_id')
+        ->join('publicacion_user AS pu2', 'pu2.publicacion_id', '=', 'publicacion_visita.publicacion_id')
+        ->join('users AS u2', 'u2.id', '=', 'pu.user_id')
+        ->join('categoria AS c2', 'c2.id', '=', 'p2.categoria_id')
+        ->groupBy('c2.id', 'c2.name', 'u2.id', 'u2.name',  'u2.last_name')
+        ->select('c2.name as nameCat', 'u2.id',
+            DB::raw( 'round(sum(c2.id) / ( select count(cat22.id)  from `categoria` cat22  ),0 ) as view_count'), 
+        )
+        ->orderByDesc('view_count')
+        ->get();
+
+
+        // select `c`.`name`, round(sum(c.id) / ( select count(cat2.id) from `categoria` cat2 ),0 ) as view_count, `u`.`name` as `user`, `u`.`last_name` from `publicacion_visita` inner join `publicacion` as `p` on `p`.`id` = `publicacion_visita`.`publicacion_id` inner join `publicacion_user` as `pu` on `pu`.`publicacion_id` = `publicacion_visita`.`publicacion_id` inner join `users` as `u` on `u`.`id` = `pu`.`user_id` inner join `categoria` as `c` on `c`.`id` = `p`.`categoria_id` 
+        // group by `c`.`id` , `c`.`name` 
+        // , `u`.`name`,  `u`.`last_name`
+        // order by `view_count` desc;
+
+        //    $el mysql no pide todos los campos en el groupBy!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ??
+
+        // select `c`.`name`, round(sum(c.id) / ( select count(cat2.id) from `categoria` cat2 ),0 ) as view_count
+        // from `publicacion_visita` 
+        // inner join `publicacion` as `p` on `p`.`id` = `publicacion_visita`.`publicacion_id` 
+        // inner join `categoria` as `c` on `c`.`id` = `p`.`categoria_id` 
+        // where c.name = 'Peluquero/a'
+        // group by `c`.`id` 
+        // order by `view_count` desc
+
+
         $perfilVisitado = Publicacion_Visita::query()
         ->join('publicacion_user AS pu', 'pu.publicacion_id', '=', 'publicacion_visita.publicacion_id')
         ->join('users AS u', 'u.id', '=', 'pu.user_id')
         ->groupBy('u.id', 'u.name', 'u.last_name')
-        ->select('u.name','u.last_name', DB::raw('COUNT(*) as view_count'))
+        ->select('u.name','u.last_name', DB::raw( 'round(( COUNT(*) / COUNT(u.id)),0 ) as view_count'))
         ->orderByDesc('view_count') 
         ->first();
 
@@ -79,7 +111,8 @@ class StatisticsController extends Controller
         ->join('publicacion AS publi', 'publi.id' , '=', 'p_user.publicacion_id')
         ->join('categoria AS cat', 'cat.id', '=', 'publi.categoria_id')
         ->groupBy('Surveys.user_id', 'us.name', 'us.last_name', 'client_name', 'client_email', 'Satisfaction', 'cat.name')
-        ->select('Surveys.user_id', 'us.name','us.last_name', DB::raw('COUNT(Surveys.user_id) as Survays'), 'client_name', 'client_email', 'Satisfaction', 'cat.name as cat')
+        ->select('Surveys.user_id', 'us.name','us.last_name', DB::raw('COUNT(Surveys.user_id) as Survays'), 'client_name', 'client_email'
+        , DB::raw( ' round( SUM(Surveys.Satisfaction) / COUNT(Surveys.user_id), 2 ) as Prom'), 'cat.name as cat', 'Surveys.Satisfaction as satisf')
         ->orderByDesc('Survays') 
         ->first();
         
