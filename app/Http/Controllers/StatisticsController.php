@@ -35,8 +35,8 @@ class StatisticsController extends Controller
         ->whereMonth('created_at', '=', now()->month)
         ->count();
 
-
-        $allCategoryVisits = $publicaciones_vistas
+        
+        $categoriesViews = $publicaciones_vistas
         ->join('publicacion AS p', 'p.id' , '=', 'publicacion_visita.publicacion_id')
         ->join('publicacion_user AS pu', 'pu.publicacion_id', '=', 'publicacion_visita.publicacion_id')
         ->join('users AS u', 'u.id', '=', 'pu.user_id')
@@ -48,13 +48,13 @@ class StatisticsController extends Controller
         ->orderByDesc('view_count')
         ->first();
 
-        $categoriesViews = $publicaciones_vistas
+        $allCategoryVisits = $publicaciones_vistas
         ->join('publicacion AS p2', 'p2.id' , '=', 'publicacion_visita.publicacion_id')
         ->join('publicacion_user AS pu2', 'pu2.publicacion_id', '=', 'publicacion_visita.publicacion_id')
         ->join('users AS u2', 'u2.id', '=', 'pu.user_id')
         ->join('categoria AS c2', 'c2.id', '=', 'p2.categoria_id')
         ->groupBy('c2.id', 'c2.name', 'u2.id', 'u2.name',  'u2.last_name')
-        ->select('c2.name as nameCat', 'u2.id',
+        ->select('c2.id','c2.name as nameCat', 'u2.id', 'u2.name',  'u2.last_name',
             DB::raw( 'round(sum(c2.id) / ( select count(cat22.id)  from `categoria` cat22  ),0 ) as view_count'), 
         )
         ->orderByDesc('view_count')
