@@ -31,12 +31,12 @@ class StatisticsController extends Controller
 
         $publicaciones_vistas = Publicacion_Visita::query();
         $views = $publicaciones_vistas -> count();
-        $views_month = Publicacion_Visita::whereYear('created_at', '=', now()->year)
+        $viewsPerMonth = Publicacion_Visita::whereYear('created_at', '=', now()->year)
         ->whereMonth('created_at', '=', now()->month)
         ->count();
 
-        
-        $categoriesViews = $publicaciones_vistas
+        ///
+        $categoryAverage = $publicaciones_vistas
         ->join('publicacion AS p', 'p.id' , '=', 'publicacion_visita.publicacion_id')
         ->join('publicacion_user AS pu', 'pu.publicacion_id', '=', 'publicacion_visita.publicacion_id')
         ->join('users AS u', 'u.id', '=', 'pu.user_id')
@@ -48,7 +48,13 @@ class StatisticsController extends Controller
         ->orderByDesc('view_count')
         ->first();
 
-        $allCategoryVisits = $publicaciones_vistas
+        // MySQL para probar promedio solo de categorias
+        // select `c`.`name`, round(sum(c.id) / ( select count(cat2.id) from `categoria` cat2 ),0 ) as view_count, `u`.`name` as `user`, `u`.`last_name` from `publicacion_visita` inner join `publicacion` as `p` on `p`.`id` = `publicacion_visita`.`publicacion_id` inner join `publicacion_user` as `pu` on `pu`.`publicacion_id` = `publicacion_visita`.`publicacion_id` inner join `users` as `u` on `u`.`id` = `pu`.`user_id` inner join `categoria` as `c` on `c`.`id` = `p`.`categoria_id` 
+        // group by `c`.`id` , `c`.`name` 
+        // , `u`.`name`,  `u`.`last_name`
+        // order by `view_count` desc;
+
+        $averageCategoryWithProfesional = $publicaciones_vistas
         ->join('publicacion AS p2', 'p2.id' , '=', 'publicacion_visita.publicacion_id')
         ->join('publicacion_user AS pu2', 'pu2.publicacion_id', '=', 'publicacion_visita.publicacion_id')
         ->join('users AS u2', 'u2.id', '=', 'pu.user_id')
@@ -61,13 +67,7 @@ class StatisticsController extends Controller
         ->get();
 
 
-        // select `c`.`name`, round(sum(c.id) / ( select count(cat2.id) from `categoria` cat2 ),0 ) as view_count, `u`.`name` as `user`, `u`.`last_name` from `publicacion_visita` inner join `publicacion` as `p` on `p`.`id` = `publicacion_visita`.`publicacion_id` inner join `publicacion_user` as `pu` on `pu`.`publicacion_id` = `publicacion_visita`.`publicacion_id` inner join `users` as `u` on `u`.`id` = `pu`.`user_id` inner join `categoria` as `c` on `c`.`id` = `p`.`categoria_id` 
-        // group by `c`.`id` , `c`.`name` 
-        // , `u`.`name`,  `u`.`last_name`
-        // order by `view_count` desc;
-
-        //    $el mysql no pide todos los campos en el groupBy!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ??
-
+        // MySQL para probar promedio  de categorias con profesionales
         // select `c`.`name`, round(sum(c.id) / ( select count(cat2.id) from `categoria` cat2 ),0 ) as view_count
         // from `publicacion_visita` 
         // inner join `publicacion` as `p` on `p`.`id` = `publicacion_visita`.`publicacion_id` 
@@ -85,6 +85,24 @@ class StatisticsController extends Controller
         ->orderByDesc('view_count') 
         ->first();
 
+        //Pendiente Revisar!!!!!!!!!!!!!!!!!!!!!!!
+        
+        //MySql Promedio publicaciones perfil mas visitado ??? REVISAR
+        // select  round(( sum(pv.id) / COUNT(pu.user_id)),0 ) as view_count, pu.user_id
+        // from publicacion_visita pv
+        // inner join publicacion_user  as pu on pu.publicacion_id=pv.publicacion_id
+        // inner join users as u on  u.id = pu.user_id
+        // group by pu.user_id
+        // ORDER by view_count DESC;
+        
+        // select count(pv.id), u.id
+        // from publicacion_visita pv
+        // inner join publicacion_user  as pu on pu.publicacion_id=pv.publicacion_id
+        // inner join users as u on  u.id = pu.user_id
+        // group by u.id
+
+
+
         $recentView = Publicacion_Visita::query()//Seguir buscando al forma de unir query
         ->join('publicacion_user AS p_user', 'p_user.publicacion_id', '=', 'publicacion_visita.publicacion_id')
         ->join('users AS us', 'us.id', '=', 'p_user.user_id')
@@ -98,14 +116,15 @@ class StatisticsController extends Controller
 
 
         //Profesionales
-
         $SurveyByProfesional = Survey::query()
         ->join('users AS us', 'us.id', '=', 'Surveys.user_id')
         ->groupBy('user_id', 'us.name', 'us.last_name', 'client_name', 'client_email', 'Satisfaction')
-        ->select('user_id', 'us.name','us.last_name', DB::raw('COUNT(Surveys.satisfaction) as Survays'), 'client_name', 'client_email', 'Satisfaction')
+        ->select('user_id', 'us.name','us.last_name', DB::raw('COUNT(Surveys.id) as Survays'), 'client_name', 'client_email', 'Satisfaction')
         ->get();
+        //Pendiente de revisar!!!!!!!!!!!!
 
-        $profesionalMorequalified = Survey::query()
+        //Average Profesional 
+        $averageProfesional = Survey::query()
         ->join('users AS us', 'us.id', '=', 'Surveys.user_id')
         ->join('publicacion_user AS p_user', 'p_user.user_id', '=', 'us.id')
         ->join('publicacion AS publi', 'publi.id' , '=', 'p_user.publicacion_id')
@@ -120,13 +139,13 @@ class StatisticsController extends Controller
         ->count();
 
         return view('admin.statistics', compact('user'))
-            ->with('categoryVisits',  $categoriesViews)
+            ->with('categoryVisits',  $categoryAverage)
             ->with('visitsCount', $views)
-            ->with('visitsMonth', $views_month)
+            ->with('visitsMonth', $viewsPerMonth)
             // ->with('category_Profile', $categoryWithProfile)
             ->with('perfilVisitado', $perfilVisitado)
-            ->with('allCategoryVisits',  $allCategoryVisits)
-            ->with('profesionalMorequalified',  $profesionalMorequalified)
+            ->with('allCategoryVisits',  $averageCategoryWithProfesional)
+            ->with('profesionalMorequalified',  $averageProfesional)
             ->with('SurveyTotal',  $SurveyTotal)
             ->with('SurveyByProfesional',  $SurveyByProfesional)
 

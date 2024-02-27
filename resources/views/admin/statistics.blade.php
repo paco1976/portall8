@@ -176,7 +176,6 @@
 											<div class="card-footer text-muted card-title">
 											   Total encuestas {{$profesionalMorequalified->Survays}}
 											</div>
-											{{$profesionalMorequalified}}
 									</div>
 								</div>	
 							</div>
