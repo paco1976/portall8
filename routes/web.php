@@ -158,7 +158,7 @@ Route::put('/admin_categoria_update','CategoriaController@admin_categoria_update
 Route::get('/admin_categoria_delete/{id}','CategoriaController@admin_categoria_delete' )->name('admin_categoria_delete'); // Activar desactivar categoria desde el panel de admin
 
 
-Route::get('/admin_surveys/{publicacion_hash}', 'AdminController@admin_surveys')->name('admin_surveys');
+Route::get('/admin_surveys/{hash_user}', 'AdminController@admin_surveys')->name('admin_surveys');
 
 
 Route::get('/admin_visitas/{publicacion_hash}', 'AdminController@admin_visitas')->name('admin_visitas');

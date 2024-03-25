@@ -127,25 +127,52 @@ class User extends Authenticatable
         return $this->hasMany(Survey::class);
     }
 
-    public function averageSatisfaction()
+    public function surveys_accepted()
     {
-        return $this->surveys()->avg('satisfaction');
+        return $this->surveys()->where('accepts_survey', true);
     }
 
-    public function getTopDescriptiveWords($limit = 5)
+    public function averageSatisfaction()
     {
-        $words = $this->surveys()->pluck('descriptive_words')->flatten()->toArray();
+        return round($this->surveys()->avg('satisfaction'), 1);
+    }
 
-        // Count the occurrences of each word
-        $wordCounts = array_count_values($words);
+    public function most_used_positive_words()
+    {
 
-        // Sort the word counts in descending order
-        arsort($wordCounts);
+        $allWords = $this->surveys->pluck('descriptive_words')->filter()->flatten()->values();
 
-        // Get the top N words
-        $topWords = array_slice($wordCounts, 0, $limit, true);
+        $wordCount = $allWords->countBy();
 
-        return array_keys($topWords);
+        $sortedWords = $wordCount->sortDesc();
+
+        $topThreeWords = $sortedWords->take(3)->keys()->toArray();
+        
+        $topThreeWords = array_map(function ($word) {
+            return str_replace('_', ' ', $word);
+        }, $topThreeWords);
+
+        return $topThreeWords;
+
+    }
+
+    public function most_used_negative_words()
+    {
+
+        $allWords = $this->surveys->pluck('no_agreement')->filter()->flatten()->values();
+
+        $wordCount = $allWords->countBy();
+
+        $sortedWords = $wordCount->sortDesc();
+
+        $topThreeWords = $sortedWords->take(3)->keys()->toArray();
+        
+        $topThreeWords = array_map(function ($word) {
+            return str_replace('_', ' ', $word);
+        }, $topThreeWords);
+
+        return $topThreeWords;
+
     }
 
     public function routeNotificationForMail()

@@ -83,7 +83,7 @@
                                     <th>Nombre y Apellido</th>
                                     <th>Publicaciones</th>
                                     <th>Mensajes nuevos</th>
-                                    <th>Clientes registrados</th>
+                                    <th>Clientes</th>
                                     <th>Calificación</th>
                                     <th>Encuestas</th>
                                 </tr>
@@ -163,15 +163,15 @@
                                         <td class="actions text-center">
 											@if ($usr->surveys > 0)
 											@if ($usr->surveys > 0)
-												<a href="{{ route('admin_prof_contacts', ['hash_user' => $usr->hash]) }}"
+												<a href="{{ route('admin_surveys', ['hash_user' => $usr->hash]) }}"
 													class="btn btn-info"><strong>{{ $usr->surveys }}</strong></a>
 											@else
-												<a href=""
-													class="btn btn-light"><strong>{{ $usr->surveys }}</strong></a>
+												<span
+													class="btn btn-light"><strong>{{ $usr->surveys }}</strong></span>
 											@endif
 										@else
-											<a href=""
-												class="btn btn-light"><strong>{{ $usr->surveys }}</strong></a>
+											<span
+												class="btn btn-light"><strong>{{ $usr->surveys }}</strong></span>
 										@endif
                                         </td>
 

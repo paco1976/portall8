@@ -39,8 +39,8 @@
             </div>
 
             <div class="form-group col-lg-2">
-                <a href="{{ route('prof_publicacion', ['hash_user' => $user->hash]) }}"
-                    class="btn btn-dark btn-modern float-end">Ver publicaciones</a>
+                <a href="{{ route('admin_surveys', ['hash_user' => $user->hash]) }}"
+                    class="btn btn-dark btn-modern float-end">Ver encuestas</a>
 
             </div>
             @if (Session::has('message'))
@@ -66,7 +66,6 @@
                                     <thead>
                                         <tr class="actions text-center">
                                             <th>Publicación</th>
-                                            <th>Lugar de contacto</th>
                                             <th>Fecha</th>
                                             <th>Cliente</th>
                                             <th>Celular</th>
@@ -83,7 +82,6 @@
                                                     <tr data-item-id="1">
                                                         <td>{{ $publicacion->categoria->name }}</td>
                                                         @if ($contact)
-                                                            <td class="actions text-center"> </td>
                                                             <td class="actions text-center">
                                                                 {{ $contact->created_at->format('d/m/Y H:i:s') }}
                                                             </td>

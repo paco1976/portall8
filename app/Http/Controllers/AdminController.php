@@ -710,13 +710,16 @@ class AdminController extends Controller
                     }                   
                 }
 
-                $usr->rating = round($ratings_sum / count($usr->publicaciones), 1);          
-                
+                if (count($usr->publicaciones) > 0) {
+                    $usr->rating = round($ratings_sum / count($usr->publicaciones), 1);
+                } else {
+                    $usr->rating = 0;
+                }
             }
             return view('/admin.profesionales', compact('user', 'user_all'));
         }
         else{
-            session::flash('message', 'No está autorizado para esta acción');
+            session::flash('message', ' No está autorizado para esta acción');
             return redirect('/');
         }
 
@@ -1366,25 +1369,27 @@ class AdminController extends Controller
         }
     }
 
-    public function admin_surveys($publicacion_hash){
-        $user = User::find(Auth::user()->id);
-
-        $publicacion = Publicacion::where('hash', $publicacion_hash)->first();
-        $surveys = $publicacion->surveys()
-                        ->where('accepts_survey', true)
-                        ->orderBy('created_at', 'DESC')
-                        ->paginate(10);
+    public function admin_surveys($hash_user){
+        $userAdmin = User::find(Auth::user()->id);
+        $userAdmin->avatar = Storage::disk('avatares')->url($userAdmin->avatar);
         
-        $publicacion->user = $publicacion->user()->first();
-        $publicacion->positive_words = $publicacion->most_used_positive_words();
-        $publicacion->negative_words = $publicacion->most_used_negative_words();
-        $publicacion->rating = $publicacion->rating();
+        $userAdmin->permisos = $userAdmin->user_type()->first();
+        if($userAdmin->permisos->name == "Administrador"){
+            $user = User::where("hash", $hash_user)->first();
+            $user->avatar = Storage::disk('avatares')->url($user->avatar);
+            $surveys = $user->surveys_accepted()->get();
 
-        $user->permisos = $user->user_type()->first();
-        if($user->permisos->name == "Administrador" ){
+            foreach($surveys as $survey) {
+                $survey->publicacion = $survey->publicacion()->get()->first();
+                $survey->publicacionName = $survey->publicacion()->get()->first()->titulo()->get()->first()->name;
+            }
+            
+            $user->rating = $user->averageSatisfaction();
+            $user->positive_words = $user->most_used_positive_words();
+            $user->negative_words = $user->most_used_negative_words();
             
                         
-            return view('admin.surveys', compact('publicacion', 'surveys', 'user'));
+            return view('admin.surveys', compact('surveys', 'user'));
             
         }
         else{

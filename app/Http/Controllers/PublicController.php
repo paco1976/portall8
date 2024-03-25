@@ -285,7 +285,7 @@ class PublicController extends Controller
 
     }
 
-    Public function interaction_publicacion($id){
+    public function interaction_publicacion($id){
         
         $data = request()->validate([
             'name' => 'required',
@@ -412,10 +412,25 @@ class PublicController extends Controller
         //url para admin
         $interactionhead->url = url('admin_mensajes/' . $interactionhead->hash);
 
+        // Add survey
+        $clientData =  new Request([
+            'user_id' =>  $user->id,
+            'publicacion_id' => $id,
+            'client_name' => $data['name'] . ' ' . $data['last_name'],
+            'client_cellphone' => $data['mobile'],
+            'client_email' =>$data['email'],
+            'terms' => 'on',
+            'agree'=> true,
+        ]);
+    
+        $surveyController = new SurveyController();
+        $surveyController->save_client_info($clientData);
+
         Mail::to($cfp->email)->send(new Interaction_notificacion_referente($interactionhead));
 
         Session::flash('message', 'El mensaje se envió con éxito');
-        
+
+    
         return redirect()->route('homeprofesional', ['id' => $id]);
     }
 
