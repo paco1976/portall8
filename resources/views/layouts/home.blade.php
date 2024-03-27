@@ -60,7 +60,7 @@
         <link rel="stylesheet" href="{{ asset('vendor/circle-flip-slideshow/css/component.css') }}" media="screen">
 
         <!-- Skin CSS -->
-        <link rel="stylesheet" href="{{ asset('ipp/css/skins/azul.css') }}">
+        <link rel="stylesheet" href="{{ $skinSelect->urlskin }}">
 
 		<!-- Head Libs -->
 		<script src="{{asset('ipp/vendor/modernizr/modernizr.min.js')}}"></script>
@@ -93,29 +93,36 @@
 										<nav class="header-nav-top">
 
 											
+											@if ($contact_all->count() > 0)
 											<ul class="list list-unstyled list-inline mb-0">
-											
+											@foreach ($contact_all as $contact)
+												@if ($contact->name == 'Teléfono')
 												<li class="list-inline-item me-4 mb-0">
 													<i class="icons icon-phone text-color-secondary text-4 position-relative top-4 me-1"></i>
 													<a href="tel:+1234567890" class="text-default text-hover-secondary font-weight-medium text-decoration-none text-2">
-														1125274751
+														{{$contact->detail }} 
 													</a>
 												</li>
-											
+												@endif
+												@if ($contact->name == 'Dirección')
 												<li class="list-inline-item me-4 mb-0 d-none d-lg-inline-block">
 													<i class="icons icon-location-pin text-color-secondary text-4 position-relative top-4 me-1"></i>
 													<a href="#" class="text-default text-hover-secondary font-weight-medium text-decoration-none text-2">
-														Morón 2453. Flores, CABA
+														{{$contact->detail }} 
+													</a>
 												</li>
-											
+												@endif
+												@if ($contact->name == 'Email')
 												<li class="list-inline-item me-4 mb-0 d-none d-md-inline-block">
 													<i class="icons icon-envelope text-color-secondary text-4 position-relative top-4 me-1"></i>
 													<a href="mailto:info@correo.com.ar" class="text-default text-hover-secondary font-weight-medium text-decoration-none text-2">
-														info@cefeperes.com.ar
+														{{$contact->detail }} 
 													</a>
 												</li>
-											
+												@endif
+											@endforeach
 											</ul>
+											@endif
 											
 										</nav>
 
@@ -285,13 +292,13 @@
 															Inicio
 														</a>
 													</li>
-													@if ($categoria_tipo_all->count() > 0)
+													@if ($supercateogrias_all->count() > 0)
 													<li class="dropdown">
 														<a class="dropdown-item dropdown-toggle" href="#">
 															Servicios
 														</a>
 														<ul class="dropdown-menu">
-														@foreach ($categoria_tipo_all as $supercategoria )
+														@foreach ($supercateogrias_all as $supercategoria )
 														
 															<li class="dropdown-submenu">
 																<a class="dropdown-item" href="#">{{ $supercategoria->name }}</a>

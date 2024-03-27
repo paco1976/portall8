@@ -67,9 +67,9 @@
 											<div class="appear-animation" data-appear-animation="fadeIn" data-appear-animation-delay="500">
 												<ul class="nav nav-pills sort-source sort-source-style-3" data-sort-id="portfolio" data-option-key="filter" data-plugin-options="{'layoutMode': 'masonry', 'filter': '*'}">
 													<li class="nav-item active" data-option-value="*"><a class="nav-link text-2-5 text-uppercase active" href="#">MOSTRAR TODOS</a></li>
-													@if ($categoria_tipo_all->count() > 0)
-													@foreach ($categoria_tipo_all as $supercateogria)
-													<li class="nav-item" data-option-value=".{{$supercateogria->id}}"><a class="nav-link text-2-5 text-uppercase" href="#">{{$supercateogria->name}}</a></li>	
+													@if ($supercateogrias_all->count() > 0)
+													@foreach ($supercateogrias_all as $supercateogria)
+													<li class="nav-item" data-option-value=".{{$supercateogria->keyword}}"><a class="nav-link text-2-5 text-uppercase" href="#">{{$supercateogria->name}}</a></li>	
 													@endforeach
 													@endif
 												</ul>
@@ -79,8 +79,24 @@
 														
 														@if ($categoria_all->count() > 0)
 														@foreach ($categoria_all as $categoria )
-														
-														<div class="col-sm-6 col-lg-3 isotope-item {{$categoria->categoria_tipo_id}}">
+														<!--
+														<div class="col-sm-6 col-lg-3 isotope-item {{$categoria->categoriatipo->keyword}}">
+															<div class="portfolio-item">
+																<a href="{{ route('homepublicaciones', ['id'=> $categoria->id]) }}">
+																	<span class="thumb-info thumb-info-centered-info thumb-info-no-borders border-radius-0">
+																		<span class="thumb-info-wrapper border-radius-0">
+																			<img src="{{ $categoria->icon }}" class="img-fluid border-radius-0" alt="">
+																			<span class="thumb-info-title">
+																				<span class="thumb-info-inner">{{ $categoria->name }}</span>
+																				
+																			</span>
+																		</span>
+																	</span>
+																</a>
+															</div>
+														</div>
+													-->
+														<div class="col-sm-6 col-lg-3 isotope-item {{$categoria->categoriatipo->keyword}}">
 															<div class="portfolio-item">
 																<span class="thumb-info thumb-info-swap-content thumb-info-centered-icons">
 																	<span class="thumb-info-wrapper overlay overlay-show overlay-gradient-bottom-content">
