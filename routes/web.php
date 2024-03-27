@@ -42,8 +42,8 @@ Route::get('/register', function () {
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/perfil', 'UserController@index')->name('perfil');
-Route::get('/encuesta', 'SurveyController@test_survey')->name('test_survey');
-Route::post('/encuesta/init', 'SurveyController@initTestSurvey')->name('survey.init');
+Route::get('/encuesta', 'SurveyController@test_survey')->name('test_survey'); //!
+Route::post('/encuesta/init', 'SurveyController@initSurveyManually')->name('survey.init');
 //rutas para crear el perfil
 Route::get('/perfil_new', 'ProfileController@nuevo')->name('perfil_new');
 Route::put('/perfil/store', 'ProfileController@store')->name('store');
@@ -129,6 +129,7 @@ Route::get('/admin_profesionales','AdminController@admin_profesionales' )->name(
 Route::get('/admin_publicaciones','AdminController@admin_publicaciones' )->name('admin_publicaciones');
 Route::get('/admin_publicacion/{hash}','AdminController@admin_publicacion' )->name('admin_publicacion');
 Route::get('/admin_publicaciones_user/{user_hash}','AdminController@admin_publicaciones_user' )->name('admin_publicaciones_user');
+Route::get('/admin_profesional_detalle/{user_hash}','AdminController@admin_profesional_detalle' )->name('admin_profesional_detalle');
 
 Route::get('/admin_publicacion_user/{publicacion_hash}/origen/{origen}','AdminController@admin_publicacion_user' )->name('admin_publicacion_user');
 Route::get('/admin_publicacion_delete/{publicacion_hash}/origen/{origen}','AdminController@admin_publicacion_delete' )->name('admin_publicacion_delete');
@@ -139,6 +140,9 @@ Route::get('/admin_publicaciones_show_rating/{publicacion_hash}/origen/{origen}'
 
 Route::get('/admin_consultas/{publicacion_hash}', 'AdminController@admin_consultas')->name('admin_consultas');
 Route::get('/admin_mensajes/{hash}', 'AdminController@admin_mensajes')->name('admin_mensajes');
+Route::get('/admin_consultas_all/{hash_user}','AdminController@admin_consultas_all' )->name('admin_consultas_all'); 
+Route::get('/admin_prof_contacts/{hash_user}','AdminController@admin_prof_contacts' )->name('admin_prof_contacts'); 
+
 /*
 Route::get('/admin_categorias','AdminController@admin_categorias' )->name('admin_categorias'); 
 Route::get('/admin_categoria_activar_desactivar/{id}','AdminController@admin_categoria_activar_desactivar' )->name('admin_categoria_activar_desactivar');

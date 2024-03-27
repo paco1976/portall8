@@ -19,7 +19,7 @@ class SurveyController extends Controller
     public function handleWebhook(Request $request)
     {
         // Verificación del token
-        $token = env('WA_WEBHOOK_TOKEN');
+        $token = config('app.WA_WEBHOOK_TOKEN');
         $hubChallenge = $request->input('hub_challenge');
         $hubVerifyToken = $request->input('hub_verify_token');
         if ($token === $hubVerifyToken) {
@@ -71,12 +71,12 @@ class SurveyController extends Controller
         }
 
         // API configuration
-        // TODO: get permanent token
-        $token = env('WHATSAPP_TOKEN');
+        $token = config('app.WHATSAPP_TOKEN');
 
-        // ID de nuestro teléfono. TODO: cambiarlo al hacer el cambio de número
-        $phoneID = env('PHONE_ID');
+        $phoneID = config('app.PHONE_ID');
 
+        info('phone id');
+        info($phoneID);
         // Api url
         $url = 'https://graph.facebook.com/v17.0/' . $phoneID . '/messages';
 
@@ -550,9 +550,9 @@ class SurveyController extends Controller
         $surveys = Survey::latest()->take(3)->get();
 
         return view('admin.testSurvey', compact('surveys'));
-    }
+    } 
 
-    public function initTestSurvey(Request $request)
+    public function initSurveyManually(Request $request)
     {
         $user = User::find($request->input('user_id'));
         $surveyId = $request->input('survey_id');
@@ -560,7 +560,7 @@ class SurveyController extends Controller
         $surveyController = new SurveyController();
         $surveyController->initSurvey($surveyId, $user->id);
 
-        return redirect()->route('test_survey');
+        return back();
     }
 };
 

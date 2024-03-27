@@ -225,6 +225,7 @@ class AdminController extends Controller
             $publicacion->cant_consultas = $publicacion->interactions()->count();
             $publicacion->cant_visitas = $publicacion->visita()->count();
             $publicacion->cant_whatsapp = $publicacion->whatsapp()->count();
+            $publicacion->rating = $publicacion->rating();
             //dd($publicacion->titulo);
             
         }
@@ -351,7 +352,7 @@ class AdminController extends Controller
                     }
                 }
             
-                Session::flash('message', 'El perfil se actualizado con éxito');
+                Session::flash('message', 'El perfil se ha actualizado con éxito');
                 return back();
             } else {
                 Session::flash('error', 'El perfil no se pudo actualizar, revise los datos');
@@ -631,7 +632,7 @@ class AdminController extends Controller
         }
         //***************** FIN SUDIDA DE ARCHIVOS *********** */
 
-        Session::flash('message', 'La publicación se creo con éxito');
+        Session::flash('message', 'La publicación se creó con éxito');
         //$this->mispublicaciones($id);
         $publicacion_all = $user->publicaciones();
         $mispublicaciones = $user->publicaciones()->get();
@@ -688,9 +689,14 @@ class AdminController extends Controller
                 $usr->cant_publicaciones = $usr->publicaciones()->count();
                 $usr->publi_sin_aprobar = $usr->publicaciones()->where('aprobado', 0)->count();
                 $cant_head = 0;
+
                 $usr->menssage = 0;
                 $usr->menssage_not_read = 0;
                 $usr->menssage_total = 0;
+                $usr->contacts_registered = 0;
+                $usr->surveys = $usr->surveys()->count();
+
+                $ratings_sum = 0;
                 foreach($usr->publicaciones as $publicacion){
                     if($publicacion){
                         $consultas = $publicacion->interactions()->get();
@@ -699,9 +705,12 @@ class AdminController extends Controller
                             $usr->menssage_not_read = $usr->menssage_not_read + $consulta->messages()->where('read', false)->count();
                             $usr->menssage_total = $usr->menssage_total + $consulta->messages()->count();
                         }
-                    }
-                    
+                            $usr->contacts_registered += $publicacion->clients_registered();
+                            $ratings_sum += $publicacion->rating();
+                    }                   
                 }
+
+                $usr->rating = round($ratings_sum / count($usr->publicaciones), 1);          
                 
             }
             return view('/admin.profesionales', compact('user', 'user_all'));
@@ -759,7 +768,7 @@ class AdminController extends Controller
         $publicacion = Publicacion::where('id',$publicacion_image->publicacion_id)->first();
         Storage::disk('publicaciones')->delete($publicacion_image->url);
         $publicacion_image->delete();
-        Session::flash('message', 'La imagen se a eliminado con éxito');
+        Session::flash('message', 'La imagen se ha eliminado con éxito');
         //return redirect()->route('publicacion_edit', ['head' => $publicacion->hash ]);
         return back();
     }
@@ -857,11 +866,11 @@ class AdminController extends Controller
         if($user->permisos->name == "Administrador"){
 
             if($publicacion->aprobado == 0){
-                session::flash('message', 'La publicación se activo con éxito');
+                session::flash('message', 'La publicación se activó con éxito');
                 $publicacion->aprobado = 1;
                 $publicacion->save(['aprobado']);
             }else{
-                session::flash('message', 'La publicación se desactivo con éxito');
+                session::flash('message', 'La publicación se desactivó con éxito');
                 $publicacion->aprobado = 0;
                 $publicacion->save(['aprobado']);
             }
@@ -1181,6 +1190,28 @@ class AdminController extends Controller
         }
     }
 
+    // Devuelve todas las consultas y mensajes por profesional
+    public function admin_consultas_all($user_hash){
+        $user = User::where("hash", $user_hash)->first();
+        $user->avatar = Storage::disk('avatares')->url($user->avatar);
+        $publicaciones = $user->publicaciones()->get();
+        foreach($publicaciones as $publicacion) {
+            $publicacion->categoria =  $publicacion->categoria()->first();
+            $publicacion->cant_consultas = $publicacion->interactions()->count();
+            $publicacion->messages_not_read = 0;
+            $publicacion->messages_total = 0;
+
+            $mensajes = $publicacion->interactions()->get();
+            $publicacion->not_active = $publicacion->not_active + 1;
+            foreach($mensajes as $mensaje){
+                $publicacion->messages_not_read = $publicacion->messages_not_read + $mensaje->messages()->where('read', false)->count();
+                $publicacion->messages_total = $publicacion->messages_total + $mensaje->messages()->count();
+            }
+        }
+       
+        return view('/admin.consultas_all', compact('publicaciones', 'user'));
+    }
+
     public function admin_visitas($publicacion_hash){
         //dd($publicacion_hash);
         $user = User::find(Auth::user()->id);
@@ -1362,5 +1393,36 @@ class AdminController extends Controller
         }
     }
   
+   
+    public function admin_profesional_detalle($user_hash){
+        $user = User::find(Auth::user()->id);
+        $user->avatar = Storage::disk('avatares')->url($user->avatar);
+        
+        $user->permisos = $user->user_type()->first();
+        if($user->permisos->name == "Administrador"){
 
+            $user = User::where("hash", $user_hash)->first();
+            $user->profile = $user->user_profile()->first();
+            $user->avatar = Storage::disk('avatares')->url($user->avatar);
+            
+            return view('/admin.profesional_detalle', compact('user'));
+        }
+        else{
+            session::flash('message', 'No está autorizado para esta acción');
+            return redirect('/');
+        }
+
+    }
+
+    public function admin_prof_contacts($user_hash){
+        $user = User::where("hash", $user_hash)->first();
+        $user->avatar = Storage::disk('avatares')->url($user->avatar);
+        $publicaciones = $user->publicaciones()->get();
+        foreach($publicaciones as $publicacion) {
+            $publicacion->categoria =  $publicacion->categoria()->first();
+            $publicacion->contacts = $publicacion->surveys()->get();
+        }
+       
+        return view('/admin.prof_contacts', compact('publicaciones', 'user'));
+    }
 }
