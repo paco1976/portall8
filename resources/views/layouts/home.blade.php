@@ -121,6 +121,12 @@
 												</li>
 												@endif
 											@endforeach
+											<li class="list-inline-item me-4 mb-0">
+												<i class="icons icon-location-pin text-color-secondary text-4 position-relative top-4 me-1"></i>
+												<a href="https://cfp24.com.ar" target="_blank" class="text-default text-hover-secondary font-weight-medium text-decoration-none text-2">
+													¿Queres aprender un oficio?
+												</a>
+											</li>
 											</ul>
 											@endif
 											
@@ -476,15 +482,21 @@
 									<div class="header-nav-features header-nav-features-no-border header-nav-features-lg-show-border order-1 order-lg-2">
 										<div class="header-nav-feature header-nav-features-search d-inline-flex">
 											
+											@if ($socialnetwork_all->count() > 0 )
 											<ul class="header-social-icons social-icons social-icons-lg d-none d-sm-block social-icons-clean ms-0">
-												
-												<li class="social-icons-facebook"><a href="https://www.facebook.com/Cefeperes/" target="_blank" title="Facebook"><i class="text-4 fab fa-facebook-f"></i></a></li>
-												
-												<li class="social-icons-twitter"><a href="#" target="_blank" title="Twitter"><i class="text-4 fab fa-twitter"></i></a></li>
-												
-												<li class="social-icons-instagram"><a href="#" target="_blank" title="Instagram"><i class="text-4 fab fa-instagram"></i></a></li>
-												
+												@foreach ( $socialnetwork_all as $socialnetwork)
+												@if ($socialnetwork->name == 'Facebook')
+												<li class="social-icons-facebook"><a href="{{$socialnetwork->link}}" target="_blank" title="Facebook"><i class="text-4 fab fa-facebook-f"></i></a></li>
+												@endif
+												@if ($socialnetwork->name == 'twitter')
+												<li class="social-icons-twitter"><a href="{{$socialnetwork->link}}" target="_blank" title="Twitter"><i class="text-4 fab fa-twitter"></i></a></li>
+												@endif
+												@if ($socialnetwork->name == 'Instagram')
+												<li class="social-icons-instagram"><a href="{{$socialnetwork->link}}/" target="_blank" title="Instagram"><i class="text-4 fab fa-instagram"></i></a></li>
+												@endif
+												@endforeach
 											</ul>
+											@endif
 											
 										</div>
 									</div>
@@ -504,9 +516,22 @@
 					<div class="row py-5">
 						<div class="col text-center">
 							
+							@if ($socialnetwork_all->count() > 0 )
 							<ul class="footer-social-icons social-icons social-icons-clean social-icons-big social-icons-opacity-light social-icons-icon-light mt-1">
-								<li class="social-icons-facebook"><a href="#" target="_blank" title="Facebook"><i class="fab fa-facebook-f text-2"></i></a></li>
+								@foreach ( $socialnetwork_all as $socialnetwork)
+								@if ($socialnetwork->name == 'Facebook')
+								<li class="social-icons-facebook"><a href="{{$socialnetwork->link}}" target="_blank" title="Facebook"><i class="fab fa-facebook-f text-2"></i></a></li>
+								@endif
+								@if ($socialnetwork->name == 'twitter')
+								<li class="social-icons-twitter"><a href="{{$socialnetwork->link}}" target="_blank" title="Twitter"><i class="fab fa-twitter text-2"></i></a></li>
+								@endif
+								@if ($socialnetwork->name == 'Instagram')
+								<li class="social-icons-instagram"><a href="{{$socialnetwork->link}}" target="_blank" title="Instagram"><i class="text-4 fab fa-instagram"></i></a></li>
+								@endif
+								@endforeach
 							</ul>
+							@endif
+						
 							
 						</div>
 					</div>
@@ -518,11 +543,19 @@
 							<div class="col-lg-8 text-center text-lg-start mb-2 mb-lg-0">
 								<p>
 								
-									<span class="pe-0 pe-md-3 d-block d-md-inline-block"><i class="far fa-dot-circle text-color-primary top-1 p-relative"></i><span class="text-color-light opacity-7 ps-1"> Morón 2453. Flores, CABA </span></span>
-								
-									<span class="pe-0 pe-md-3 d-block d-md-inline-block"><i class="fab fa-whatsapp text-color-primary top-1 p-relative"></i><a href="tel:1234567890" class="text-color-light opacity-7 ps-1"> 1125274751 </a></span>
-								
-									<span class="pe-0 pe-md-3 d-block d-md-inline-block"><i class="far fa-envelope text-color-primary top-1 p-relative"></i><a href="mailto:info@correo.com.ar" class="text-color-light opacity-7 ps-1"> info@cefeperes.com.ar </a></span>
+									@if ($contact_all->count() > 0)	
+									@foreach ($contact_all as $contact)
+									@if ($contact->name == 'Dirección')
+									<span class="pe-0 pe-md-3 d-block d-md-inline-block"><i class="far fa-dot-circle text-color-primary top-1 p-relative"></i><span class="text-color-light opacity-7 ps-1"> {{$contact->detail }} </span></span>
+									@endif
+									@if ($contact->name == 'Teléfono')
+									<span class="pe-0 pe-md-3 d-block d-md-inline-block"><i class="fab fa-whatsapp text-color-primary top-1 p-relative"></i><a href="tel:1234567890" class="text-color-light opacity-7 ps-1"> {{$contact->detail }} </a></span>
+									@endif
+									@if ($contact->name == 'Email')
+									<span class="pe-0 pe-md-3 d-block d-md-inline-block"><i class="far fa-envelope text-color-primary top-1 p-relative"></i><a href="mailto:info@correo.com.ar" class="text-color-light opacity-7 ps-1"> {{$contact->detail }} </a></span>
+									@endif
+									@endforeach
+									@endif
 								
 								</p>
 							</div>

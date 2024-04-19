@@ -14,7 +14,39 @@
 					</div>
 
 					<div class="owl-carousel dots-inside dots-horizontal-center show-dots-hover nav-inside nav-inside-plus nav-dark nav-md nav-font-size-md show-nav-hover mb-0" data-plugin-options="{'responsive': {'0': {'items': 1}, '479': {'items': 1}, '768': {'items': 1}, '979': {'items': 1}, '1199': {'items': 1}}, 'loop': false, 'autoHeight': false, 'margin': 0, 'dots': true, 'dotsVerticalOffset': '-75px', 'nav': true, 'animateIn': 'fadeIn', 'animateOut': 'fadeOut', 'mouseDrag': false, 'touchDrag': false, 'pullDrag': false, 'autoplay': true, 'autoplayTimeout': 9000, 'autoplayHoverPause': true, 'rewind': true}">
-
+						@if ($carrusel_all->count() > 0)
+							@foreach ($carrusel_all as $carrusel)
+							
+								<!-- Nuevo carrusel	-->
+								<div class="position-relative overlay overlay-show overlay-op-2" data-dynamic-height="['670px','670px','670px','550px','500px']" style="background-image: url({{$carrusel->image}}); background-size: cover; background-position: center; height: 670px;">
+									<div class="container position-relative z-index-1 h-100">
+										<div class="d-flex flex-column align-items-center justify-content-center h-100">
+											<h3 class="position-relative text-color-light text-5 line-height-5 font-weight-medium px-4 mb-2 appear-animation" data-appear-animation="fadeInDownShorter" data-plugin-options="{'minWindowWidth': 0}">
+												@if ($carrusel->text2)
+												<span class="position-absolute right-100pct top-50pct transform3dy-n50 opacity-3">
+													<img src="{{ asset('img/slides/slide-title-border.png')}}" class="w-auto appear-animation" data-appear-animation="fadeInLeftShorter" data-appear-animation-delay="250" data-plugin-options="{'minWindowWidth': 0}" alt="" />
+												</span>
+												{{$carrusel->text2}} 	
+												<span class="position-absolute left-100pct top-50pct transform3dy-n50 opacity-3">
+													<img src="{{ asset('img/slides/slide-title-border.pn')}}g" class="w-auto appear-animation" data-appear-animation="fadeInRightShorter" data-appear-animation-delay="250" data-plugin-options="{'minWindowWidth': 0}" alt="" />
+												</span>
+												@endif
+											</h3>
+											<h1 class="text-color-light font-weight-extra-bold text-12 mb-3 appear-animation" data-appear-animation="blurIn" data-appear-animation-delay="500" data-plugin-options="{'minWindowWidth': 0}">
+												@if ($carrusel->text1)
+												{{$carrusel->text1}} 	
+												@endif
+												</h1>
+											@if ($carrusel->link)
+											<a href="{{ $carrusel->link }}" target="_blank" class="btn btn-primary btn-rounded font-weight-bold text-3 px-5 py-3 appear-animation" data-appear-animation="blurIn" data-appear-animation-delay="500" data-plugin-options="{'minWindowWidth': 0}">ENTRAR</a>	
+											@endif
+										</div>
+									</div>
+								</div>
+						<!-- hasta acá carrusel nuevo -->
+							@endforeach
+						@else
+						<!-- Carousel Slide 1 -->
 						<div class="position-relative overlay overlay-show overlay-op-2" data-dynamic-height="['670px','670px','670px','550px','500px']" style="background-image: url({{asset('img/slides/slide-bg-4.jpg')}}); background-size: cover; background-position: center; height: 670px;">
 							<div class="container position-relative z-index-1 h-100">
 								<div class="d-flex flex-column align-items-center justify-content-center h-100">
@@ -32,7 +64,7 @@
 								</div>
 							</div>
 						</div>
-
+						@endif
 					</div>
 				</div>
 
