@@ -95,17 +95,21 @@
 									
 									<div class="appear-animation" data-appear-animation="fadeIn" data-appear-animation-delay="850">
 										<h4 class="mt-2 mb-1">Nuestros <strong>Datos</strong></h4>
-										
+										@if ($contact_all->count() > 0)
 										<ul class="list list-icons list-icons-style-2 mt-2">
-										
-													<li><i class="fas fa-map-marker-alt top-6"></i><strong>Dirección: </strong> Morón 2453. Flores, CABA</li>	
-										
-													<li><i class="fas fa-phone top-6"></i> <strong>Teléfono: </strong> 1125274751 </li>	
-										
-													<li><i class="fas fa-envelope top-6"></i><strong>Email: </strong><a href="mailto:info@cefeperes.com.ar<"> info@cefeperes.com.ar<</a></li>
-										
+											@foreach ($contact_all as $contact)
+												@if ($contact->name == 'Dirección')
+													<li><i class="fas fa-map-marker-alt top-6"></i><strong>{{$contact->name }}</strong> {{$contact->detail }}</li>	
+												@endif	
+												@if ($contact->name == 'Teléfono')
+													<li><i class="fas fa-phone top-6"></i> <strong>{{$contact->name }}</strong> {{$contact->detail }}</li>	
+												@endif
+												@if ($contact->name == 'Email')
+													<li><i class="fas fa-envelope top-6"></i><strong>{{$contact->name }}</strong><a href="{{ 'mailto:'.$contact->detail}}"> {{$contact->detail }}</a></li>
+												@endif		
+											@endforeach
 										</ul>
-										
+										@endif
 									</div>
 	
 							</div>
