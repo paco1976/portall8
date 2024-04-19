@@ -297,7 +297,8 @@ Route::get('/privacidad',function(){return view('privacidad');});
 
 //a partir de acá voy a hacer el panel de referentes
 
-
+//pagina de quienes somos
+Route::get('/nosotros',function(){return view('nosotros');});
 
 /** Rutas para WhatsApp Api */
 Route::get('/whatsapp', [App\Http\Controllers\SurveyController::class, 'handleWebhook']);

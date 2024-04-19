@@ -324,7 +324,7 @@
 													
 												
 													<li>
-														<a class="nav-link" href="{{ url('/comunidad') }}">
+														<a class="nav-link" href="{{ url('/nosotros') }}">
 															Comunidad CFP
 														</a>
 													</li>
