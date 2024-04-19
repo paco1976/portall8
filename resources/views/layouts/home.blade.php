@@ -488,8 +488,8 @@
 												@if ($socialnetwork->name == 'Facebook')
 												<li class="social-icons-facebook"><a href="{{$socialnetwork->link}}" target="_blank" title="Facebook"><i class="text-4 fab fa-facebook-f"></i></a></li>
 												@endif
-												@if ($socialnetwork->name == 'twitter')
-												<li class="social-icons-twitter"><a href="{{$socialnetwork->link}}" target="_blank" title="Twitter"><i class="text-4 fab fa-twitter"></i></a></li>
+												@if ($socialnetwork->name == 'Youtube')
+												<li class="social-icons-youtube"><a href="{{$socialnetwork->link}}" target="_blank" title="Twitter"><i class="text-4 fab fa-youtube"></i></a></li>
 												@endif
 												@if ($socialnetwork->name == 'Instagram')
 												<li class="social-icons-instagram"><a href="{{$socialnetwork->link}}/" target="_blank" title="Instagram"><i class="text-4 fab fa-instagram"></i></a></li>
@@ -522,8 +522,8 @@
 								@if ($socialnetwork->name == 'Facebook')
 								<li class="social-icons-facebook"><a href="{{$socialnetwork->link}}" target="_blank" title="Facebook"><i class="fab fa-facebook-f text-2"></i></a></li>
 								@endif
-								@if ($socialnetwork->name == 'twitter')
-								<li class="social-icons-twitter"><a href="{{$socialnetwork->link}}" target="_blank" title="Twitter"><i class="fab fa-twitter text-2"></i></a></li>
+								@if ($socialnetwork->name == 'Youtube')
+								<li class="social-icons-youtube"><a href="{{$socialnetwork->link}}" target="_blank" title="Twitter"><i class="fab fa-youtube text-2"></i></a></li>
 								@endif
 								@if ($socialnetwork->name == 'Instagram')
 								<li class="social-icons-instagram"><a href="{{$socialnetwork->link}}" target="_blank" title="Instagram"><i class="text-4 fab fa-instagram"></i></a></li>
