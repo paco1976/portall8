@@ -24,7 +24,7 @@ class InitSurvey implements ShouldQueue
 
     public function handle()
     {
-        info('4. El delay funciona. Entra al Job InitSurvey.');
+        //info('4. El delay funciona. Entra al Job InitSurvey.');
         $surveyController = new SurveyController();
         $surveyController->initSurvey($this->surveyId, $this->userId);
     }

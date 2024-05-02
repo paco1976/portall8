@@ -11,13 +11,13 @@ class TriggerNewSurvey
 {
     public function handle(ClientRegistered $event)
     {
-        info('3. Entra al Listener TriggerNewSurvey');
+        //info('3. Entra al Listener TriggerNewSurvey');
         $surveyId = $event->surveyId;
         $userId = $event->userId;
 
         //TODO: dejar addWeek cuando se termine de testear
         // InitSurvey::dispatch($surveyId, $userId)->delay(now()->addWeek());   
-        // InitSurvey::dispatch($surveyId, $userId)->delay(now()->addMinutes(1));
-        info('  3.1 Pasa el dispatch');
+        InitSurvey::dispatch($surveyId, $userId)->delay(now()->addMinutes(1));
+        //info('  3.1 Pasa el dispatch');
     }
 }
