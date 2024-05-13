@@ -88,8 +88,8 @@
 							</div>
 							<div class="col-lg-6">
 								<div class="appear-animation" data-appear-animation="fadeIn" data-appear-animation-delay="800">
-									<h4 class="pt-5">Somos <strong>CFP</strong></h4>
-									<p class="lead mb-0 text-4">Cefeperes es una plataforma digital diseñada para facilitar el contacto entre profesionales de los oficios y potenciales clientes. La lista de servicios ofrecidos es variada (se puede consultar acá) y el denominador común es que son egresadas y egresados de escuelas púbicas de formación profesional de nuestra ciudad.</p>
+									<h4 class="pt-5">¿Qué es <strong>Cefeperes</strong>?</h4>
+									<p class="lead mb-0 text-4">Cefeperes es una plataforma digital diseñada para facilitar el contacto entre profesionales de los oficios y potenciales clientes. La lista de servicios ofrecidos es variada (se puede consultar acá) y el denominador común es que son egresadas y egresados de escuelas púbicas de Formación Profesional de nuestra ciudad.</p>
 									</div>
 									<br></br>
 									
