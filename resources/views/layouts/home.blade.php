@@ -282,7 +282,7 @@
 								<div class="header-row">
 									<div class="header-logo">
 										<a href="{{route('welcome')}}">
-											<img alt="Tecnoarte" width="160" height="62" data-sticky-width="123" data-sticky-height="48" src="{{ asset('img/logo.png') }}">
+											<img alt="Tecnoarte"  style="object-fit: contain;" width="220" height="62" data-sticky-width="123" data-sticky-height="48" src="{{ asset('img/logo.png') }}">
 										</a>
 									</div>
 								</div>
