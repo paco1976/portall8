@@ -628,8 +628,12 @@ function validate(evt) {
   }
 </script>
 <!-- Editor de texto en textarea de quienes somos -->
-<script type="text/javascript">
+<!-- <script type="text/javascript">
 	$(document).ready(function () {
-		$('.ckeditor').ckeditor();
+		$('.ckeditor').ckeditor(); -->
+
+
+@yield('scripts')
+
 </body>
 </html>

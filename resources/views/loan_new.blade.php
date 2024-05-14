@@ -134,8 +134,7 @@
 
 
 				@endsection
-
-@push('script')
+@section('scripts')
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://npmcdn.com/flatpickr/dist/l10n/es.js"></script>
 <script>
@@ -154,4 +153,4 @@
       });
 	});
 </script>
-@endpush
+@endsection
