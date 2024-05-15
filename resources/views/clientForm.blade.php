@@ -43,6 +43,7 @@
   </form>
 </div>
 
+@section('scripts')
 <script>
   $(document).ready(function() {
     $('#clientInfoForm').submit(function(event) {
@@ -99,3 +100,4 @@
     });
   });
 </script>
+@endsection

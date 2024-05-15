@@ -282,7 +282,7 @@
 								<div class="header-row">
 									<div class="header-logo">
 										<a href="{{route('welcome')}}">
-											<img alt="Tecnoarte" width="160" height="62" data-sticky-width="123" data-sticky-height="48" src="{{ asset('img/logo.png') }}">
+											<img alt="Tecnoarte"  style="object-fit: contain;" width="220" height="62" data-sticky-width="123" data-sticky-height="48" src="{{ asset('img/logo.png') }}">
 										</a>
 									</div>
 								</div>
@@ -628,8 +628,12 @@ function validate(evt) {
   }
 </script>
 <!-- Editor de texto en textarea de quienes somos -->
-<script type="text/javascript">
+<!-- <script type="text/javascript">
 	$(document).ready(function () {
-		$('.ckeditor').ckeditor();
+		$('.ckeditor').ckeditor(); -->
+
+
+@yield('scripts')
+
 </body>
 </html>
