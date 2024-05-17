@@ -709,8 +709,13 @@ class AdminController extends Controller
                             $ratings_sum += $publicacion->rating();
                     }                   
                 }
-
-                $usr->rating = round($ratings_sum / count($usr->publicaciones), 1);          
+                //dd($ratings_sum. " " .  count($usr->publicaciones));
+                if (count($usr->publicaciones)>0) {
+                    $usr->rating = round($ratings_sum / count($usr->publicaciones), 1);
+                }else{
+                    $usr->rating = round($ratings_sum, 1);
+                }
+                          
                 
             }
             return view('/admin.profesionales', compact('user', 'user_all'));
