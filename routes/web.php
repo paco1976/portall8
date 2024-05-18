@@ -304,6 +304,9 @@ Route::get('/nosotros',function(){return view('nosotros');});
 Route::get('/whatsapp', [App\Http\Controllers\SurveyController::class, 'handleWebhook']);
 Route::post('/whatsapp', [App\Http\Controllers\SurveyController::class, 'handleResponse']);
 
+/*Ruta de estadísticas en el panel de admin*/
+Route::get('/statistics','StatisticsController@getStatistics' )->name('statistics');
+
 //rutas de configuración de sitio
 Route::resource('SocialNetworks', SocialNetworkController::class);
 Route::resource('contacts', ContactController::class);
