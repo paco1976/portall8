@@ -37,38 +37,69 @@ class StatisticsController extends Controller
         $viewsPerMonth = Publicacion_Visita::whereYear('created_at', '=', now()->year)
         ->whereMonth('created_at', '=', now()->month)
         ->count();
-
+             
         ///
-        $categoryAverage = $publicaciones_vistas
-        ->join('publicacion AS p', 'p.id' , '=', 'publicacion_visita.publicacion_id')
-        ->join('publicacion_user AS pu', 'pu.publicacion_id', '=', 'publicacion_visita.publicacion_id')
-        ->join('users AS u', 'u.id', '=', 'pu.user_id')
+        // $categoryAverage = Publicacion_Visita::query()
+        // ->join('publicacion AS p', 'p.id' , '=', 'publicacion_visita.publicacion_id')
+        // ->join('publicacion_user AS pu', 'pu.publicacion_id', '=', 'publicacion_visita.publicacion_id')
+        // ->join('users AS u', 'u.id', '=', 'pu.user_id')
+        // ->join('categoria AS c', 'c.id', '=', 'p.categoria_id')
+        // ->groupBy('c.id', 'c.name')
+        // ->select('c.name', 
+        // DB::raw( 'round(sum(c.id) / ( select count(cat2.id)  from `categoria` cat2  ),0 ) as view_count'), 
+        // )
+        // ->orderByDesc('view_count')
+        // ->first();      
+        
+        
+        // // MySQL para probar promedio solo de categorias
+        // // select `c`.`name`, round(sum(c.id) / ( select count(cat2.id) from `categoria` cat2 ),0 ) as view_count, `u`.`name` as `user`, `u`.`last_name` from `publicacion_visita` inner join `publicacion` as `p` on `p`.`id` = `publicacion_visita`.`publicacion_id` inner join `publicacion_user` as `pu` on `pu`.`publicacion_id` = `publicacion_visita`.`publicacion_id` inner join `users` as `u` on `u`.`id` = `pu`.`user_id` inner join `categoria` as `c` on `c`.`id` = `p`.`categoria_id` 
+        // // group by `c`.`id` , `c`.`name` 
+        // // , `u`.`name`,  `u`.`last_name`
+        // // order by `view_count` desc;
+
+        // $averageCategoryWithProfesional = Publicacion_Visita::query()
+        // ->join('publicacion AS p2', 'p2.id' , '=', 'publicacion_visita.publicacion_id')
+        // ->join('publicacion_user AS pu2', 'pu2.publicacion_id', '=', 'publicacion_visita.publicacion_id')
+        // ->join('users AS u2', 'u2.id', '=', 'pu2.user_id')
+        // ->join('categoria AS c2', 'c2.id', '=', 'p2.categoria_id')
+        // ->groupBy('c2.id', 'c2.name', 'u2.id', 'u2.name', 'u2.last_name')
+        // ->select('c2.id','c2.name as nameCat', 'u2.id', 'u2.name',  'u2.last_name',
+        //     DB::raw( 'round(sum(c2.id) / ( select count(cat22.id)  from `categoria` cat22  ),0 ) as view_count'), 
+        // )
+        // ->orderByDesc('view_count')
+        // ->get();
+
+
+        $categories = Publicacion_Visita::query()
+        ->join('publicacion AS p', 'p.id', '=', 'publicacion_visita.publicacion_id')
         ->join('categoria AS c', 'c.id', '=', 'p.categoria_id')
         ->groupBy('c.id', 'c.name')
-        ->select('c.name', 
-        DB::raw( 'round(sum(c.id) / ( select count(cat2.id)  from `categoria` cat2  ),0 ) as view_count'), 
-        )
-        ->orderByDesc('view_count')
-        ->first();
-
-        // MySQL para probar promedio solo de categorias
-        // select `c`.`name`, round(sum(c.id) / ( select count(cat2.id) from `categoria` cat2 ),0 ) as view_count, `u`.`name` as `user`, `u`.`last_name` from `publicacion_visita` inner join `publicacion` as `p` on `p`.`id` = `publicacion_visita`.`publicacion_id` inner join `publicacion_user` as `pu` on `pu`.`publicacion_id` = `publicacion_visita`.`publicacion_id` inner join `users` as `u` on `u`.`id` = `pu`.`user_id` inner join `categoria` as `c` on `c`.`id` = `p`.`categoria_id` 
-        // group by `c`.`id` , `c`.`name` 
-        // , `u`.`name`,  `u`.`last_name`
-        // order by `view_count` desc;
-
-        $averageCategoryWithProfesional = $publicaciones_vistas
-        ->join('publicacion AS p2', 'p2.id' , '=', 'publicacion_visita.publicacion_id')
-        ->join('publicacion_user AS pu2', 'pu2.publicacion_id', '=', 'publicacion_visita.publicacion_id')
-        ->join('users AS u2', 'u2.id', '=', 'pu.user_id')
-        ->join('categoria AS c2', 'c2.id', '=', 'p2.categoria_id')
-        ->groupBy('c2.id', 'c2.name', 'u2.id', 'u2.name',  'u2.last_name')
-        ->select('c2.id','c2.name as nameCat', 'u2.id', 'u2.name',  'u2.last_name',
-            DB::raw( 'round(sum(c2.id) / ( select count(cat22.id)  from `categoria` cat22  ),0 ) as view_count'), 
-        )
+        ->select('c.id', 'c.name', DB::raw('COUNT(publicacion_visita.id) as view_count'))
         ->orderByDesc('view_count')
         ->get();
 
+        $categoryAverage = $categories->first();
+
+        $categoryViews = $categories->map(function ($category) {
+            $viewsByProfessional = Publicacion_Visita::query()
+                ->join('publicacion AS p', 'p.id', '=', 'publicacion_visita.publicacion_id')
+                ->join('publicacion_user AS pu', 'pu.publicacion_id', '=', 'publicacion_visita.publicacion_id')
+                ->join('users AS u', 'u.id', '=', 'pu.user_id')
+                ->where('p.categoria_id', $category->id)
+                ->groupBy('u.id', 'u.name', 'u.last_name')
+                ->select('u.id', 'u.name', 'u.last_name', DB::raw('COUNT(publicacion_visita.id) as views'))
+                ->orderByDesc('views')
+                ->get();
+    
+            $viewsByProfessional = $viewsByProfessional->slice(0, 3);
+            
+            return [
+                'nameCat' => $category->name,
+                'view_count' => $category->view_count,
+                'views_by_professional' => $viewsByProfessional
+            ];
+        });      
 
         // MySQL para probar promedio  de categorias con profesionales
         // select `c`.`name`, round(sum(c.id) / ( select count(cat2.id) from `categoria` cat2 ),0 ) as view_count
@@ -147,7 +178,7 @@ class StatisticsController extends Controller
             ->with('visitsMonth', $viewsPerMonth)
             // ->with('category_Profile', $categoryWithProfile)
             ->with('perfilVisitado', $perfilVisitado)
-            ->with('allCategoryVisits',  $averageCategoryWithProfesional)
+            ->with('allCategoryVisits',  $categoryViews)
             ->with('profesionalMorequalified',  $averageProfesional)
             ->with('SurveyTotal',  $SurveyTotal)
             ->with('SurveyByProfesional',  $SurveyByProfesional)
