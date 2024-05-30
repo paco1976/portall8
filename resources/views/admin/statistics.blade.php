@@ -1,8 +1,7 @@
 
-@extends( 'layouts.home')
+@extends('layouts.home')
 
 @section('main')
-
 <div role="main" class="main">
 <section class="section section-concept section-no-border section-dark section-angled section-angled-reverse pt-5 m-0 overlay overlay-show overlay-op-8" style="background-image: url({{asset('img/slides/slide-bg-4.jpg')}}); background-size: cover; background-position: center; min-height: 645px;">
 		<div class="section-angled-layer-bottom section-angled-layer-increase-angle bg-light" style="padding: 8rem 0;">
@@ -215,7 +214,6 @@
 	</div>
 
 </div>
-@endsection
 
 <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
 <script type="text/javascript">
@@ -236,4 +234,7 @@ function showHide(eleme) {
     document.getElementById(eleme).style.display = 'block';
 }
 </script>
+
+
+@endsection
 
