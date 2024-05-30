@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Publicacion_Visita;
 use App\Models\Survey;
+use App\Models\Categoria;
+use App\Models\User_type;
+
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
