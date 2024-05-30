@@ -151,21 +151,21 @@ class StatisticsController extends Controller
 
         //Profesionales
         $SurveyByProfesional = Survey::query()
-        ->join('users AS us', 'us.id', '=', 'Surveys.user_id')
+        ->join('users AS us', 'us.id', '=', 'surveys.user_id')
         ->groupBy('user_id', 'us.name', 'us.last_name', 'client_name', 'client_email', 'Satisfaction')
-        ->select('user_id', 'us.name','us.last_name', DB::raw('COUNT(Surveys.id) as Survays'), 'client_name', 'client_email', 'Satisfaction')
+        ->select('user_id', 'us.name','us.last_name', DB::raw('COUNT(surveys.id) as Survays'), 'client_name', 'client_email', 'Satisfaction')
         ->get();
         //Pendiente de revisar!!!!!!!!!!!!
 
         //Average Profesional 
         $averageProfesional = Survey::query()
-        ->join('users AS us', 'us.id', '=', 'Surveys.user_id')
+        ->join('users AS us', 'us.id', '=', 'surveys.user_id')
         ->join('publicacion_user AS p_user', 'p_user.user_id', '=', 'us.id')
         ->join('publicacion AS publi', 'publi.id' , '=', 'p_user.publicacion_id')
         ->join('categoria AS cat', 'cat.id', '=', 'publi.categoria_id')
-        ->groupBy('Surveys.user_id', 'us.name', 'us.last_name', 'client_name', 'client_email', 'Satisfaction', 'cat.name')
-        ->select('Surveys.user_id', 'us.name','us.last_name', DB::raw('COUNT(Surveys.user_id) as Survays'), 'client_name', 'client_email'
-        , DB::raw( ' round( SUM(Surveys.Satisfaction) / COUNT(Surveys.user_id), 2 ) as Prom'), 'cat.name as cat', 'Surveys.Satisfaction as satisf')
+        ->groupBy('surveys.user_id', 'us.name', 'us.last_name', 'client_name', 'client_email', 'satisfaction', 'cat.name')
+        ->select('surveys.user_id', 'us.name','us.last_name', DB::raw('COUNT(surveys.user_id) as Survays'), 'client_name', 'client_email'
+        , DB::raw( ' round( SUM(surveys.satisfaction) / COUNT(surveys.user_id), 2 ) as Prom'), 'cat.name as cat', 'surveys.satisfaction as satisf')
         ->orderByDesc('Survays') 
         ->first();
         
