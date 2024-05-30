@@ -92,6 +92,8 @@ class StatisticsController extends Controller
                 ->orderByDesc('views')
                 ->get();
     
+            $viewsByProfessional = $viewsByProfessional->slice(0, 3);
+            
             return [
                 'nameCat' => $category->name,
                 'view_count' => $category->view_count,
