@@ -1425,7 +1425,7 @@ class AdminController extends Controller
         $publicaciones = $user->publicaciones()->get();
         foreach($publicaciones as $publicacion) {
             $publicacion->categoria =  $publicacion->categoria()->first();
-            $publicacion->contacts = $publicacion->surveys()->get();
+            $publicacion->contacts = $publicacion->surveys()->paginate(10);
         }
        
         return view('/admin.prof_contacts', compact('publicaciones', 'user'));

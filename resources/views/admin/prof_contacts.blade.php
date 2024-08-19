@@ -138,6 +138,11 @@
                         </div>
                     </section>
                 </div>
+                <div class="row">
+                    <div class="col-12 text center">
+                    {{ $publicacion->contacts->Links() }}
+                    </div>
+                </div>
             </div>
 
 
