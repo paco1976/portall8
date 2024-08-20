@@ -16,7 +16,7 @@ class CreateCategoriaTable extends Migration
         Schema::create('categoria', function (Blueprint $table) {
             $table->integerIncrements('id');
             $table->string('name', '200');
-            $table->string('icon', '400');
+            $table->string('icon', '400')->nullable()->default('icon/oficio_generico.jpg');
             $table->Integer('categoria_tipo_id')->unsigned();
             $table->boolean('active')->default(true);
             $table->timestamps();
