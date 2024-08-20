@@ -15,7 +15,7 @@
 					<li class="text-color-primary"><a href="#">Panel del sitio</a></li>
 					
 				</ul>
-				<h1 class="font-weight-bold text-10 text-xl-12 line-height-2 mb-3">TITULOS</h1>
+				<h1 class="font-weight-bold text-10 text-xl-12 line-height-2 mb-3">Titulos</h1>
 				
 				<a href="#ver" data-hash data-hash-offset="0" data-hash-offset-lg="100" class="btn btn-gradient-primary border-primary btn-effect-4 font-weight-semi-bold px-4 btn-py-2 text-3">VER <i class="fas fa-arrow-down ms-1"></i></a>
 				
