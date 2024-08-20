@@ -389,7 +389,9 @@
 																<a class="dropdown-item" href="{{ route('statistics') }}"><i class="fa fa-list-ul"></i> Estadisticas</a>
 																<a class="dropdown-item" href="{{ route('loans') }}"><i class="fa fa-list-ul"></i> Préstamos</a>
 																<a class="dropdown-item" href="{{ route('toolsList') }}"><i class="fa fa-list-ul"></i> Herramientas</a>
+																<a href="{{ route('categoria-tipos.index') }}"><i class="fa fa-list"></i> Super Categorias</a>
 																<a class="dropdown-item" href="{{ route('admin_categorias') }}"><i class="fa fa-list"></i> Categorías</a>
+																<a class="dropdown-item" href="{{ route('titulos.index') }}"><i class="fa fa-list"></i> Titulos</a>
 																<!-- <a class="dropdown-item" href="#"><i class="fa fa-list"></i> Títulos</a></li> -->
 															</li>
 															<li class="dropdown-submenu">
@@ -402,8 +404,10 @@
 																	<li><a href="{{ route('contacts.index') }}"><i class="fa fa-address-book" aria-hidden="true"></i> Datos Contacto</a></li>
 																	<li><a href="{{ route('links.index') }}"><i class="fa fa-link" aria-hidden="true"></i> Links de interes</a></li>
 																	<li><a href="{{ route('aboutus.index') }}"><i class="fa fa-list"></i> Quienes Somos</a></li>
+																	<!-- 
 																	<li><a href="{{ route('categoria-tipos.index') }}"><i class="fa fa-list"></i> Super Categorias</a></li>
 																	<li><a href="{{ route('admin_categorias') }}"><i class="fa fa-list"></i> Categorias</a></li>
+																	-->
 																</ul>
 															</li>
 															

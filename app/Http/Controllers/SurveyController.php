@@ -16,6 +16,11 @@ class SurveyController extends Controller
     /** 
      * Webhook para conectar con la API de WhatsApp
      * */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     public function handleWebhook(Request $request)
     {
         // Verificación del token
