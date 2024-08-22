@@ -31,7 +31,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\Rules\Unique;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\File;
-use Intervention\Image\Image;
+use Image;
 use Mail;
 
 class AdminController extends Controller
