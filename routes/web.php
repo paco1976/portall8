@@ -42,7 +42,6 @@ Route::get('/register', function () {
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/perfil', 'UserController@index')->name('perfil');
-Route::get('/encuesta', 'SurveyController@test_survey')->name('test_survey'); //!
 Route::post('/encuesta/init', 'SurveyController@initSurveyManually')->name('survey.init');
 //rutas para crear el perfil
 Route::get('/perfil_new', 'ProfileController@nuevo')->name('perfil_new');
@@ -316,3 +315,8 @@ Route::resource('categoria-tipos', CategoriaTipoController::class);
 Route::resource('carrusel', CarruselController::class);
 Route::resource('logo', LogoController::class);
 Route::resource('skins', SkinController::class);
+
+// Encuesta a profesionales
+Route::get('/encuesta/{hash}', 'SurveyController@createSurveyProf')->name('createSurveyProf');
+Route::post('/encuesta/{hash}', 'SurveyController@saveSurveyProf')->name('saveSurveyProf');
+
