@@ -16,8 +16,9 @@ class TriggerNewSurvey
         $userId = $event->userId;
 
         //TODO: dejar addWeek cuando se termine de testear
-        // InitSurvey::dispatch($surveyId, $userId)->delay(now()->addWeek());   
-        InitSurvey::dispatch($surveyId, $userId)->delay(now()->addMinutes(1));
+        InitSurvey::dispatch($surveyId, $userId)->delay(now()->addWeek());   
+        //este es cada minuto para test
+        //InitSurvey::dispatch($surveyId, $userId)->delay(now()->addMinutes(1));
         info('  3.1 Pasa el dispatch');
     }
 }
