@@ -16607,8 +16607,8 @@ html.gecko .sort-destination.sort-destination-margin > [class*="col-"] {
 	position: absolute;
 	z-index: 2;
 	max-width: 90%;
-	font-size: 17px;
-	padding: 13px 21px 2px;
+	font-size: 11px;
+	padding: 5px 8px 2px;
 	bottom: 13%;
 }
 
@@ -17214,7 +17214,7 @@ html.gecko .sort-destination.sort-destination-margin > [class*="col-"] {
 
 @media (max-width: 991px) {
 	.thumb-info .thumb-info-title {
-		font-size: 14px;
+		font-size: 11px;
 	}
 
 	.thumb-info .thumb-info-more {
