@@ -79,13 +79,9 @@
                     @if ($user_all->count() > 0)
                         <table class="table table-bordered table-striped mb-0" id="datatable-editable">
                             <thead>
-                                <tr class="text-center">
+                                <tr class="">
                                     <th>Nombre y Apellido</th>
                                     <th>Publicaciones</th>
-                                    <th>Mensajes nuevos</th>
-                                    <th>Clientes registrados</th>
-                                    <th>Calificación</th>
-                                    <th>Encuestas</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -95,7 +91,7 @@
                                                 {{ $usr->last_name }}</a></td>
 
                                         {{-- Cantidad de publicaciones y link a tabla de publicaciones --}}
-                                        <td class="actions text-center">
+                                        <td class="actions">
                                             @if ($usr->cant_publicaciones > 0)
                                                 @if ($usr->publi_sin_aprobar > 0)
                                                     <a href="{{ route('prof_publicacion', ['hash_user' => $usr->hash]) }}"
@@ -108,74 +104,7 @@
                                                 <a href="{{ route('prof_publicacion', ['hash_user' => $usr->hash]) }}"
                                                     class="btn btn-danger"><strong>{{ $usr->cant_publicaciones }}</strong></a>
                                             @endif
-                                        </td>
-
-                                        {{-- Cantidad de mensajes --}}
-                                        <td class="actions text-center">
-                                            @if ($usr->menssage_total > 0)
-                                                @if ($usr->menssage_not_read > 0)
-                                                    <a href="{{ route('admin_consultas_all', ['hash_user' => $usr->hash]) }}"
-                                                        class="btn btn-success"><strong>{{ $usr->menssage_not_read }}</strong></a>
-                                                @else
-                                                    <a href="{{ route('admin_consultas_all', ['hash_user' => $usr->hash]) }}"
-                                                        class="btn btn-light"><strong>{{ $usr->menssage_not_read }}</strong></a>
-                                                @endif
-                                            @else
-                                                <a href="{{ route('admin_consultas_all', ['hash_user' => $usr->hash]) }}"
-                                                    class="btn btn-light"><strong>{{ $usr->menssage_not_read }}</strong></a>
-                                            @endif
-                                        </td>
-
-                                        {{-- Clientes registrados: cantidad de números de cel registrados para encuestas --}}
-                                        <td class="actions text-center">
-                                            {{-- redirigir a vista para enviar encuestas manualmente --}}
-
-                                            @if ($usr->contacts_registered > 0)
-                                                @if ($usr->contacts_registered > 0)
-                                                    <a href="{{ route('admin_prof_contacts', ['hash_user' => $usr->hash]) }}"
-                                                        class="btn btn-info"><strong>{{ $usr->contacts_registered }}</strong></a>
-                                                @else
-                                                    <a href="{{ route('admin_prof_contacts', ['hash_user' => $usr->hash]) }}"
-                                                        class="btn btn-light"><strong>{{ $usr->contacts_registered }}</strong></a>
-                                                @endif
-                                            @else
-                                                <a href="{{ route('admin_prof_contacts', ['hash_user' => $usr->hash]) }}"
-                                                    class="btn btn-light"><strong>{{ $usr->contacts_registered }}</strong></a>
-                                            @endif
-                                        </td>
-
-                                        {{-- Calificación promedio entre todas las publicaciones --}}
-                                        <td class="actions text-center">
-                                            @if ($usr->rating > 0)
-                                                @if ($usr->rating >= 3)
-                                                    <span
-                                                        class="btn btn-success"><strong>{{ $usr->rating }}</strong></span>
-                                                @else
-                                                    <span
-                                                        class="btn btn-danger"><strong>{{ $usr->rating }}</strong></span>
-                                                @endif
-                                            @else
-                                                <span class="btn btn-light"><strong>{{ $usr->rating }}</strong></span>
-                                            @endif
-                                        </td>
-
-                                        {{-- Cantidad de Encuestas entre todas las publicaciones --}}
-                                        <td class="actions text-center">
-											@if ($usr->surveys > 0)
-											@if ($usr->surveys > 0)
-												<a href="{{ route('admin_prof_contacts', ['hash_user' => $usr->hash]) }}"
-													class="btn btn-info"><strong>{{ $usr->surveys }}</strong></a>
-											@else
-												<a href=""
-													class="btn btn-light"><strong>{{ $usr->surveys }}</strong></a>
-											@endif
-										@else
-											<a href=""
-												class="btn btn-light"><strong>{{ $usr->surveys }}</strong></a>
-										@endif
-                                        </td>
-
-
+                                        </td>                                     
 
                                     </tr>
                                 @endforeach

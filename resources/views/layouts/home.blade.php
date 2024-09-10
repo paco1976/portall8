@@ -385,13 +385,12 @@
 														<ul class="dropdown-menu">
 															<li class="dropdown">
 																<a class="dropdown-item" href="{{ route('admin_profesionales') }}"><i class="fa fa-users"> </i>  Profesionales</a>
-																<a class="dropdown-item" href="{{ route('admin_publicaciones') }}"><i class="fa fa-list-ul"></i> Publiaciones</a>
-																<a class="dropdown-item" href="{{ route('statistics') }}"><i class="fa fa-list-ul"></i> Estadisticas</a>
+																<a class="dropdown-item" href="{{ route('statistics') }}"><i class="fa fa-list-ul"></i> Estadísticas</a>
 																<a class="dropdown-item" href="{{ route('loans') }}"><i class="fa fa-list-ul"></i> Préstamos</a>
 																<a class="dropdown-item" href="{{ route('toolsList') }}"><i class="fa fa-list-ul"></i> Herramientas</a>
-																<a href="{{ route('categoria-tipos.index') }}"><i class="fa fa-list"></i> Super Categorias</a>
+																<a href="{{ route('categoria-tipos.index') }}"><i class="fa fa-list"></i> Super Categorías</a>
 																<a class="dropdown-item" href="{{ route('admin_categorias') }}"><i class="fa fa-list"></i> Categorías</a>
-																<a class="dropdown-item" href="{{ route('titulos.index') }}"><i class="fa fa-list"></i> Titulos</a>
+																<a class="dropdown-item" href="{{ route('titulos.index') }}"><i class="fa fa-list"></i> Títulos</a>
 																<!-- <a class="dropdown-item" href="#"><i class="fa fa-list"></i> Títulos</a></li> -->
 															</li>
 															<li class="dropdown-submenu">
