@@ -90,7 +90,7 @@ class Publicacion extends Model
         return round($this->surveys()->avg('satisfaction'), 1);
     }
 
-    public function clients_registered()
+    public function getClientsRegistered()
     {
         return $this->surveys()->count();
     }

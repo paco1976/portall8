@@ -142,7 +142,7 @@ Route::get('/admin_publicaciones_show_rating/{publicacion_hash}/origen/{origen}'
 Route::get('/admin_consultas/{publicacion_hash}', 'AdminController@admin_consultas')->name('admin_consultas');
 Route::get('/admin_mensajes/{hash}', 'AdminController@admin_mensajes')->name('admin_mensajes');
 Route::get('/admin_consultas_all/{hash_user}','AdminController@admin_consultas_all' )->name('admin_consultas_all'); 
-Route::get('/admin_prof_contacts/{hash_user}','AdminController@admin_prof_contacts' )->name('admin_prof_contacts'); 
+Route::get('/admin_prof_contacts/{publicacion_hash}','AdminController@admin_prof_contacts' )->name('admin_prof_contacts'); 
 
 /*
 Route::get('/admin_categorias','AdminController@admin_categorias' )->name('admin_categorias'); 
@@ -159,7 +159,7 @@ Route::put('/admin_categoria_update','CategoriaController@admin_categoria_update
 Route::get('/admin_categoria_delete/{id}','CategoriaController@admin_categoria_delete' )->name('admin_categoria_delete'); // Activar desactivar categoria desde el panel de admin
 
 
-Route::get('/admin_surveys/{publicacion_hash}', 'AdminController@admin_surveys')->name('admin_surveys');
+Route::get('/admin_surveys/{survey_id}', 'AdminController@admin_surveys')->name('admin_surveys');
 
 
 Route::get('/admin_visitas/{publicacion_hash}', 'AdminController@admin_visitas')->name('admin_visitas');

@@ -20,6 +20,7 @@ use App\Models\Interactionhead;
 use App\Models\Interactionimage;
 use App\Models\Interactionmessage;
 use App\Models\Interactionsubjet;
+use App\Models\Survey;
 Use App\Mail\ContactHome;
 Use App\Mail\Interaction_notificacion_referente;
 Use App\Mail\Interaction_notificacion_cliente;
@@ -209,7 +210,7 @@ class AdminController extends Controller
         Session::flash('message', 'La imagen se a actualizo con éxito');
         return back();
     }
-
+    
     public function prof_publicaciones($hash_user){
         $user = User::where("hash", $hash_user)->first();
         //$user = User::find(Auth::user()->id);
@@ -224,10 +225,9 @@ class AdminController extends Controller
             $publicacion->titulo = $publicacion->titulo()->first();
             $publicacion->cant_consultas = $publicacion->interactions()->count();
             $publicacion->cant_visitas = $publicacion->visita()->count();
-            $publicacion->cant_whatsapp = $publicacion->whatsapp()->count();
             $publicacion->rating = $publicacion->rating();
-            //dd($publicacion->titulo);
-            
+            $publicacion->surveys_taken = $publicacion->surveys_accepted();
+            $publicacion->contacts_registered = $publicacion->getClientsRegistered();            
         }
        
         return view('/admin.prof_publicacion', compact('mispublicaciones', 'user'));
@@ -705,7 +705,7 @@ class AdminController extends Controller
                             $usr->menssage_not_read = $usr->menssage_not_read + $consulta->messages()->where('read', false)->count();
                             $usr->menssage_total = $usr->menssage_total + $consulta->messages()->count();
                         }
-                            $usr->contacts_registered += $publicacion->clients_registered();
+                            $usr->contacts_registered += $publicacion->getClientsRegistered();
                             $ratings_sum += $publicacion->rating();
                     }                   
                 }
@@ -801,7 +801,7 @@ class AdminController extends Controller
                         $publicacion->menssage_not_read = $publicacion->menssage_not_read + $consulta->messages()->where('read', false)->count();
                         $publicacion->menssage_total = $publicacion->menssage_total +$consulta->messages()->count();
                     }
-                    $publicacion->clients_registered = $publicacion->clients_registered();
+                    $publicacion->clients_registered = $publicacion->getClientsRegistered();
                     $publicacion->surveys_accepted = $publicacion->surveys_accepted();
                     $publicacion->surveys_sent = $publicacion->surveys_sent();
                     $publicacion->rating = $publicacion->rating();
@@ -1371,25 +1371,16 @@ class AdminController extends Controller
         }
     }
 
-    public function admin_surveys($publicacion_hash){
+    public function admin_surveys($survey_id){
         $user = User::find(Auth::user()->id);
-
-        $publicacion = Publicacion::where('hash', $publicacion_hash)->first();
-        $surveys = $publicacion->surveys()
-                        ->where('accepts_survey', true)
-                        ->orderBy('created_at', 'DESC')
-                        ->paginate(10);
-        
-        $publicacion->user = $publicacion->user()->first();
-        $publicacion->positive_words = $publicacion->most_used_positive_words();
-        $publicacion->negative_words = $publicacion->most_used_negative_words();
-        $publicacion->rating = $publicacion->rating();
-
+       
         $user->permisos = $user->user_type()->first();
         if($user->permisos->name == "Administrador" ){
-            
-                        
-            return view('admin.surveys', compact('publicacion', 'surveys', 'user'));
+            $survey = Survey::find($survey_id);         
+            $publicacion = $survey->publicacion;
+            $user = $survey->user;   
+                             
+            return view('admin.surveys', compact('publicacion', 'survey', 'user'));
             
         }
         else{
@@ -1419,15 +1410,29 @@ class AdminController extends Controller
 
     }
 
-    public function admin_prof_contacts($user_hash){
-        $user = User::where("hash", $user_hash)->first();
-        $user->avatar = Storage::disk('avatares')->url($user->avatar);
-        $publicaciones = $user->publicaciones()->get();
-        foreach($publicaciones as $publicacion) {
-            $publicacion->categoria =  $publicacion->categoria()->first();
-            $publicacion->contacts = $publicacion->surveys()->paginate(10);
+    public function admin_prof_contacts($publicacion_hash){
+        $userAdmin = User::find(Auth::user()->id);
+        $userAdmin->avatar = Storage::disk('avatares')->url($userAdmin->avatar);
+        $publicacion = Publicacion::where('hash', $publicacion_hash)->first();
+
+        $publicacion->user = $publicacion->user()->first();
+        $publicacion->user->avatar = Storage::disk('avatares')->url($publicacion->user->avatar);
+        $userAdmin->permisos = $userAdmin->user_type()->first();
+        
+        if($userAdmin->permisos->name == "Administrador" ){
+            $publicacion->contacts = $publicacion->surveys()->orderBy('created_at', 'desc')->paginate(10);
+            $publicacion->positive_words = $publicacion->most_used_positive_words();
+            $publicacion->negative_words = $publicacion->most_used_negative_words();
+            $publicacion->rating = $publicacion->rating();
+            $survey_prof = [];
+                        
+            return view('admin.prof_contacts', compact('publicacion', 'survey_prof'));
+            
         }
+        else{
+            session::flash('message', 'No está autorizado para esta acción');
+            return redirect('/');
+        }   
        
-        return view('/admin.prof_contacts', compact('publicaciones', 'user'));
     }
 }
