@@ -167,25 +167,61 @@ $dates = [];
 
 foreach ($averageViewsToGraph as $resultado) {
     $date = $resultado->date;
-    //dd($resultado );
+    $categoria = $resultado->categoria;
+    $vistas = $resultado->vistas;
+
+    // Si no existe la fecha en el array datasets, se inicializa- Trabajara tipo arbol. Por fecha -> categoria -> vistas
     if (!isset($datasets[$date])) {
         $datasets[$date] = [
-            'categorias' => $resultado->categoria,
-            'vistas' => $resultado->vistas
+            'categorias' => [],
         ];
-
         $dates[] = $date; // Agregar la fecha al array de etiquetas (fechas)
+    }
+
+    // Asignar las vistas a la fecha y categoría correspondiente
+    if (!isset($datasets[$date]['categorias'][$categoria])) {
+        $datasets[$date]['categorias'][$categoria] = $vistas;
+    }
+    
+    // No se necesita lo resuelve la query-
+    // else { 
+    //     // Si ya existe la categoría para esa fecha, acumular las vistas
+    //     $datasets[$date]['categorias'][$categoria] += $vistas;
+    // }
+}
+
+
+
+// Preparar las categorías y vistas para el gráfico
+$categories = [];
+$vistasPorCategoria = [];
+
+//Por cada fecha agrupa -> Categorias : Por cada Categoria Asigna la s Vistas
+foreach ($datasets as $date => $data) {
+    foreach ($data['categorias'] as $categoria => $vistas) {
+        $categories[] = $categoria; // Guardar las categorías
+        $vistasPorCategoria[$categoria][] = $vistas; // Guardar las vistas asociadas a la categoría
     }
 }
 
+// Crear el gráfico y definir las etiquetas (fechas)
+$chart = new Chart;
+$chart->labels($dates); // Usamos fechas como etiquetas para el eje X
+
+// Agregar un dataset por cada categoría y la libreria lo asocia a cada fecha que le mandamos en la linea 23-
+foreach ($vistasPorCategoria as $categoria => $vistas) {
+    $chart->dataset("Vistas para $categoria", 'line', $vistas);
+}
+
+
+
         //dd($datasets);
         $chart = new Chart;
-
         $chart->labels($dates);
 
         // Agregar los datasets al gráfico
-        $chart->dataset('Vistas por fecha', 'line', array_column($datasets, 'vistas'));
-        
+        $chart->dataset("Vistas para $categoria", 'line', $vistas);
+
 
         return view('admin.statistics', compact('user'))
             ->with('categoryVisits',  $categoryAverage)
