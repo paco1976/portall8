@@ -213,6 +213,10 @@
 		</div>
 	</div>
 
+	<div > {!! $chart->container() !!}</div>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js" charset="utf-8"></script>
+        {!! $chart->script() !!}
+
 </div>
 
 <script src="https://code.jquery.com/jquery-3.2.1.js"></script>

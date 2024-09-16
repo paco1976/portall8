@@ -41,8 +41,9 @@ class AppServiceProvider extends ServiceProvider
     {
         Paginator::useBootstrap();
         Schema::defaultStringLength(191);
-        $logo = Logo::first();
-        $logo->image = Storage::disk('logo')->url($logo->image);
+        // $logo = Logo::first();
+        // $logo->image = Storage::disk('logo')->url($logo->image);
+        $logo=null;
         $supercateogrias_all = CategoriaTipo::where(['active' => 1])->get();
         $carrusel_all = Carrusel::where(['active' => 1])->get();
         foreach ($carrusel_all as $carrusel) {
@@ -58,7 +59,7 @@ class AppServiceProvider extends ServiceProvider
         $link_all = Link::where('active',1)->get();
         $aboutus_all = Aboutus::where('active',1)->paginate(2);
         $skinSelect = Skin::where('active',1)->first();
-        $skinSelect->urlskin = Storage::disk('skin')->url($skinSelect->urlskin);
+        // $skinSelect->urlskin = Storage::disk('skin')->url($skinSelect->urlskin);
         //return view('comunidad', compact('categoria_servicios_all', 'categoria_productos_all'));
         View::share(compact('categoria_all', 'supercateogrias_all','socialnetwork_all', 'contact_all', 'link_all', 'aboutus_all', 'carrusel_all','logo','skinSelect'));
     }
