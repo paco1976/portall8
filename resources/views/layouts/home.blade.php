@@ -60,7 +60,7 @@
         <link rel="stylesheet" href="{{ asset('vendor/circle-flip-slideshow/css/component.css') }}" media="screen">
 
         <!-- Skin CSS -->
-        <link rel="stylesheet" href="{{ $skinSelect->urlskin }}">
+        <link rel="stylesheet" href="">
 
 		<!-- Head Libs -->
 		<script src="{{asset('ipp/vendor/modernizr/modernizr.min.js')}}"></script>

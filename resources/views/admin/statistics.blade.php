@@ -213,17 +213,15 @@
 		</div>
 	</div>
 
+	<div > {!! $chart->container() !!}</div>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js" charset="utf-8"></script>
+        {!! $chart->script() !!}
+
 </div>
+
 
 <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
 <script type="text/javascript">
-
-// function showHide($eleme){
-// 	foreach($elemDocu in document.getElementById()){
-// 		document.getElementById().style.display == 'none';
-// 		document.getElementById($eleme).style.display = 'block';
-// 	}
-// } 
 function showHide(eleme) {
     var allElements = document.getElementsByClassName('info'); // Replace 'yourClassName' with the actual class name of your elements
 
