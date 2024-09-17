@@ -165,6 +165,7 @@ $averageViewsToGraph = Publicacion_Visita::query()
 $datasets = [];
 $dates = [];
 
+
 foreach ($averageViewsToGraph as $resultado) {
     $date = $resultado->date;
     $categoria = $resultado->categoria;
@@ -181,13 +182,10 @@ foreach ($averageViewsToGraph as $resultado) {
     // Asignar las vistas a la fecha y categoría correspondiente
     if (!isset($datasets[$date]['categorias'][$categoria])) {
         $datasets[$date]['categorias'][$categoria] = $vistas;
+    }else { 
+        // Si ya existe la categoría para esa fecha, acumular las vistas
+        $datasets[$date]['categorias'][$categoria] += $vistas;
     }
-    
-    // No se necesita lo resuelve la query-
-    // else { 
-    //     // Si ya existe la categoría para esa fecha, acumular las vistas
-    //     $datasets[$date]['categorias'][$categoria] += $vistas;
-    // }
 }
 
 
@@ -208,19 +206,10 @@ foreach ($datasets as $date => $data) {
 $chart = new Chart;
 $chart->labels($dates); // Usamos fechas como etiquetas para el eje X
 
-// Agregar un dataset por cada categoría y la libreria lo asocia a cada fecha que le mandamos en la linea 23-
+// Agregar un dataset por cada categoría y la libreria lo asocia a cada fecha que le mandamos en la linea
 foreach ($vistasPorCategoria as $categoria => $vistas) {
     $chart->dataset("Vistas para $categoria", 'line', $vistas);
 }
-
-
-
-        //dd($datasets);
-        $chart = new Chart;
-        $chart->labels($dates);
-
-        // Agregar los datasets al gráfico
-        $chart->dataset("Vistas para $categoria", 'line', $vistas);
 
 
         return view('admin.statistics', compact('user'))
