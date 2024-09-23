@@ -59,7 +59,7 @@ class AppServiceProvider extends ServiceProvider
         $link_all = Link::where('active',1)->get();
         $aboutus_all = Aboutus::where('active',1)->paginate(2);
         $skinSelect = Skin::where('active',1)->first();
-        // $skinSelect->urlskin = Storage::disk('skin')->url($skinSelect->urlskin);
+        $skinSelect->urlskin = Storage::disk('skin')->url($skinSelect->urlskin);
         //return view('comunidad', compact('categoria_servicios_all', 'categoria_productos_all'));
         View::share(compact('categoria_all', 'supercateogrias_all','socialnetwork_all', 'contact_all', 'link_all', 'aboutus_all', 'carrusel_all','logo','skinSelect'));
     }
