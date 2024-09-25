@@ -41,7 +41,8 @@
 										<th>Concretó servicio</th>
 										<th>Calificación</th>
 										<th>Palabras positivas</th>
-										<th>Palabras negativas</th>	
+										<th>Sugerencias mejorar</th>
+										<th>Razón no concretó</th>	
                                         <th>Reseña</th>										
 									</tr>
 								</thead>
@@ -68,8 +69,17 @@
 											@endif
 										</td>
 										<td>
-											@if($survey->no_agreement !== null)
+											@if($survey->negative_words !== null)
 											@foreach($survey->negativeWords() as $word)
+    										{{$word}}@if (!$loop->last) - @endif
+											@endforeach
+											@else
+											-
+											@endif
+										</td>
+										<td>
+											@if($survey->no_agreement !== null)
+											@foreach($survey->reasonNoAgree() as $word)
     										{{$word}}@if (!$loop->last) - @endif
 											@endforeach
 											@else

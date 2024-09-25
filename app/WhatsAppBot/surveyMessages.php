@@ -104,29 +104,8 @@ $surveyMessages = [
     'message1c_text' => "¿Qué es lo que más te gustó del servicio?\n(Podés volver a este mensaje para seleccionar más de una opción).",
     'message1c_buttons' => [
         "button" => "Describir", 
-        "sections" => [ 
-            [ 
-                "title" => "Sobre el profesional",
-                "rows" => [
-                    [
-                        "id" => "word:responsable",
-                        "title" => "Responsabilidad",
-                        "description" => ""
-                    ],
-                    [
-                        "id" => "word:buen_trato",
-                        "title" => "Buen trato",
-                        "description" => ""
-                    ],
-                    [
-                        "id" => "word:buen_asesoramiento",
-                        "title" => "Buen asesoramiento",
-                        "description" => ""
-                    ],
-                ]
-            ],
+        "sections" => [            
             [
-                "title" => "Sobre su trabajo",
                 "rows" => [
                     [
                         "id" => "word:prolijo",
@@ -147,9 +126,72 @@ $surveyMessages = [
                 ]
             ]
         ]
+    ],    
+    'message1c2_text' => "¿Qué es lo que más te gustó del profesional?\n(Podés volver a este mensaje para seleccionar más de una opción).",
+    'message1c2_buttons' => [
+        "button" => "Describir", 
+        "sections" => [ 
+            [ 
+                "rows" => [
+                    [
+                        "id" => "prof:responsable",
+                        "title" => "Responsabilidad",
+                        "description" => ""
+                    ],
+                    [
+                        "id" => "prof:buen_trato",
+                        "title" => "Buen trato",
+                        "description" => ""
+                    ],
+                    [
+                        "id" => "prof:buen_asesoramiento",
+                        "title" => "Buen asesoramiento",
+                        "description" => ""
+                    ],
+                ]
+            ]            
+        ]
     ],     
-    'message1d_text' => '¿Qué cosas mejorarías?', // Pasa a finalMessage1
-    'message1e_text' => '¿Qué cosas no te gustaron?', // Pasa a finalMessage1
+    'message1d_text' => '¿Qué aspectos considerás que debe mejorar el profesional?', // Pasa a review
+    'message1d_buttons' => [
+        "button" => "Describir", 
+        "sections" => [ 
+            [ 
+                "rows" => [
+                    [
+                        "id" => "neg:trato",
+                        "title" => "Trato",
+                        "description" => ""
+                    ],
+                    [
+                        "id" => "neg:responsabilidad",
+                        "title" => "Responsabilidad",
+                        "description" => ""
+                    ],
+                    [
+                        "id" => "neg:asesoramiento",
+                        "title" => "Asesoramiento",
+                        "description" => ""
+                    ],
+                    [
+                        "id" => "neg:prolijidad",
+                        "title" => "Prolijidad",
+                        "description" => ""
+                    ],
+                    [
+                        "id" => "neg:precio",
+                        "title" => "Precio",
+                        "description" => ""
+                    ],
+                    [
+                        "id" => "neg:cumplimiento",
+                        "title" => "Cumplimiento de acuerdos",
+                        "description" => ""
+                    ],
+                ]
+            ]            
+        ]
+    ],
     'message1f_text' => "¿Querés dejarnos una reseña?", // Pasa a finalMessage1 o review
     'message1f_buttons' => [
         "buttons" => [
