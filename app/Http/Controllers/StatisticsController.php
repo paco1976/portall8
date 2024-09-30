@@ -9,7 +9,8 @@ use App\Models\Categoria;
 use App\Models\User_type;
 // use App\Charts\StatisticsChart;
 // use App\Charts\Chart;
-use ConsoleTVs\Charts\Classes\Chartjs\Chart;
+//usaba este
+//use ConsoleTVs\Charts\Classes\Chartjs\Chart;
 
 
 use Illuminate\Support\Facades\Auth;
@@ -40,6 +41,7 @@ class StatisticsController extends Controller
         $viewsPerMonth = Publicacion_Visita::whereYear('created_at', '=', now()->year)
         ->whereMonth('created_at', '=', now()->month)
         ->count();
+
             
 
         $categories = Publicacion_Visita::query()
@@ -203,13 +205,16 @@ foreach ($datasets as $date => $data) {
 }
 
 // Crear el gráfico y definir las etiquetas (fechas)
-$chart = new Chart;
-$chart->labels($dates); // Usamos fechas como etiquetas para el eje X
+//$chart = new Chart;
+//$chart->labels($dates); // Usamos fechas como etiquetas para el eje X
 
 // Agregar un dataset por cada categoría y la libreria lo asocia a cada fecha que le mandamos en la linea
+
+/*
 foreach ($vistasPorCategoria as $categoria => $vistas) {
     $chart->dataset("Vistas para $categoria", 'line', $vistas);
 }
+    */
 
 
         return view('admin.statistics', compact('user'))
@@ -222,7 +227,7 @@ foreach ($vistasPorCategoria as $categoria => $vistas) {
             ->with('profesionalMorequalified',  $averageProfesional)
             ->with('SurveyTotal',  $SurveyTotal)
             ->with('SurveyByProfesional',  $SurveyByProfesional)
-            ->with('chart', $chart)
+            //->with('chart', $chart)
             ->with('recentView',  $recentView);
     }
     
