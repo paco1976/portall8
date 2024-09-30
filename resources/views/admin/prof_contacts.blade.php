@@ -56,22 +56,30 @@
             <div class="row pt-2">
             <div class="container" style="margin-bottom: 10px">
 					<div class="row" style="background-color: #f2f2f2; margin: 1px; padding: 20px; border-radius: 5px;">
-						<div class="col-md-4" >
+						<div class="col-md-3" >
 						<h5>Calificación promedio</h5>
 						<h1>{{$publicacion->rating}}</h1>
 						</div>	
-				<div class="col-md-4" >
-						<h5>Palabras positivas más usadas</h5>
+				<div class="col-md-3" >
+						<h5>Palabras positivas</h5>
 						<ol>
 						@foreach ($publicacion->positive_words as $word)
 								<li>{{ $word }}</li>
 						@endforeach	
 						</ol>	
 					</div>
-					<div class="col-md-4" >
-					<h5>Palabras negativas más usadas</h5>
+                    <div class="col-md-3" >
+					<h5>Sugerencias para mejorar</h5>
 						<ol>
 						@foreach ($publicacion->negative_words as $word)
+								<li>{{ $word }}</li>
+						@endforeach	
+						</ol>			
+					</div>
+					<div class="col-md-3" >
+					<h5>Razones no concretar</h5>
+						<ol>
+						@foreach ($publicacion->reason_no_agree as $word)
 								<li>{{ $word }}</li>
 						@endforeach	
 						</ol>			

@@ -106,8 +106,11 @@ class Publicacion extends Model
    
     public function most_used_positive_words()
     {
-
-        $allWords = $this->surveys->pluck('descriptive_words')->filter()->flatten()->values();
+        $allWords = $this->surveys->pluck('descriptive_words')
+        ->merge($this->surveys->pluck('descriptive_words_prof'))
+        ->filter() // Remove null entries
+        ->flatten() // Flatten into a single collection
+        ->values(); // Reset keys
 
         $wordCount = $allWords->countBy();
 
@@ -124,6 +127,24 @@ class Publicacion extends Model
     }
 
     public function most_used_negative_words()
+    {
+        $allWords = $this->surveys->pluck('negative_words')->filter()->flatten()->values();
+
+        $wordCount = $allWords->countBy();
+
+        $sortedWords = $wordCount->sortDesc();
+
+        $topThreeWords = $sortedWords->take(3)->keys()->toArray();
+        
+        $topThreeWords = array_map(function ($word) {
+            return str_replace('_', ' ', $word);
+        }, $topThreeWords);
+
+        return $topThreeWords;
+
+    }
+
+    public function most_used_reasons_no_agree()
     {
 
         $allWords = $this->surveys->pluck('no_agreement')->filter()->flatten()->values();

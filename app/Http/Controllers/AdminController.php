@@ -1423,6 +1423,7 @@ class AdminController extends Controller
             $publicacion->contacts = $publicacion->surveys()->orderBy('created_at', 'desc')->paginate(10);
             $publicacion->positive_words = $publicacion->most_used_positive_words();
             $publicacion->negative_words = $publicacion->most_used_negative_words();
+            $publicacion->reason_no_agree = $publicacion->most_used_reasons_no_agree();
             $publicacion->rating = $publicacion->rating();
             $survey_prof = [];
                         
