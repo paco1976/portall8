@@ -398,7 +398,8 @@ class SurveyController extends Controller
                  */
                 else if ($rating <= 3) {
                     $response = $surveyMessages['message1d_text'];
-                    $this->sendWhatsAppMessage($survey, "text", $response, 4, $message_ID, $message, '', $client_phone);
+                    $dataToSend = $surveyMessages['message1d_buttons'];
+                    $this->sendWhatsAppMessage($survey, "list", $response, 4, $message_ID, $message, $dataToSend, $client_phone);
                 }                
             }
             /**
