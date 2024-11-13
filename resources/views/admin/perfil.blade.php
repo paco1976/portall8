@@ -82,7 +82,7 @@
                                 -->
                                 <li class="nav-item"><a class="nav-link text-3 text-dark active" href="#"><i class="fa-solid fa-user"></i> Mi Perfil</a></li>
                                 <li class="nav-item"><a class="nav-link text-3" href="{{ route('admin_profesionales') }}"><i class="fa fa-users"></i> Profesionales</a></li>
-                                <li class="nav-item"><a class="nav-link text-3" href="{{ route('admin_publicaciones') }}"><i class="fa fa-list-ul"></i> Publiaciones</a></li>
+                                <li class="nav-item"><a class="nav-link text-3" href="{{ route('admin_publicaciones') }}"><i class="fa fa-list-ul"></i> Publicaciones</a></li>
 								<!--<li class="nav-item"><a class="nav-link text-3" href="{{ route('admin_publicaciones') }}"><i class="fa fa-list-ul"></i> Publiaciones</a></li>-->
                                 <li class="nav-item"><a class="nav-link text-3" href="{{ route('logout') }}"
                                     onclick="event.preventDefault();
