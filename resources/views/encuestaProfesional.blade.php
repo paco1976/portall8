@@ -31,7 +31,6 @@
 	</div>
 	@endif
     @if(!Session::has('message'))
-    <div class="mb-5">Hola, {{ $professional_name }}. Cliente: {{ $client_name }}</div>
 
     <form id="surveyForm" action="{{ route('saveSurveyProf', ['hash' => $hash])  }}" method="POST" class="needs-validation fs-6" novalidate>
     @csrf
@@ -265,7 +264,7 @@
     document.querySelectorAll('input[name="job_not_completed"]').forEach((input) => {
         input.addEventListener('change', () => {
             const reason = input.value;
-            document.getElementById('disagreement_reason').style.display = (reason === 'Disagreement') ? 'block' : 'none';
+            document.getElementById('disagreement_reason').style.display = (reason === '3') ? 'block' : 'none';
         
 
         });
