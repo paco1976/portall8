@@ -194,11 +194,11 @@
 										<h2 style="margin-bottom: 0px">{{ $SurveyTotal }}</h2>
 									</button>		
 									<button onclick="showHide('profesionalMorequalified')"  style="border: none; background-color: #dedede; margin: 1px; padding: 20px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease;">
-										<caption>Perfil mejor calificado</caption>
+										<caption>Perfil con buenas calificaciones</caption>
 										<h2 style="margin-bottom: 0px">{{ $profesionalMorequalified->first()->name }} {{ $profesionalMorequalified->first()->last_name }}</h2>
 									</button>
 									<button onclick="showHide('profesionalWorstqualified')"  style="border: none; background-color: #dedede; margin: 1px; padding: 20px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease;">
-										<caption>Perfil peor calificado</caption>
+										<caption>Perfil malas calificaciones</caption>
 										<h2 style="margin-bottom: 0px">{{ $profesionalWorstqualified->first()->name }} {{ $profesionalWorstqualified->first()->last_name }}</h2>
 
 									</button>								
@@ -239,7 +239,7 @@
 
 							@if($profesionalMorequalified)
 							<div class=" col-md-10 info" id="profesionalMorequalified" style="text-align:center; display:none;width:99%" >
-							<h2 >Perfiles mejor calificados</h2>
+							<h2 >Perfiles con buenas calificaciones</h2>
 							<div class="survey-scroll-container" style="display: flex; overflow-x: auto; gap: 10px;">
 							@foreach ($profesionalMorequalified as $best)
             <div class="col-md-5" style="min-width: 300px; margin: 10px;">
@@ -266,7 +266,7 @@
 							@endif	
 							@if($profesionalWorstqualified)	
 							<div class=" col-md-10 info" id="profesionalWorstqualified" style="text-align:center; display:none;width:99%" >
-							<h2 >Perfiles peor calificados</h2>
+							<h2 >Perfiles con malas calificaciones</h2>
 							<div class="survey-scroll-container" style="display: flex; overflow-x: auto; gap: 10px;">
 							@foreach ($profesionalWorstqualified as $worst)
             <div class="col-md-5" style="min-width: 300px; margin: 10px;">

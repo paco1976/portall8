@@ -242,14 +242,12 @@ class StatisticsController extends Controller
         $averageProfesionalWorst = $averageProfesional->sortBy('average')->values();
 
 // Get the lowest average
-$worstAverage = $averageProfesionalWorst->first()->average ?? 0;
+$worstAverage = $averageProfesionalWorst->firstWhere('average', '!==', null)->average ?? 0;
 
 // Filter professionals with the lowest average
 $averageProfesionalWorst = $averageProfesionalWorst->filter(function ($professional) use ($worstAverage) {
-    return $professional->average == $worstAverage;
+    return $professional->average !== null && $professional->average == $worstAverage;
 });
-
-          
 
         $surveysCount = $allSurveys->count();
 
