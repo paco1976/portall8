@@ -489,37 +489,36 @@ class SurveyController extends Controller
             $name = $user->name;
             $phone = $professional->mobile;
             info($phone);
-
             info($name);
 
-            // $template = [
-            //     "name" => "encuesta_prof",
-            //     "language" => [
-            //         "code" => "es_AR"
-            //     ],
-            //     "components" => [
-            //         [
-            //             "type" => "body",
-            //             "parameters" => [
-            //                 [
-            //                     "type" => "text",
-            //                     "text" => $name
-            //                 ]
-            //             ]
-            //         ],
-            //         [
-            //             "type" => "button",
-            //             "sub_type" => "url",
-            //             "index" => "0",
-            //             "parameters" => [
-            //                 [
-            //                     "type" => "text",
-            //                     "text" => $param
-            //                 ]
-            //             ]
-            //         ]
-            //     ]
-            // ];
+            $template = [
+                "name" => "encuesta_profs",
+                "language" => [
+                    "code" => "es_AR"
+                ],
+                "components" => [
+                    [
+                        "type" => "body",
+                        "parameters" => [
+                            [
+                                "type" => "text",
+                                "text" => $name
+                            ]
+                        ]
+                    ],
+                    [
+                        "type" => "button",
+                        "sub_type" => "url",
+                        "index" => "0",
+                        "parameters" => [
+                            [
+                                "type" => "text",
+                                "text" => $param
+                            ]
+                        ]
+                    ]
+                ]
+            ];
     }
 
     // TODO: reemplazar mensaje por envío de template
