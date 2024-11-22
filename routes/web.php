@@ -4,6 +4,7 @@ use App\Models\User_type;
 use App\Models\User_Cfp;
 use App\Models\User_Profile;
 use App\Models\User;
+use App\Models\Titulo;
 use App\Models\Categoria;
 use App\Models\Categoria_Tipo;
 use Illuminate\Support\Facades\Route;
@@ -140,7 +141,7 @@ Route::get('/admin_publicaciones_show_rating/{publicacion_hash}/origen/{origen}'
 Route::get('/admin_consultas/{publicacion_hash}', 'AdminController@admin_consultas')->name('admin_consultas');
 Route::get('/admin_mensajes/{hash}', 'AdminController@admin_mensajes')->name('admin_mensajes');
 Route::get('/admin_consultas_all/{hash_user}','AdminController@admin_consultas_all' )->name('admin_consultas_all'); 
-Route::get('/admin_prof_contacts/{hash_user}','AdminController@admin_prof_contacts' )->name('admin_prof_contacts'); 
+Route::get('/admin_prof_contacts/{publicacion_hash}','AdminController@admin_prof_contacts' )->name('admin_prof_contacts'); 
 
 /*
 Route::get('/admin_categorias','AdminController@admin_categorias' )->name('admin_categorias'); 
@@ -157,7 +158,7 @@ Route::put('/admin_categoria_update','CategoriaController@admin_categoria_update
 Route::get('/admin_categoria_delete/{id}','CategoriaController@admin_categoria_delete' )->name('admin_categoria_delete'); // Activar desactivar categoria desde el panel de admin
 
 
-Route::get('/admin_surveys/{publicacion_hash}', 'AdminController@admin_surveys')->name('admin_surveys');
+Route::get('/admin_surveys/{survey_id}', 'AdminController@admin_surveys')->name('admin_surveys');
 
 
 Route::get('/admin_visitas/{publicacion_hash}', 'AdminController@admin_visitas')->name('admin_visitas');
@@ -320,3 +321,5 @@ Route::resource('skins', SkinController::class);
 Route::get('/encuesta/{hash}', 'SurveyController@createSurveyProf')->name('createSurveyProf');
 Route::post('/encuesta/{hash}', 'SurveyController@saveSurveyProf')->name('saveSurveyProf');
 
+
+Route::resource('titulos', TituloController::class);

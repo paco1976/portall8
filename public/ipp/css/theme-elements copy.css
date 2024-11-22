@@ -3883,6 +3883,7 @@ html.sticky-header-active .hamburguer-btn.hamburguer-btn-sticky-dark .close span
 
 .owl-carousel.nav-arrows-thin .owl-nav .owl-prev:before, .owl-carousel.nav-arrows-thin .owl-nav .owl-next:before {
 	font-family: simple-line-icons;
+	speak: none;
 	font-style: normal;
 	font-weight: 700;
 	font-variant: normal;
@@ -7155,7 +7156,9 @@ input[type="url"],
 input[type="search"],
 input[type="tel"],
 input[type="color"],
-
+textarea {
+	-webkit-appearance: none;
+}
 
 .form-control::-webkit-input-placeholder,
 input[type="text"]::-webkit-input-placeholder,
@@ -12384,6 +12387,7 @@ Credits: Codyhouse (https://codyhouse.co/gem/360-degrees-product-viewer)
 	-webkit-mask-image: url(../img/particle-dot.svg);
 	mask-image: url(../img/particle-dot.svg);
 	z-index: 0;
+	-webkit-mask-size: 18px;
 }
 
 .particle.particle-repeating-lines {
@@ -16607,8 +16611,8 @@ html.gecko .sort-destination.sort-destination-margin > [class*="col-"] {
 	position: absolute;
 	z-index: 2;
 	max-width: 90%;
-	font-size: 11px;
-	padding: 5px 8px 2px;
+	font-size: 17px;
+	padding: 13px 21px 2px;
 	bottom: 13%;
 }
 
@@ -16627,6 +16631,7 @@ html.gecko .sort-destination.sort-destination-margin > [class*="col-"] {
 	background-color: #CCC;
 	border-radius: 2px;
 	display: inline-block;
+	float: left;
 	font-size: 0.6em;
 	font-weight: 600;
 	letter-spacing: 0;
@@ -17214,7 +17219,7 @@ html.gecko .sort-destination.sort-destination-margin > [class*="col-"] {
 
 @media (max-width: 991px) {
 	.thumb-info .thumb-info-title {
-		font-size: 11px;
+		font-size: 14px;
 	}
 
 	.thumb-info .thumb-info-more {
@@ -17855,7 +17860,7 @@ p.drop-caps.drop-caps-style-2:first-letter {
 
 /* Gradient Text */
 .gradient-text-color {
-
+	-webkit-background-clip: text !important;
 	-webkit-text-fill-color: transparent !important;
 }
 

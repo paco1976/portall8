@@ -17,6 +17,8 @@ class Survey extends Model
         'service_provided',
         'satisfaction',
         'descriptive_words',
+        'descriptive_words_prof',
+        'negative_words',
         'no_agreement',
         'wa_id',
         'review',
@@ -24,6 +26,8 @@ class Survey extends Model
 
     protected $casts = [
         'descriptive_words' => 'array',
+        'descriptive_words_prof' => 'array',  
+        'negative_words' => 'array',
         'no_agreement' => 'array'
     ];
     
@@ -53,14 +57,26 @@ class Survey extends Model
 
     public function positiveWords()
     {        
-        if($this->descriptive_words !== null){
-            return array_map(function ($word) {
+        $descriptiveWords = $this->descriptive_words ?? [];
+        $descriptiveWordsProf = $this->descriptive_words_prof ?? [];
+    
+        $allWords = array_merge($descriptiveWords, $descriptiveWordsProf);
+
+        return array_map(function ($word) {
                 return str_replace('_', ' ', $word);
-            }, $this->descriptive_words);
-        } else return [];
+        }, $allWords);
     }
 
     public function negativeWords()
+    {        
+        if($this->negative_words !== null){
+            return array_map(function ($word) {
+                return str_replace('_', ' ', $word);
+            }, $this->negative_words);
+        } else return [];
+    }
+
+    public function reasonNoAgree()
     {        
         if($this->no_agreement !== null){
             return array_map(function ($word) {

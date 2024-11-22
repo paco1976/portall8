@@ -43,7 +43,7 @@
 							data-appear-animation="maskUp" data-appear-animation-delay="300">{{ $user->name }}
 							{{ $user->Last_name }}</h2>
 					</div>
-					
+					<!--
 					@if($publicacion->show_rating)
 					<div class="star-rating">
 						@for ($i = 1; $i <= 5; $i++) @if ($rating < 3) <i class="bi bi-star "></i>
@@ -60,7 +60,7 @@
 									@endif
 					</div>
 					@endif
-
+				-->
 					<div class="overflow-hidden mb-3">
 						<p class="font-weight-bold text-primary text-uppercase mb-0 appear-animation"
 							data-appear-animation="maskUp" data-appear-animation-delay="500">{{ $categoria->name }}</p>

@@ -18,6 +18,11 @@ class SurveyController extends Controller
     /** 
      * Webhook para conectar con la API de WhatsApp
      * */
+    public function __construct()
+    {
+        //$this->middleware('auth');
+    }
+    
     public function handleWebhook(Request $request)
     {
         // Verificación del token
@@ -391,22 +396,16 @@ class SurveyController extends Controller
                     $this->sendWhatsAppMessage($survey, "list", $response, 4, $message_ID, $message, $dataToSend, $client_phone);
                 }
                 /**
-                 * Opción b: rating 3 -> manda message1d (pregunta)
+                 * Opción b: rating <= 3 -> manda message1d (pregunta)
                  */
-                else if ($rating == 3) {
+                else if ($rating <= 3) {
                     $response = $surveyMessages['message1d_text'];
-                    $this->sendWhatsAppMessage($survey, "text", $response, 4, $message_ID, $message, '', $client_phone);
-                }
-                /**
-                 * Opción c: rating 1 o 2 -> manda message1e (pregunta)
-                 */
-                else if ($rating < 3) {
-                    $response = $surveyMessages['message1e_text'];
-                    $this->sendWhatsAppMessage($survey, "text", $response, 4, $message_ID, $message, '', $client_phone);
-                }
+                    $dataToSend = $surveyMessages['message1d_buttons'];
+                    $this->sendWhatsAppMessage($survey, "list", $response, 4, $message_ID, $message, $dataToSend, $client_phone);
+                }                
             }
             /**
-             * Recibe palabra positiva --- manda FIN
+             * Recibe palabra positiva --- manda message1c2 (describir profesional)
              */
             else if (strpos($message, 'word:') !== false) {
 
@@ -432,11 +431,78 @@ class SurveyController extends Controller
                 }
 
                 if ($firstWord) {
+                    $response = $surveyMessages['message1c2_text'];
+                    $dataToSend = $surveyMessages['message1c2_buttons'];
+                    $this->sendWhatsAppMessage($survey, "list", $response, 4, $message_ID, $message, $dataToSend, $client_phone);
+                }
+            } 
+            
+            /**
+             * Recibe descripción sobre profesional --- manda FIN
+             */
+            else if (strpos($message, 'prof:') !== false) {
+
+                $firstWord = true;
+                // Guarda la palabra en el tabla de survey
+                if ($survey) {
+
+                    $word = substr($message, strpos($message, "prof:") + strlen("prof:"));
+
+                    $descriptiveWords = $survey->descriptive_words_prof;
+
+                    if ($descriptiveWords === null) {
+                        $descriptiveWords = [];
+                    } else {
+                        $firstWord = false;
+                    }
+
+                    $descriptiveWords[] = $word;
+
+                    $survey->descriptive_words_prof = $descriptiveWords;
+
+                    $survey->save();
+                }
+
+                if ($firstWord) {
                     $response = $surveyMessages['message1f_text'];
                     $dataToSend = $surveyMessages['message1f_buttons'];
                     $this->sendWhatsAppMessage($survey, "buttons", $response, 5, $message_ID, $message, $dataToSend, $client_phone);
                 }
-            } else if ($message === 'no_review') {
+            }  
+            
+            /**
+             * Recibe sugerencias para mejorar --- manda FIN
+             */
+            else if (strpos($message, 'neg:') !== false) {
+
+                $firstWord = true;
+                // Guarda la palabra en el tabla de survey
+                if ($survey) {
+
+                    $word = substr($message, strpos($message, "neg:") + strlen("neg:"));
+
+                    $descriptiveWords = $survey->negative_words;
+
+                    if ($descriptiveWords === null) {
+                        $descriptiveWords = [];
+                    } else {
+                        $firstWord = false;
+                    }
+
+                    $descriptiveWords[] = $word;
+
+                    $survey->negative_words = $descriptiveWords;
+
+                    $survey->save();
+                }
+
+                if ($firstWord) {
+                    $response = $surveyMessages['message1f_text'];
+                    $dataToSend = $surveyMessages['message1f_buttons'];
+                    $this->sendWhatsAppMessage($survey, "buttons", $response, 5, $message_ID, $message, $dataToSend, $client_phone);
+                }
+            }
+            else if ($message === 'no_review') {
                 $response = $surveyMessages['finalMessage1_text'];
                 $this->sendWhatsAppMessage($survey, "text", $response, 5, $message_ID, $message, '', $client_phone);
             } else if ($message === 'review') {

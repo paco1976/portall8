@@ -98,9 +98,11 @@
 				<thead>
 					<tr class="actions text-center">			
 						<th>Categoría</th>
-						<th>Título Relacionado</th>
+						<th>Título</th>
 						<th>Estado</th>
-						<th>Calificación</th>
+						<th>Encuestas</th>
+						<th>Calificación promedio</th>
+						<th>Consultas web</th>
 						<th>Visitas</th>
 						<th>Ver</th>
 						<th>Editar</th>
@@ -111,12 +113,15 @@
 				<tbody>
 					@foreach($mispublicaciones as $publicacion)
 					<tr data-item-id="1">
+						<!-- Categoría -->
 						<td>{{$publicacion->categoria->name}}</td>	
+
+						<!-- Título -->
 						<td>
 							{{$publicacion->titulo->name}}
 						</td>
 
-					
+						<!-- Estado de la publicación -->
 						<td class="actions text-center">
 						@if($publicacion->aprobado)
 								<a href="{{ route('admin_publicaciones_aprobar_desaprobar', ['publicacion_hash' => $publicacion->hash, 'origen' => 'publicaciones']) }}" class="btn btn-success"><i class="fas fa-check-circle"></i></a>
@@ -125,22 +130,51 @@
 						@endif
 						</td>
 						
+						<!-- Encuestas -->
 						<td class="actions text-center">
-							@if ($publicacion->rating > 0)
-                                @if ($publicacion->rating >= 3)
-                                <span class="btn btn-success"><strong>{{ $publicacion->rating }}</strong></span>
-                                @else
-                                <span class="btn btn-danger"><strong>{{ $publicacion->rating }}</strong></span>
-                                @endif
-                            @else
-                                <span class="btn btn-light"><strong>-</strong></span>
-                            @endif	
-							@if($publicacion->show_rating==0)
-								<a href="{{ route('admin_publicaciones_show_rating', ['publicacion_hash' => $publicacion->hash, 'origen' => 'profesionales']) }}" class="btn btn-warning"><i class="fa fa-eye-slash"></i></a>
-								@else
-								<a href="{{ route('admin_publicaciones_show_rating', ['publicacion_hash' => $publicacion->hash, 'origen' => 'profesionales']) }}" class="btn btn-success"><i class="fa fa-eye"></i></a>
-							@endif		
+                                <a class="btn btn-success" href="{{ route('admin_prof_contacts', ['publicacion_hash' => $publicacion->hash]) }}"><strong>{{ $publicacion->surveys_taken }} / {{ $publicacion->contacts_registered }}</strong></a>
 						</td>
+						<!-- Calificación -->
+						<td class="actions text-center">
+    					<a href="{{ route('admin_publicaciones_show_rating', ['publicacion_hash' => $publicacion->hash, 'origen' => 'profesionales']) }}" class="btn 
+       @if ($publicacion->rating > 0) 
+           @if ($publicacion->rating >= 3) 
+               btn-success 
+           @else 
+               btn-danger 
+           @endif 
+       @else 
+           btn-light 
+       @endif 
+       position-relative d-inline-flex align-items-center justify-content-center">
+        				@if ($publicacion->rating > 0)
+           					@if ($publicacion->rating >= 3)
+                			<span class="me-2"><strong>{{ $publicacion->rating }}</strong></span>
+            				@else
+                			<span class="me-2"><strong>{{ $publicacion->rating }}</strong></span>
+           					@endif
+        				@else
+            			<span class="me-2"><strong>-</strong></span>
+        				@endif
+        
+       					@if($publicacion->show_rating == 0)
+           				<i class="fa fa-eye-slash"></i>
+        				@else
+            			<i class="fa fa-eye"></i>
+        				@endif
+    </a>
+</td>
+
+						
+						<!-- Consultas web -->
+						<td class="actions text-center">
+							@if($publicacion->cant_consultas>0)
+							<a href="{{ route('admin_consultas', ['publicacion_hash' => $publicacion->hash]) }}" class="btn btn-info"><strong>{{$publicacion->cant_consultas}}</strong></a>
+							@else
+							<a href="#" class="btn btn-light"><i class="fa fa-read"><strong>0</strong></i></a>
+							@endif
+						</td>
+						<!-- Visitas -->
 						<td class="actions text-center">
 							@if ($publicacion->cant_visitas < 1 )
 								<a href="" class="btn btn-info"> {{$publicacion->cant_visitas}} </a>		
@@ -148,12 +182,18 @@
 								<a href="{{ route('admin_visitas', ['publicacion_hash' => $publicacion->hash]) }}" class="btn btn-info"> {{$publicacion->cant_visitas}} </a>
 							@endif
 						</td>
+
+						<!-- Ver -->
 						<td class="actions text-center">
 							<a href="{{ route('admin_publicacion_user', ['publicacion_hash' => $publicacion->hash, 'origen'=>'profesionales' ]) }}" class="btn btn-primary"><i class="fa fa-eye"></i></a></a>
 						</td>
+
+						<!-- Editar -->
 						<td class="actions text-center">
 							<a href="{{ route('prof_publicacion_edit', ['publicacion_hash'=> $publicacion->hash, 'hash_user'=>$user->hash]) }}" class="btn btn-primary"><i class="fas fa-pencil-alt"></i></a>
 						</td>
+
+						<!-- Eliminar -->
 						<td class="actions text-center">
 							<a href="{{ route('admin_publicacion_delete', ['publicacion_hash' => $publicacion->hash, 'origen'=>'profesionales' ]) }}" class="btn btn-danger" onclick="return confirm('Está seguro que quiere borrar la publicación?')" ><i class="far fa-trash-alt"></i></a>
 						</td>
@@ -163,13 +203,7 @@
 
 
 						
-						{{-- <td>
-							@if($publicacion->cant_consultas>0)
-							<a href="{{ route('admin_consultas', ['publicacion_hash' => $publicacion->hash]) }}" class="btn btn-info"><strong>{{$publicacion->cant_consultas}}</strong></a>
-							@else
-							<a href="#" class="btn btn-primary"><i class="fa fa-read"><strong>NO</strong></i></a>
-							@endif
-						</td>
+						{{-- 
 						
 						
 						<td class="actions text-center">

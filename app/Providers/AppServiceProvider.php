@@ -41,8 +41,9 @@ class AppServiceProvider extends ServiceProvider
     {
         Paginator::useBootstrap();
         Schema::defaultStringLength(191);
-        $logo = Logo::first();
-        $logo->image = Storage::disk('logo')->url($logo->image);
+        // $logo = Logo::first();
+        // $logo->image = Storage::disk('logo')->url($logo->image);
+        $logo=null;
         $supercateogrias_all = CategoriaTipo::where(['active' => 1])->get();
         $carrusel_all = Carrusel::where(['active' => 1])->get();
         foreach ($carrusel_all as $carrusel) {

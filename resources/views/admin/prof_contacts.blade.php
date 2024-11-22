@@ -14,7 +14,7 @@
                         <li class="text-color-primary"><a href="#">Panel de control</a></li>
 
                     </ul>
-                    <h1 class="font-weight-bold text-10 text-xl-12 line-height-2 mb-3">CLIENTES</h1>
+                    <h1 class="font-weight-bold text-10 text-xl-12 line-height-2 mb-3">Encuestas a {{ $publicacion->user->name }} {{ $publicacion->user->last_name }}</h1>
 
                     <a href="#ver" data-hash data-hash-offset="0" data-hash-offset-lg="100"
                         class="btn btn-gradient-primary border-primary btn-effect-4 font-weight-semi-bold px-4 btn-py-2 text-3">Ver
@@ -30,17 +30,17 @@
 
 
     <div role="main" class="main" id="ver">
-    </div>
+    </div>    
     <div class="container pt-3 pb-2">
         <div class="form-group row">
             <div class="form-group col-lg-9">
-                <h2 class="font-weight-normal line-height-1">Clientes registrados de <strong
-                        class="font-weight-extra-bold">{{ $user->name }} {{ $user->last_name }}</strong></h2>
+                <h2 class="font-weight-normal line-height-1">Publicación <strong
+                        class="font-weight-extra-bold">{{ $publicacion->titulo->name }}</strong> </h2>
             </div>
 
             <div class="form-group col-lg-2">
-                <a href="{{ route('prof_publicacion', ['hash_user' => $user->hash]) }}"
-                    class="btn btn-dark btn-modern float-end">Ver publicaciones</a>
+                <a href="{{ route('prof_publicacion', ['hash_user' => $publicacion->user->hash]) }}"
+                    class="btn btn-dark btn-modern float-end">Volver</a>
 
             </div>
             @if (Session::has('message'))
@@ -54,55 +54,94 @@
                 </div>
             @endif
             <div class="row pt-2">
+            <div class="container" style="margin-bottom: 10px">
+					<div class="row" style="background-color: #f2f2f2; margin: 1px; padding: 20px; border-radius: 5px;">
+						<div class="col-md-3" >
+						<h5>Calificación promedio</h5>
+						<h1>{{$publicacion->rating}}</h1>
+						</div>	
+				<div class="col-md-3" >
+						<h5>Palabras positivas</h5>
+						<ol>
+						@foreach ($publicacion->positive_words as $word)
+								<li>{{ $word }}</li>
+						@endforeach	
+						</ol>	
+					</div>
+                    <div class="col-md-3" >
+					<h5>Sugerencias para mejorar</h5>
+						<ol>
+						@foreach ($publicacion->negative_words as $word)
+								<li>{{ $word }}</li>
+						@endforeach	
+						</ol>			
+					</div>
+					<div class="col-md-3" >
+					<h5>Razones no concretar</h5>
+						<ol>
+						@foreach ($publicacion->reason_no_agree as $word)
+								<li>{{ $word }}</li>
+						@endforeach	
+						</ol>			
+					</div>
+					</div>
+				</div>
                 <div class="container">
                     <section class="card card-admin">
 
                         <div class="card-body">
-
-                            @if (!$publicaciones)
-                                <p>Por el momento no tienes publicaciones</p>
-                            @else
                                 <table class="table table-bordered table-striped mb-0" id="datatable-editable">
                                     <thead>
                                         <tr class="actions text-center">
-                                            <th>Publicación</th>
-                                            <th>Lugar de contacto</th>
-                                            <th>Fecha</th>
+                                            <th>Fecha de registro</th>
                                             <th>Cliente</th>
                                             <th>Celular</th>
-                                            <th>Encuesta</th>
+                                            <th>Calificación</td>
+                                            <th>Encuesta cliente</th>
                                             <th>Enviar encuesta</th>
-                                            <th>Contactar</th>
+                                            <th>Encuesta profesional</th>
 
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($publicaciones as $publicacion)
                                             @if ($publicacion->contacts)
                                                 @foreach ($publicacion->contacts as $contact)
                                                     <tr data-item-id="1">
-                                                        <td>{{ $publicacion->categoria->name }}</td>
                                                         @if ($contact)
-                                                            <td class="actions text-center"> </td>
+                                                        <!-- Fecha -->
                                                             <td class="actions text-center">
                                                                 {{ $contact->created_at->format('d/m/Y H:i:s') }}
                                                             </td>
-                                                            {{-- Nombre del cliente --}}
+                                                        <!-- {{-- Nombre del cliente --}} -->
                                                             <td class="actions text-center">
                                                                 {{ $contact->client_name }}
                                                             </td>
+                                                        <!-- Cel del cliente -->
                                                             <td class="actions text-center">
                                                                 {{ $contact->client_cellphone }}
+                                                                <a target="_blank"
+                                                                    href=" https://wa.me/{{ $contact->client_cellphone }}?text=Hola!%20Te%20contacto%20desde%20el%20portal%20de%20oficios%20para%20hacerte%20una%20consulta!"
+                                                                    class="">
+                                                                    <i class="fab fa-whatsapp text-success"></i></a>
                                                             </td>
+                                                        <!-- Calificación -->
+                                                            <td class="actions text-center">
+                                                                {{ $contact->satisfaction }}
+                                                            </td>                                                        
+                                                        <!-- Encuesta cliente -->
                                                             <td class="actions text-center">
                                                                 @if ($contact->contacted == 0)
                                                                     <span class="btn btn-light">No enviada</span>
+                                                                @elseif ($contact->accepts_survey == 0) 
+                                                                <span class="btn btn-warning">No contestada</span>
                                                                 @else
-                                                                    <a class="btn btn-info">
+                                                                    <a class="btn btn-success" href="{{ route('admin_surveys', ['survey_id' => $contact->id]) }}">
                                                                         <span>Ver</span>
                                                                     </a>
                                                                 @endif
                                                             </td>
+                                                        
+                                                         <!-- Envío de encuesta -->
                                                             <td class="actions text-center">
                                                                 <form action="{{ route('survey.init') }}" method="post">
                                                                     @csrf
@@ -119,24 +158,39 @@
                                                                     @endif
                                                                 </form>
 
-                                                            </td>
+                                                            </td>                                                          
+                                                   
+                                                            <!-- Encuesta profesional -->
                                                             <td class="actions text-center">
-                                                                <a target="_blank"
-                                                                    href=" https://wa.me/{{ $contact->client_cellphone }}?text=Hola!%20Te%20contacto%20desde%20el%20portal%20de%20oficios%20para%20hacerte%20una%20consulta!"
-                                                                    class="btn btn-success">
-                                                                    <i class="fab fa-whatsapp"></i></a>
+                                                            @if ($survey_prof)
+                                                                @if ($survey_prof->date_sent)
+                                                                    @if ($survey_prof->date_completed) 
+                                                                    <a class="btn btn-success" href="">
+                                                                        <span>Ver</span>
+                                                                    </a>
+                                                                    @else
+                                                                    <span class="btn btn-warning">No contestada</span>
+                                                                    @endif
+                                                                @else                
+                                                                <span class="btn btn-light">No enviada</span>
+                                                                @endif
+                                                            @else
+                                                                <span class="btn btn-light">-</span>
+                                                            @endif
                                                             </td>
                                                         @endif
                                                     </tr>
                                                 @endforeach
                                             @endif
-                                        @endforeach
-
                                     </tbody>
                                 </table>
-                            @endif
                         </div>
                     </section>
+                </div>
+                <div class="row">
+                    <div class="col-12 text center">
+                    {{ $publicacion->contacts->Links() }}
+                    </div>
                 </div>
             </div>
 
