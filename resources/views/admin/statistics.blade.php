@@ -188,108 +188,49 @@
 							<!--PROFESIONALES-->
 							<div class="col-md-12" style="margin-bottom:5%; margin-top:5%">
 								<h3>Encuestas</h3>
-								<div class=" container" style="display: flex; justify-content: space-between;">
-									<button onclick="showHide('surveyList')" style="border: none; background-color: #dedede; margin: 1px; padding: 20px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease;">
-										<caption>Total encuestas</caption>
-										<h2 style="margin-bottom: 0px">{{ $SurveyTotal }}</h2>
-									</button>		
-									<button onclick="showHide('profesionalMorequalified')"  style="border: none; background-color: #dedede; margin: 1px; padding: 20px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease;">
-										<caption>Perfil con buenas calificaciones</caption>
-										<h2 style="margin-bottom: 0px">{{ $profesionalMorequalified->first()->name }} {{ $profesionalMorequalified->first()->last_name }}</h2>
-									</button>
-									<button onclick="showHide('profesionalWorstqualified')"  style="border: none; background-color: #dedede; margin: 1px; padding: 20px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease;">
-										<caption>Perfil malas calificaciones</caption>
-										<h2 style="margin-bottom: 0px">{{ $profesionalWorstqualified->first()->name }} {{ $profesionalWorstqualified->first()->last_name }}</h2>
+								<!-- Filters -->
+								<div id="month-year-selector-surveys" style="margin-bottom: 20px;">
+										  <form id="filterSurveys" method="GET" action="">
+											  <label for="month_surveys">Mes:</label>
+											  <select id="month_surveys" name="month">
+												  <option value=""></option>
+												  @foreach ($months as $monthValue => $monthName)
+													  <option value="{{ $monthValue }}" {{ $month == $monthValue ? 'selected' : '' }}>
+														  {{ $monthName }}
+													  </option>
+												  @endforeach
+											  </select>
+							  
+											  <label for="year_surveys">Año:</label>
+											  <select id="year_surveys" name="year">
+												  <option value=""></option>
+												  @foreach ($years as $yearValue)
+													  <option value="{{ $yearValue }}" {{ $year == $yearValue  ? 'selected' : '' }}>
+														  {{ $yearValue }}
+													  </option>
+												  @endforeach
+											  </select>
 
-									</button>								
+											  <label for="periodo_surveys">Período:</label>
+											  <select id="periodo_surveys" name="periodo">
+												  <option value=""></option>
+												  @foreach ($periodos as $periodoKey => $periodoValue)
+													<option value="{{ $periodoKey }}" {{ (string) $periodo === (string) $periodoKey ? 'selected' : '' }}>
+														{{ $periodoValue }}
+													</option>
+												@endforeach
+											  </select>
+							  
+											  <button type="submit">Filtrar</button>
+											  <button type="button" id="allTimeButtonSurveys">Deseleccionar</button>
+										  </form>
+								</div>
+								<div id="surveysContainer">
+								@if($allSurveys)
+            						@include('admin.partials.survey_statistics')
+								@endif
 								</div>
 								
-							</div>
-							@if($allSurveys)
-							<div class="col-md-10 info" id="surveyList" style="text-align:center; width:99%;  display:none;">
-    <h2>Encuestas</h2>
-    
-    <div class="survey-scroll-container" style="display: flex; overflow-x: auto; gap: 10px;">
-        @foreach ($allSurveys as $survey)
-            <div class="col-md-5" style="min-width: 300px; margin: 10px;">
-                <div class="card text-center">
-                    <div class="card-header" style="background-color:#1c5fa8; color:white; font-size:18px">
-                        {{ $survey->name }} {{ $survey->last_name }}
-                    </div>
-                    <div class="card-header">
-                        {{ $survey->cat }}
-                    </div>
-                    <div class="card-body">
-					<p class="card-text">{{date('d/m/Y H:i:s',strtotime($survey->updated_at))}}</p>   
-					<h5 class="card-title">Calificación</h5>
-                        <p class="card-text">{{ $survey->satisfaction }}</p>
-                    </div>
-                    <div class="card-footer text-muted card-title">
-                       <a href="{{ route('admin_surveys', ['survey_id' => $survey->id ]) }}" target="_blank">Ver encuesta</a>
-                    </div>
-                </div>
-            </div>
-        @endforeach
-    </div>
-</div>
-
-
-
-							@endif	
-
-							@if($profesionalMorequalified)
-							<div class=" col-md-10 info" id="profesionalMorequalified" style="text-align:center; display:none;width:99%" >
-							<h2 >Perfiles con buenas calificaciones</h2>
-							<div class="survey-scroll-container" style="display: flex; overflow-x: auto; gap: 10px;">
-							@foreach ($profesionalMorequalified as $best)
-            <div class="col-md-5" style="min-width: 300px; margin: 10px;">
-                <div class="card text-center">
-                    <div class="card-header" style="background-color:#1c5fa8; color:white; font-size:18px">
-                        {{ $best->name }} {{ $best->last_name }}
-                    </div>
-                    <div class="card-header">
-                        {{ $best->cat }}
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title">Promedio</h5>
-                        <p class="card-text">{{ $best->average }}</p>
-                    </div>
-                    <div class="card-footer text-muted card-title">
-                        <a href="{{ route('admin_prof_contacts', ['publicacion_hash' => $best->hash ]) }}" target="_blank">Total encuestas calificadas: {{ $best->surveysWRating }}</a>
-                    </div>
-                </div>
-            </div>
-        @endforeach
-</div>
-								
-							</div>
-							@endif	
-							@if($profesionalWorstqualified)	
-							<div class=" col-md-10 info" id="profesionalWorstqualified" style="text-align:center; display:none;width:99%" >
-							<h2 >Perfiles con malas calificaciones</h2>
-							<div class="survey-scroll-container" style="display: flex; overflow-x: auto; gap: 10px;">
-							@foreach ($profesionalWorstqualified as $worst)
-            <div class="col-md-5" style="min-width: 300px; margin: 10px;">
-                <div class="card text-center">
-                    <div class="card-header" style="background-color:#1c5fa8; color:white; font-size:18px">
-                        {{ $worst->name }} {{ $worst->last_name }}
-                    </div>
-                    <div class="card-header">
-                        {{ $worst->cat }}
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title">Promedio</h5>
-                        <p class="card-text">{{ $worst->average }}</p>
-                    </div>
-                    <div class="card-footer text-muted card-title">
-					<a href="{{ route('admin_prof_contacts', ['publicacion_hash' => $worst->hash ]) }}" target="_blank">Total encuestas calificadas: {{ $worst->surveysWRating }}</a>
-                    </div>
-                </div>
-            </div>
-        @endforeach
-</div>
-							</div>
-							@endif
 							
 				</div>
 			</div>
@@ -319,13 +260,7 @@ function showHide(eleme) {
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
 	document.addEventListener('DOMContentLoaded', function() {
-        const monthSelect = document.getElementById('month');
-        const yearSelect = document.getElementById('year');
-        const periodSelect = document.getElementById('periodo');
-		const monthSelectPub = document.getElementById('month_pub');
-        const yearSelectPub = document.getElementById('year_pub');
-        const periodSelectPub = document.getElementById('periodo_pub');
-
+        function setupSelectListeners(monthSelect, yearSelect, periodSelect) {
         monthSelect.addEventListener('change', function() {
             if (monthSelect.value) {
                 periodSelect.value = ''; // Deselect period
@@ -344,28 +279,28 @@ function showHide(eleme) {
                 yearSelect.value = ''; // Deselect year
             }
         });
+    }
 
-		monthSelectPub.addEventListener('change', function() {
-            if (monthSelectPub.value) {
-                periodSelectPub.value = ''; // Deselect period
-            }
-        });
+    setupSelectListeners(
+        document.getElementById('month'),
+        document.getElementById('year'),
+        document.getElementById('periodo')
+    );
 
-        yearSelectPub.addEventListener('change', function() {
-            if (yearSelectPub.value) {
-                periodSelectPub.value = ''; // Deselect period
-            }
-        });
+    setupSelectListeners(
+        document.getElementById('month_pub'),
+        document.getElementById('year_pub'),
+        document.getElementById('periodo_pub')
+    );
 
-        periodSelectPub.addEventListener('change', function() {
-            if (periodSelectPub.value) {
-                monthSelectPub.value = ''; // Deselect month
-                yearSelectPub.value = ''; // Deselect year
-            }
-        });
+    setupSelectListeners(
+        document.getElementById('month_surveys'),
+        document.getElementById('year_surveys'),
+        document.getElementById('periodo_surveys')
+    );
     });
 
-	function updateCategoryVisitButton(categoryViews) {
+function updateCategoryVisitButton(categoryViews) {
     const displayElement = document.getElementById('categoryViewsDisplay');
     if (categoryViews && categoryViews[0]) {
         displayElement.innerHTML = `${categoryViews[0].nameCat} con ${categoryViews[0].view_count} visitas`;
@@ -432,6 +367,30 @@ function updatePublicacionesViews(views) {
             $('#year_pub').val('');  
 			$('#periodo_pub').val('');  
             $('#filterPublicaciones').submit();
+        });
+
+		$('#filterSurveys').on('submit', function(event) {
+            event.preventDefault(); 
+
+            $.ajax({
+                url: $(this).attr('action'), 
+                type: 'GET',
+                data: $(this).serialize(), 
+                success: function(response) {
+					console.log(response)
+                    $('#surveysContainer').html(response.html_surveys);
+                },
+                error: function(xhr, status, error) {
+                    console.error("AJAX Error: ", status, error);
+                }
+            });
+        });
+
+		$('#allTimeButtonSurveys').on('click', function() {
+            $('#month_surveys').val(''); 
+            $('#year_surveys').val('');  
+			$('#periodo_surveys').val('');  
+            $('#filterSurveys').submit();
         });
     });
 </script>
