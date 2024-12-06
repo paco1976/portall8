@@ -11,7 +11,7 @@ class SurveyProfQuestions extends Model
 
     protected $table = 'survey_prof_questions';
 
-    protected $fillable = ['question_text', 'question_type', 'options'];
+    protected $fillable = ['question_text', 'question_type', 'options', 'parent_question_id', 'condition', 'order'];
 
     protected $casts = [
         'options' => 'array', 

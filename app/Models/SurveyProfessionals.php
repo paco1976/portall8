@@ -10,15 +10,10 @@ class SurveyProfessionals extends Model
     protected $table = 'survey_professionals';
     use HasFactory;
 
-    protected $fillable = ['client_survey_id', 'hash', 'phone_number', 'date_completed'];
+    protected $fillable = ['client_survey_id', 'hash', 'phone_number', 'date_completed', 'responses'];
 
     public function survey()
     {
         return $this->belongsTo(Survey::class, 'client_survey_id');
-    }
-
-    public function questions()
-    {
-        return $this->hasMany(SurveyProfQuestions::class);
     }
 }
