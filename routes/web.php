@@ -44,6 +44,8 @@ Route::get('/register', function () {
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/perfil', 'UserController@index')->name('perfil');
 Route::post('/encuesta/init', 'SurveyController@initSurveyManually')->name('survey.init');
+Route::post('/encuesta/initProf', 'SurveyController@initSurveyManuallyProf')->name('survey.initProf');
+
 //rutas para crear el perfil
 Route::get('/perfil_new', 'ProfileController@nuevo')->name('perfil_new');
 Route::put('/perfil/store', 'ProfileController@store')->name('store');
@@ -159,6 +161,8 @@ Route::get('/admin_categoria_delete/{id}','CategoriaController@admin_categoria_d
 
 
 Route::get('/admin_surveys/{survey_id}', 'AdminController@admin_surveys')->name('admin_surveys');
+Route::get('/admin_surveys_prof/{survey_id}', 'AdminController@admin_surveys_prof')->name('admin_surveys_prof');
+Route::delete('/admin_surveys/{survey_id}', 'AdminController@admin_delete_survey')->name('admin_delete_survey');
 
 
 Route::get('/admin_visitas/{publicacion_hash}', 'AdminController@admin_visitas')->name('admin_visitas');

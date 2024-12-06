@@ -21,6 +21,7 @@ use App\Models\Interactionimage;
 use App\Models\Interactionmessage;
 use App\Models\Interactionsubjet;
 use App\Models\Survey;
+use App\Models\SurveyProfessionals;
 Use App\Mail\ContactHome;
 Use App\Mail\Interaction_notificacion_referente;
 Use App\Mail\Interaction_notificacion_cliente;
@@ -1376,11 +1377,15 @@ class AdminController extends Controller
        
         $user->permisos = $user->user_type()->first();
         if($user->permisos->name == "Administrador" ){
-            $survey = Survey::find($survey_id);         
-            $publicacion = $survey->publicacion;
-            $user = $survey->user;   
-                             
-            return view('admin.surveys', compact('publicacion', 'survey', 'user'));
+            $survey = Survey::find($survey_id);      
+            if($survey){
+                $publicacion = $survey->publicacion;
+                $user = $survey->user;   
+                                 
+                return view('admin.surveys', compact('publicacion', 'survey', 'user'));
+            } else {
+                return view('admin.surveys');
+            }
             
         }
         else{
@@ -1389,7 +1394,28 @@ class AdminController extends Controller
         }
     }
   
-   
+    public function admin_surveys_prof($survey_id){
+        $user = User::find(Auth::user()->id);
+       
+        $user->permisos = $user->user_type()->first();
+        if($user->permisos->name == "Administrador" ){
+            $survey = SurveyProfessionals::find($survey_id);        
+            if (!$survey) {
+                session()->flash('message', 'La encuesta no fue encontrada.');
+                return redirect()->back();
+            }
+            
+            $responses = json_decode($survey->responses, true);
+
+            return view('admin.surveys_prof', compact('survey', 'responses'));
+            
+        }
+        else{
+            session::flash('message', 'No está autorizado para esta acción');
+            return redirect('/');
+        }
+    }
+
     public function admin_profesional_detalle($user_hash){
         $user = User::find(Auth::user()->id);
         $user->avatar = Storage::disk('avatares')->url($user->avatar);
@@ -1420,14 +1446,13 @@ class AdminController extends Controller
         $userAdmin->permisos = $userAdmin->user_type()->first();
         
         if($userAdmin->permisos->name == "Administrador" ){
-            $publicacion->contacts = $publicacion->surveys()->orderBy('created_at', 'desc')->paginate(10);
+            $publicacion->contacts = $publicacion->surveys()->with('professionalSurvey')->orderBy('created_at', 'desc')->paginate(10);
             $publicacion->positive_words = $publicacion->most_used_positive_words();
             $publicacion->negative_words = $publicacion->most_used_negative_words();
             $publicacion->reason_no_agree = $publicacion->most_used_reasons_no_agree();
             $publicacion->rating = $publicacion->rating();
-            $survey_prof = [];
-                        
-            return view('admin.prof_contacts', compact('publicacion', 'survey_prof'));
+            info($publicacion->contacts);
+            return view('admin.prof_contacts', compact('publicacion'));
             
         }
         else{
@@ -1436,4 +1461,27 @@ class AdminController extends Controller
         }   
        
     }
+
+    public function admin_delete_survey($survey_id)
+    {
+        $user = User::find(Auth::user()->id);
+
+        $user->permisos = $user->user_type()->first();
+        if ($user->permisos->name !== "Administrador") {
+            session()->flash('message', 'No está autorizado para esta acción.');
+            return redirect('/');
+        }
+
+        $survey = Survey::find($survey_id);
+        if (!$survey) {
+            session()->flash('message', 'La encuesta no fue encontrada.');
+            return redirect()->back();
+        }
+
+        $survey->delete();
+
+        session()->flash('message', 'La encuesta ha sido eliminada exitosamente.');
+        return redirect()->back();
+    }
+
 }

@@ -37,8 +37,15 @@
                                             </div>
                                             <div class="card-footer text-muted card-title">
                                             <a href="{{ route('admin_surveys', ['survey_id' => $survey->id ]) }}" target="_blank">Ver encuesta</a>
+                                            <form action="{{ route('admin_delete_survey', ['survey_id' => $survey->id]) }}" method="POST" style="display: inline;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Está seguro de que desea eliminar esta encuesta?')"><i class="fa fa-trash-o"></i></button>
+                                            </form>
+                    
                                             </div>
                                         </div>
+                                       
                                     </div>
                                 @endforeach
                             </div>
