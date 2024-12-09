@@ -28,78 +28,81 @@
 </section>	
 
 <div role="main" class="main" id="ver"></div> 
-	<div class="container pt-3 pb-2">
-		<div class="container">
-				<div class="row">
-					<div class="col-md-12">
-						<table class="table table-bordered table-striped mb-none" id="datatable-editable">
-								<thead>
-									<tr>										
-										<th>Fecha de última actualización</th>
-										<th>Nombre del cliente</th>
-										<th>Celular</th>
-										<th>Concretó servicio</th>
-										<th>Calificación</th>
-										<th>Palabras positivas</th>
-										<th>Sugerencias mejorar</th>
-										<th>Razón no concretó</th>	
-                                        <th>Reseña</th>										
-									</tr>
-								</thead>
-								<tbody>
-									<tr class="gradeX">                                    
-										<td>{{$survey->updated_at}} </td>
-										<td>{{$survey->client_name}} </td>
-										<td>{{$survey->client_cellphone}} </td>
-										<td>
-											@if($survey->service_provided)
-											Sí
-											@else
-											No
-											@endif
-										</td>
-										<td>{{$survey->satisfaction}} </td>
-										<td>
-											@if($survey->descriptive_words !== null)
-											@foreach($survey->positiveWords() as $word)
-    										{{$word}}@if (!$loop->last) - @endif
-											@endforeach
-											@else
-											-
-											@endif
-										</td>
-										<td>
-											@if($survey->negative_words !== null)
-											@foreach($survey->negativeWords() as $word)
-    										{{$word}}@if (!$loop->last) - @endif
-											@endforeach
-											@else
-											-
-											@endif
-										</td>
-										<td>
-											@if($survey->no_agreement !== null)
-											@foreach($survey->reasonNoAgree() as $word)
-    										{{$word}}@if (!$loop->last) - @endif
-											@endforeach
-											@else
-											-
-											@endif
-										</td>
-										<td>
-											@if($survey->review !== null)
-											{{$survey->review}}
-											@else 
-											-
-											@endif
-										</td>
-									</tr>
-								</tbody>
-						</table>
-					</div>						
-				</div>
-		</div>           
-	</div>
-</div>
 
+@if(isset($survey))
+<div class="container pt-3 pb-2">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- Basic Survey Information -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h4 class="card-title">Información básica</h4>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><strong>Fecha de última actualización:</strong> {{ $survey->updated_at }}</li>
+                        <li class="list-group-item"><strong>Nombre del cliente:</strong> {{ $survey->client_name }}</li>
+                        <li class="list-group-item"><strong>Celular:</strong> {{ $survey->client_cellphone }}</li>
+                        <li class="list-group-item">
+                            <strong>Concretó servicio:</strong> 
+                            @if($survey->service_provided)
+                                Sí
+                            @else
+                                No
+                            @endif
+                        </li>
+                    </ul>
+                    <form action="{{ route('admin_delete_survey', $survey->id) }}" method="POST" style="margin-top: 20px;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('¿Está seguro de que desea eliminar esta encuesta?')">Eliminar encuesta</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Survey Answers Section -->
+            <h4 class="mt-5">Respuestas de la encuesta</h4>
+            <ul class="list-group">
+                <li class="list-group-item"><strong>Calificación:</strong> {{ $survey->satisfaction }}</li>
+                <li class="list-group-item"><strong>Palabras positivas:</strong>
+                    @if($survey->descriptive_words)
+                        @foreach($survey->positiveWords() as $word)
+                            {{ $word }}@if (!$loop->last) - @endif
+                        @endforeach
+                    @else
+                        -
+                    @endif
+                </li>
+                <li class="list-group-item"><strong>Sugerencias para mejorar:</strong>
+                    @if($survey->negative_words)
+                        @foreach($survey->negativeWords() as $word)
+                            {{ $word }}@if (!$loop->last) - @endif
+                        @endforeach
+                    @else
+                        -
+                    @endif
+                </li>
+                <li class="list-group-item"><strong>Razón por la que no concretó:</strong>
+                    @if($survey->no_agreement)
+                        @foreach($survey->reasonNoAgree() as $word)
+                            {{ $word }}@if (!$loop->last) - @endif
+                        @endforeach
+                    @else
+                        -
+                    @endif
+                </li>
+                <li class="list-group-item"><strong>Reseña:</strong>
+                    @if($survey->review)
+                        {{ $survey->review }}
+                    @else 
+                        -
+                    @endif
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+@else
+<div class="container card col-md-4 p-4 rounded-lg shadow-md">
+        <strong class="text-xl text-center">Esta encuesta no existe o ha sido eliminada</strong>
+</div>
+@endif
 @endsection

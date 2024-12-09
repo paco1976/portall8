@@ -17,5 +17,10 @@ class User_Profile extends Model
     public function users() {
         return $this->belongsTo('App\Models\User');
     }
+
+    public function getUser()
+    {
+        return $this->user;
+    }
     
 }

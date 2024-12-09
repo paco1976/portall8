@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\Events\ClientRegistered;
 use Illuminate\Http\Request;
 use App\Models\Survey;
+use App\Models\SurveyProfessionals;
+use App\Models\SurveyProfQuestions;
 use App\Models\Chatbot;
 use App\Models\User;
+use App\Models\User_Profile;
 
 include app_path('WhatsAppBot/surveyMessages.php');
 
@@ -542,14 +545,58 @@ class SurveyController extends Controller
         }
     }
 
-    // TODO: reemplazar mensaje por envío de template
+    public function sendProfSurvey($hash)
+    {
+            $profSurvey = SurveyProfessionals::where('hash', $hash)->firstOrFail();
+            $param = $profSurvey->hash;
+            $surveyClient = $profSurvey->survey;
+            $professional = User_Profile::where('user_id', $surveyClient->user_id)->first();
+            $user = User::find($surveyClient->user_id)->first();
+            $name = $user->name;
+            $phone = $professional->mobile;
+            info($phone);
+            info($name);
+
+            $profSurvey->client_phone = $phone;
+            $template = [
+                "name" => "encuesta_profs",
+                "language" => [
+                    "code" => "es_AR"
+                ],
+                "components" => [
+                    [
+                        "type" => "body",
+                        "parameters" => [
+                            [
+                                "type" => "text",
+                                "text" => $name
+                            ]
+                        ]
+                    ],
+                    [
+                        "type" => "button",
+                        "sub_type" => "url",
+                        "index" => "0",
+                        "parameters" => [
+                            [
+                                "type" => "text",
+                                "text" => $param
+                            ]
+                        ]
+                    ]
+                ]
+            ];
+
+            $this->sendWhatsAppMessage($profSurvey, "template", $template, 1, "", "", "", $phone);
+    }
+
     /**
-     * Inicio de la encuesta por whatsapp
+     * Inicio de la encuesta por whatsapp para cliente y envío de link para profesional
      */
     public function initSurvey($surveyId, $id)
     {
         global $surveyMessages;
-
+       
         info('5. Entra al controller initSurvey.');
         // Busca el nombre del profesional
         $user = User::find($id);
@@ -557,15 +604,10 @@ class SurveyController extends Controller
         $survey = Survey::find($surveyId);
 
         $client_phone = $survey->client_cellphone;
-
+       
         if ($user && $client_phone) {
 
             $profileName = $user->name . ' ' . $user->last_name;
-
-            // Mensaje inicial
-            // $initialMessage = str_replace(':profileName', $profileName, $surveyMessages['initialMessage_text']);;
-
-            // $dataToSend = $surveyMessages['initialMessage_buttons'];
 
             $template = [
                 "name" => "encuesta",
@@ -608,6 +650,39 @@ class SurveyController extends Controller
             ];
 
             $this->sendWhatsAppMessage($survey, "template", $template, 1, "", "", "", $client_phone);
+        }     
+    }
+
+    public function initSurveyProf($surveyId, $id)
+    {
+        global $surveyMessages;
+       
+        info('5. Entra al controller initSurvey profesional.');
+        // Busca el nombre del profesional
+        $user = User::find($id);
+
+        if (!$user) {
+            info("User with ID {$id} not found.");
+            return response()->json(['message' => 'User not found'], 404);
+        }
+
+        $survey = Survey::find($surveyId);
+        
+        $userProfile = User_Profile::where('user_id', $id)->first();
+
+        $profSurvey = SurveyProfessionals::firstOrCreate(
+            ['client_survey_id' => $surveyId], // Condition to check if it exists
+            [ // Data to create if it doesn't exist
+                'hash' => md5($surveyId),
+                'phone_number' => $userProfile->mobile,
+                'client_survey_id' => $surveyId
+            ]
+        );
+
+        if($user && $userProfile->mobile){
+            info('Send survey to prof');
+            $surveyController = new SurveyController();
+            $surveyController->sendProfSurvey($profSurvey->hash);
         }
     }
 
@@ -628,5 +703,71 @@ class SurveyController extends Controller
 
         return back();
     }
-};
 
+    public function initSurveyManuallyProf(Request $request)
+    {
+        $user = User::find($request->input('user_id'));
+        $surveyId = $request->input('survey_id');
+
+        $surveyController = new SurveyController();
+        $surveyController->initSurveyProf($surveyId, $user->id);
+
+        return back();
+    }
+    
+    public function createSurveyProf($hash)
+    {
+        $surveyProf = SurveyProfessionals::where('hash', $hash)->firstOrFail();
+
+        if ($surveyProf->date_completed) {
+            session()->flash('message', 'Esta encuesta ya ha sido contestada.');
+    
+            return view('encuestaProfesional', [
+                'survey_completed' => true,
+                'professional_name' => $surveyProf->survey->client_name,
+                'client_name' => $surveyProf->survey->client_name,
+                'hash' => $hash,
+                'questions' => SurveyProfQuestions::orderBy('order')->get()
+            ]);
+        }
+
+        $questions = SurveyProfQuestions::orderBy('order')->get();
+        $surveyClient = $surveyProf->survey;
+        $client_name = $surveyClient->client_name; 
+        $professional = User::find($surveyClient->user_id);
+        $professional_name = $professional->name;
+
+        return view('encuestaProfesional', compact('professional_name', 'client_name', 'hash', 'questions'));
+    }
+
+    public function saveSurveyProf(Request $request, $hash)
+    {
+        $surveyProf = SurveyProfessionals::where('hash', $hash)->firstOrFail();
+            $submittedResponses = $request->except('_token');
+
+            $detailedResponses = [];
+        
+            foreach ($submittedResponses as $key => $response) {
+                if (preg_match('/^question_(\d+)$/', $key, $matches)) {
+                    $questionId = $matches[1];
+        
+                    $question = SurveyProfQuestions::find($questionId);
+        
+                    if ($question) {
+                        $detailedResponses[] = [
+                            'question_id' => $questionId,
+                            'question_text' => $question->question_text,
+                            'response' => $response,
+                        ];
+                    }
+                }
+            }
+
+            $surveyProf->responses = json_encode($detailedResponses);
+            $surveyProf->date_completed = now(); 
+            $surveyProf->save();
+           
+
+        return redirect()->route('createSurveyProf', ['hash' => $hash])->with('message', 'Encuesta enviada exitosamente');
+    }
+};

@@ -98,7 +98,6 @@
                                             <th>Celular</th>
                                             <th>Calificación</td>
                                             <th>Encuesta cliente</th>
-                                            <th>Enviar encuesta</th>
                                             <th>Encuesta profesional</th>
 
                                         </tr>
@@ -129,7 +128,8 @@
                                                                 {{ $contact->satisfaction }}
                                                             </td>                                                        
                                                         <!-- Encuesta cliente -->
-                                                            <td class="actions text-center">
+                                                            <td class="actions text-center" >
+                                                                <div style="display: flex; gap: 10px; justify-content: center; align-items: center;">
                                                                 @if ($contact->contacted == 0)
                                                                     <span class="btn btn-light">No enviada</span>
                                                                 @elseif ($contact->accepts_survey == 0) 
@@ -139,10 +139,8 @@
                                                                         <span>Ver</span>
                                                                     </a>
                                                                 @endif
-                                                            </td>
-                                                        
-                                                         <!-- Envío de encuesta -->
-                                                            <td class="actions text-center">
+                                                            <!-- Envío de encuesta -->
+
                                                                 <form action="{{ route('survey.init') }}" method="post">
                                                                     @csrf
                                                                     <input type="hidden" name="user_id"
@@ -151,32 +149,45 @@
                                                                         value="{{ $contact->id }}">
                                                                     @if ($contact->contacted == 0)
                                                                         <button class="btn btn-success"
-                                                                            type="submit">Enviar</button>
+                                                                            type="submit" data-bs-toggle="tooltip" title="Enviar encuesta"><i class="fa fa-paper-plane"></i></button>
                                                                     @else
                                                                         <button class="btn btn-warning"
-                                                                            type="submit">Volver a enviar</button>
+                                                                            type="submit" data-bs-toggle="tooltip" title="Volver a enviar encuesta"><i class="fa fa-repeat"></i></button>
                                                                     @endif
                                                                 </form>
+                                                            </div>
+                                                            </td>
 
-                                                            </td>                                                          
-                                                   
                                                             <!-- Encuesta profesional -->
                                                             <td class="actions text-center">
-                                                            @if ($survey_prof)
-                                                                @if ($survey_prof->date_sent)
-                                                                    @if ($survey_prof->date_completed) 
-                                                                    <a class="btn btn-success" href="">
+                                                            <div style="display: flex; gap: 10px; justify-content: center; align-items: center;">
+                                            
+                                                            @if ($contact->professionalSurvey)
+                                                                    @if ($contact->professionalSurvey->date_completed) 
+                                                                    <a class="btn btn-success" href="{{ route('admin_surveys_prof', ['survey_id' => $contact->professionalSurvey->id]) }}">
                                                                         <span>Ver</span>
                                                                     </a>
                                                                     @else
                                                                     <span class="btn btn-warning">No contestada</span>
-                                                                    @endif
-                                                                @else                
-                                                                <span class="btn btn-light">No enviada</span>
-                                                                @endif
+                                                                    @endif                                                        
                                                             @else
                                                                 <span class="btn btn-light">-</span>
                                                             @endif
+                                                            <form action="{{ route('survey.initProf') }}" method="post">
+                                                                    @csrf
+                                                                    <input type="hidden" name="user_id"
+                                                                        value="{{ $contact->user_id }}">
+                                                                    <input type="hidden" name="survey_id"
+                                                                        value="{{ $contact->id }}">
+                                                                    @if ($contact->professionalSurvey)
+                                                                    <button class="btn btn-warning"
+                                                                    type="submit" data-bs-toggle="tooltip" title="Volver a enviar encuesta"><i class="fa fa-repeat"></i></button>
+                                                                    @else
+                                                                    <button class="btn btn-success"
+                                                                        type="submit" data-bs-toggle="tooltip" title="Enviar encuesta"><i class="fa fa-paper-plane"></i></button>
+                                                                    @endif
+                                                                </form>
+                                                            </div>
                                                             </td>
                                                         @endif
                                                     </tr>

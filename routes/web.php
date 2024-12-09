@@ -43,8 +43,9 @@ Route::get('/register', function () {
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/perfil', 'UserController@index')->name('perfil');
-Route::get('/encuesta', 'SurveyController@test_survey')->name('test_survey'); //!
 Route::post('/encuesta/init', 'SurveyController@initSurveyManually')->name('survey.init');
+Route::post('/encuesta/initProf', 'SurveyController@initSurveyManuallyProf')->name('survey.initProf');
+
 //rutas para crear el perfil
 Route::get('/perfil_new', 'ProfileController@nuevo')->name('perfil_new');
 Route::put('/perfil/store', 'ProfileController@store')->name('store');
@@ -160,6 +161,8 @@ Route::get('/admin_categoria_delete/{id}','CategoriaController@admin_categoria_d
 
 
 Route::get('/admin_surveys/{survey_id}', 'AdminController@admin_surveys')->name('admin_surveys');
+Route::get('/admin_surveys_prof/{survey_id}', 'AdminController@admin_surveys_prof')->name('admin_surveys_prof');
+Route::delete('/admin_surveys/{survey_id}', 'AdminController@admin_delete_survey')->name('admin_delete_survey');
 
 
 Route::get('/admin_visitas/{publicacion_hash}', 'AdminController@admin_visitas')->name('admin_visitas');
@@ -317,4 +320,10 @@ Route::resource('categoria-tipos', CategoriaTipoController::class);
 Route::resource('carrusel', CarruselController::class);
 Route::resource('logo', LogoController::class);
 Route::resource('skins', SkinController::class);
+
+// Encuesta a profesionales
+Route::get('/encuesta/{hash}', 'SurveyController@createSurveyProf')->name('createSurveyProf');
+Route::post('/encuesta/{hash}', 'SurveyController@saveSurveyProf')->name('saveSurveyProf');
+
+
 Route::resource('titulos', TituloController::class);

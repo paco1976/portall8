@@ -148,7 +148,7 @@ class StatisticsController extends Controller
         ->select('p.id', 'u.name', 'u.last_name', DB::raw('COUNT(publicacion_visita.id) as view_count')) // Count views for each publication
         ->orderByDesc('view_count') // Order by view count
         ->first(); // Get the top publication
-
+        
 
     $publicaciones = Publicacion_Visita::query()
     ->join('publicacion AS p', 'p.id', '=', 'publicacion_visita.publicacion_id')
@@ -196,6 +196,21 @@ class StatisticsController extends Controller
 
         $allSurveys = Survey::query()
             ->where('accepts_survey', 1)
+            ->when($periodo, function ($query) use ($periodo) {
+                $endDate = now()->startOfMonth()->subDay();
+                $startDate = $endDate->copy()->subMonths((int) $periodo - 1)->startOfMonth();
+                
+                return $query->whereBetween('surveys.updated_at', [$startDate, $endDate]);
+            })
+            ->when(!$periodo, function ($query) use ($year, $month) {
+                if ($year) {
+                    $query->whereYear('surveys.updated_at', $year);
+                }
+                if ($month) {
+                    $query->whereMonth('surveys.updated_at', $month);
+                }
+                return $query;
+            })
             ->join('publicacion AS pub', 'surveys.publicacion_id', '=', 'pub.id')
             ->join('categoria AS cat', 'cat.id', '=', 'pub.categoria_id')
             ->join('users AS us', 'surveys.user_id', '=', 'us.id')
@@ -211,8 +226,23 @@ class StatisticsController extends Controller
                 ->orderByDesc('surveys.updated_at') 
                 ->get();
                 
-                $averageProfesional = Survey::query()
+            $averageProfesional = Survey::query()
                 ->where('accepts_survey', 1)
+                ->when($periodo, function ($query) use ($periodo) {
+                    $endDate = now()->startOfMonth()->subDay();
+                    $startDate = $endDate->copy()->subMonths((int) $periodo - 1)->startOfMonth();
+                    
+                    return $query->whereBetween('surveys.updated_at', [$startDate, $endDate]);
+                })
+                ->when(!$periodo, function ($query) use ($year, $month) {
+                    if ($year) {
+                        $query->whereYear('surveys.updated_at', $year);
+                    }
+                    if ($month) {
+                        $query->whereMonth('surveys.updated_at', $month);
+                    }
+                    return $query;
+                })
                 ->join('users AS us', 'us.id', '=', 'surveys.user_id')
                 ->join('publicacion AS pub', 'surveys.publicacion_id', '=', 'pub.id')
                 ->join('categoria AS cat', 'cat.id', '=', 'pub.categoria_id')
@@ -231,7 +261,7 @@ class StatisticsController extends Controller
             ->orderByDesc('surveysWRating')
             ->get();
         
-        // Get the top average
+        // Get the top average        
         $topAverage = $averageProfesional->first()->average ?? 0;
         
         // Filter professionals with the top average
@@ -330,8 +360,8 @@ foreach ($vistasPorCategoria as $categoria => $vistas) {
             'categoryViews' => $categoryViews,
             'publicacionesViews' => $publicaciones,
             'html' => view('admin.partials.category_views', ['filteredCategories' => $categoryViews])->render(),
-            'html_pubs' => view('admin.partials.publicacion_views', ['filteredPublicaciones' => $publicaciones])->render()
-
+            'html_pubs' => view('admin.partials.publicacion_views', ['filteredPublicaciones' => $publicaciones])->render(),
+            'html_surveys' => view('admin.partials.survey_statistics', ['allSurveys' => $allSurveys, 'SurveyTotal' => $surveysCount, 'profesionalMorequalified' => $averageProfesionalBest, 'profesionalWorstqualified' => $averageProfesionalWorst])->render()
         ]);
     }
 

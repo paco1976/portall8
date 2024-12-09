@@ -85,4 +85,9 @@ class Survey extends Model
         } else return [];
     }
 
+    public function professionalSurvey()
+    {
+        return $this->hasOne(SurveyProfessionals::class, 'client_survey_id', 'id');
+    }
+
 }
