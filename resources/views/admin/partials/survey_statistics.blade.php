@@ -1,16 +1,19 @@
 <div>
 <div class=" container" style="display: flex; justify-content: space-between;">
-									<button onclick="showHide('surveyList')" style="border: none; background-color: #dedede; margin: 1px; padding: 20px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease;">
+									
+                                    
+                            <button onclick="showHide('surveyList')" style="border: none; background-color: #dedede; margin: 1px; padding: 20px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease;">
 										<caption>Total encuestas</caption>
 										<h2 style="margin-bottom: 0px">{{ $SurveyTotal ?? 0 }}</h2>
 									</button>		
 									<button onclick="showHide('profesionalMorequalified')"  style="border: none; background-color: #dedede; margin: 1px; padding: 20px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease;">
 										<caption>Perfil con buenas calificaciones</caption>
-										<h2 style="margin-bottom: 0px">{{ $profesionalMorequalified->first()?->name ?? 'N/A' }} {{ $profesionalMorequalified->first()?->last_name ?? '' }}</h2>
+										<h2 style="margin-bottom: 0px">{{ $profesionalMorequalified->first()->name ?? 'N/A' }} {{ $profesionalMorequalified->first()->last_name ?? '' }}</h2>
+                                        
 									</button>
 									<button onclick="showHide('profesionalWorstqualified')"  style="border: none; background-color: #dedede; margin: 1px; padding: 20px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease;">
 										<caption>Perfil malas calificaciones</caption>
-                                        <h2 style="margin-bottom: 0px">{{ $profesionalWorstqualified->first()?->name ?? 'N/A' }} {{ $profesionalWorstqualified->first()?->last_name ?? '' }}</h2>
+                                        <h2 style="margin-bottom: 0px">{{ $profesionalWorstqualified->first()->name ?? 'N/A' }} {{ $profesionalWorstqualified->first()->last_name ?? '' }}</h2>
 									</button>								
 								</div>
 								
