@@ -10,7 +10,7 @@ class SurveyProfessionals extends Model
     protected $table = 'survey_professionals';
     use HasFactory;
 
-    protected $fillable = ['client_survey_id', 'hash', 'phone_number', 'date_completed', 'responses'];
+    protected $fillable = ['client_survey_id', 'hash', 'phone_number', 'date_completed', 'responses', 'contacted'];
 
     public function survey()
     {

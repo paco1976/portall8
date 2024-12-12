@@ -10,6 +10,7 @@ class Chatbot extends Model
 
     protected $fillable = [
         'survey_id',
+        'survey_profs_id',
         'message_received',
         'message_sent',
         'id_wa',
