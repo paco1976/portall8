@@ -69,6 +69,7 @@
                         <select 
                             class="form-select w-auto" 
                             name="question_{{ $question->id }}">
+                            <option value=""></option>
                             @foreach ($question->options as $option)
                                 <option value="{{ $option }}">{{ $option }}</option>
                             @endforeach

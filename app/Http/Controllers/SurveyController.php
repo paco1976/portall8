@@ -68,12 +68,12 @@ class SurveyController extends Controller
         return redirect()->route('homeprofesional', ['id' => $data['publicacion_id'], 'info' => true]);
     }
 
-    public function sendWhatsAppMessage($survey, $type, $message, $step, $idReceived, $messageReceived, $action, $client_phone)
+    public function sendWhatsAppMessage($survey, $type, $message, $step, $idReceived, $messageReceived, $action, $client_phone, $survey_type)
     {
         info('6. Entra a sendWhatsAppMessage.');
         $recipient_phone = '';
         if ($survey) {
-            $recipient_phone = $survey->client_cellphone;
+            $recipient_phone = $survey->client_cellphone ?? $survey->phone_number;
         } else {
             $recipient_phone = Chatbot::where('phone', $client_phone)->first()->phone;
         }
@@ -197,18 +197,29 @@ class SurveyController extends Controller
                         // En el step 1 quiero cambiar el campo contacted a true y reemplazar lo que se almacena como mensaje guardado.
                         if ($step === 1) {
                             $messageSent = 'Inicio encuesta';
-
                             $survey->contacted = true;
                             $survey->save();
                         }
                         // Guardo los datos en la tabla Chatbot
-                        Chatbot::create([
-                            'survey_id' => $survey->id,
-                            'message_received' => $idReceived,
-                            'message_sent' => $messageSent,
-                            'id_wa' => $message_id,
-                            'phone' => $wa_id,
-                        ]);
+                        if($survey_type === 'encuesta_profs'){
+                            Chatbot::create([
+                                'survey_profs_id' => $survey->id,
+                                'message_received' => $idReceived,
+                                'message_sent' => $messageSent,
+                                'id_wa' => $message_id,
+                                'phone' => $wa_id,
+                                'survey_id' => null,
+                            ]);
+                        } else {
+                            Chatbot::create([
+                                'survey_id' => $survey->id,
+                                'message_received' => $idReceived,
+                                'message_sent' => $messageSent,
+                                'id_wa' => $message_id,
+                                'phone' => $wa_id,
+                                'survey_profs_id' => null,
+                            ]);
+                        }
                     } else {
                         // Para mensajes que no está asociados con un survey, los guardo igual.
                         Chatbot::create([
@@ -551,13 +562,11 @@ class SurveyController extends Controller
             $param = $profSurvey->hash;
             $surveyClient = $profSurvey->survey;
             $professional = User_Profile::where('user_id', $surveyClient->user_id)->first();
-            $user = User::find($surveyClient->user_id)->first();
-            $name = $user->name;
+            $name = $surveyClient->client_name;
             $phone = $professional->mobile;
             info($phone);
             info($name);
 
-            $profSurvey->client_phone = $phone;
             $template = [
                 "name" => "encuesta_profs",
                 "language" => [
@@ -587,7 +596,7 @@ class SurveyController extends Controller
                 ]
             ];
 
-            $this->sendWhatsAppMessage($profSurvey, "template", $template, 1, "", "", "", $phone);
+            $this->sendWhatsAppMessage($profSurvey, "template", $template, 1, "", "", "", $phone, "encuesta_profs");
     }
 
     /**
@@ -736,8 +745,9 @@ class SurveyController extends Controller
         $client_name = $surveyClient->client_name; 
         $professional = User::find($surveyClient->user_id);
         $professional_name = $professional->name;
+        $survey_completed = false;
 
-        return view('encuestaProfesional', compact('professional_name', 'client_name', 'hash', 'questions'));
+        return view('encuestaProfesional', compact('professional_name', 'client_name', 'hash', 'questions', 'survey_completed'));
     }
 
     public function saveSurveyProf(Request $request, $hash)
