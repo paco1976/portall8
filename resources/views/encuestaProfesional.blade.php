@@ -146,6 +146,18 @@
             })();
         @endforeach
 
+        // Function to reset fields inside a question element
+        function resetFields(questionElement) {
+            const inputs = questionElement.querySelectorAll('input, select, textarea');
+            inputs.forEach(input => {
+                if (input.type === 'radio' || input.type === 'checkbox') {
+                    input.checked = false;
+                } else {
+                    input.value = '';
+                }
+            });
+        }
+        
         // Function to evaluate conditions recursively
         function evaluateVisibility(questionId) {
             const question = questionElements[questionId];
@@ -157,6 +169,7 @@
             // Check if the parent is visible and condition is met
             if (parentId && !evaluateVisibility(parentId)) {
                 question.element.style.display = 'none';
+                resetFields(question.element); // Reset fields when hiding
                 return false;
             }
 
@@ -177,6 +190,7 @@
                 return true;
             } else {
                 question.element.style.display = 'none';
+                resetFields(question.element); // Reset fields when hiding
                 return false;
             }
         }
