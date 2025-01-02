@@ -102,13 +102,13 @@
                         @break
 
                     @default
-                        <p class="text-danger">Unsupported question type.</p>
+                        <p class="text-danger"></p>
                 @endswitch
             </div>
         </div>
     @endforeach
 
-        <button type="submit">Submit</button>
+        <button type="submit">Enviar</button>
     </form>
 
 @endif
