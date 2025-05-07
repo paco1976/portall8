@@ -299,7 +299,7 @@ class SurveyController extends Controller
                 }
 
                 // Envía mensaje de agradecimiento
-                $this->sendWhatsAppMessage($survey, "text", $response, 2, $message_ID,  $message, '', $client_phone);
+                $this->sendWhatsAppMessage($survey, "text", $response, 2, $message_ID,  $message, '', $client_phone, "encuesta_clientes");
             }
             /**
              * Respuesta a init SI - manda 1a (concretó?)
@@ -316,7 +316,7 @@ class SurveyController extends Controller
                     $survey->save();
                 }
 
-                $this->sendWhatsAppMessage($survey, "buttons", $response, 2, $message_ID, $message, $dataToSend, $client_phone);
+                $this->sendWhatsAppMessage($survey, "buttons", $response, 2, $message_ID, $message, $dataToSend, $client_phone, "encuesta_clientes");
             }
             /**
              * Recibe 'no concretó' -> manda por qué no?
@@ -332,7 +332,7 @@ class SurveyController extends Controller
                     $survey->save();
                 }
 
-                $this->sendWhatsAppMessage($survey, "list", $response, 3, $message_ID, $message, $dataToSend, $client_phone);
+                $this->sendWhatsAppMessage($survey, "list", $response, 3, $message_ID, $message, $dataToSend, $client_phone, "encuesta_clientes");
             }
             /**
              * Recibe 'concretó' -> manda calificar
@@ -351,7 +351,7 @@ class SurveyController extends Controller
                     $survey->save();
                 }
 
-                $this->sendWhatsAppMessage($survey, "list", $response, 3, $message_ID, $message, $dataToSend, $client_phone);
+                $this->sendWhatsAppMessage($survey, "list", $response, 3, $message_ID, $message, $dataToSend, $client_phone, "encuesta_clientes");
             }
             /**
              * Recibe respuestas de por qué no concretó -- manda FIN2            * 
@@ -381,7 +381,7 @@ class SurveyController extends Controller
                 if ($firstWord) {
                     $response = $surveyMessages['finalMessage2_text'];
                     // Envía mensaje de agradecimiento
-                    $this->sendWhatsAppMessage($survey, "text", $response, 4, $message_ID, $message, '', $client_phone);
+                    $this->sendWhatsAppMessage($survey, "text", $response, 4, $message_ID, $message, '', $client_phone, "encuesta_clientes");
                 }
             }
             /**
@@ -406,7 +406,7 @@ class SurveyController extends Controller
 
                     $dataToSend = $surveyMessages['message1c_buttons'];
 
-                    $this->sendWhatsAppMessage($survey, "list", $response, 4, $message_ID, $message, $dataToSend, $client_phone);
+                    $this->sendWhatsAppMessage($survey, "list", $response, 4, $message_ID, $message, $dataToSend, $client_phone, "encuesta_clientes");
                 }
                 /**
                  * Opción b: rating <= 3 -> manda message1d (pregunta)
@@ -414,7 +414,7 @@ class SurveyController extends Controller
                 else if ($rating <= 3) {
                     $response = $surveyMessages['message1d_text'];
                     $dataToSend = $surveyMessages['message1d_buttons'];
-                    $this->sendWhatsAppMessage($survey, "list", $response, 4, $message_ID, $message, $dataToSend, $client_phone);
+                    $this->sendWhatsAppMessage($survey, "list", $response, 4, $message_ID, $message, $dataToSend, $client_phone, "encuesta_clientes");
                 }                
             }
             /**
@@ -446,7 +446,7 @@ class SurveyController extends Controller
                 if ($firstWord) {
                     $response = $surveyMessages['message1c2_text'];
                     $dataToSend = $surveyMessages['message1c2_buttons'];
-                    $this->sendWhatsAppMessage($survey, "list", $response, 4, $message_ID, $message, $dataToSend, $client_phone);
+                    $this->sendWhatsAppMessage($survey, "list", $response, 4, $message_ID, $message, $dataToSend, $client_phone, "encuesta_clientes");
                 }
             } 
             
@@ -479,7 +479,7 @@ class SurveyController extends Controller
                 if ($firstWord) {
                     $response = $surveyMessages['message1f_text'];
                     $dataToSend = $surveyMessages['message1f_buttons'];
-                    $this->sendWhatsAppMessage($survey, "buttons", $response, 5, $message_ID, $message, $dataToSend, $client_phone);
+                    $this->sendWhatsAppMessage($survey, "buttons", $response, 5, $message_ID, $message, $dataToSend, $client_phone, "encuesta_clientes");
                 }
             }  
             
@@ -512,15 +512,15 @@ class SurveyController extends Controller
                 if ($firstWord) {
                     $response = $surveyMessages['message1f_text'];
                     $dataToSend = $surveyMessages['message1f_buttons'];
-                    $this->sendWhatsAppMessage($survey, "buttons", $response, 5, $message_ID, $message, $dataToSend, $client_phone);
+                    $this->sendWhatsAppMessage($survey, "buttons", $response, 5, $message_ID, $message, $dataToSend, $client_phone, "encuesta_clientes");
                 }
             }
             else if ($message === 'no_review') {
                 $response = $surveyMessages['finalMessage1_text'];
-                $this->sendWhatsAppMessage($survey, "text", $response, 5, $message_ID, $message, '', $client_phone);
+                $this->sendWhatsAppMessage($survey, "text", $response, 5, $message_ID, $message, '', $client_phone, "encuesta_clientes");
             } else if ($message === 'review') {
                 $response = $surveyMessages['message1g_text'];
-                $this->sendWhatsAppMessage($survey, "text", $response, 5, $message_ID, $message, '', $client_phone);
+                $this->sendWhatsAppMessage($survey, "text", $response, 5, $message_ID, $message, '', $client_phone, "encuesta_clientes");
             }
             /**
              * Recibe texto -- Manda mensaje final o soy robot
@@ -533,7 +533,7 @@ class SurveyController extends Controller
 
                         // Mandar mensaje soy robot
                         $response = $surveyMessages['aRobot'];
-                        $this->sendWhatsAppMessage($survey, "text", $response, 5, $message_ID, $message, '', $client_phone);
+                        $this->sendWhatsAppMessage($survey, "text", $response, 5, $message_ID, $message, '', $client_phone, "encuesta_clientes");
                     } else {
                         //Si se calificó, chequear si no se completó encuesta
                         if ($survey->isReviewEmpty()) {
@@ -542,16 +542,16 @@ class SurveyController extends Controller
                             $survey->save();
 
                             $response = $surveyMessages['finalMessage1_text'];
-                            $this->sendWhatsAppMessage($survey, "text", $response, 5, $message_ID, $message, '', $client_phone);
+                            $this->sendWhatsAppMessage($survey, "text", $response, 5, $message_ID, $message, '', $client_phone, "encuesta_clientes");
                         } else {
                             // La encuesta ya se completó. Mandar soy un robot
                             $response = $surveyMessages['aRobot'];
-                            $this->sendWhatsAppMessage($survey, "text", $response, 5, $message_ID, $message, '', $client_phone);
+                            $this->sendWhatsAppMessage($survey, "text", $response, 5, $message_ID, $message, '', $client_phone, "encuesta_clientes");
                         }
                     }
                 } else {
                     $response = $surveyMessages['aRobot'];
-                    $this->sendWhatsAppMessage($survey, "text", $response, 5, $message_ID, $message, '', $client_phone);
+                    $this->sendWhatsAppMessage($survey, "text", $response, 5, $message_ID, $message, '', $client_phone, "encuesta_clientes");
                 }
             }
         }
@@ -659,7 +659,7 @@ class SurveyController extends Controller
                 ]
             ];
 
-            $this->sendWhatsAppMessage($survey, "template", $template, 1, "", "", "", $client_phone, "encuesta");
+            $this->sendWhatsAppMessage($survey, "template", $template, 1, "", "", "", $client_phone, "encuesta_clientes");
         }     
     }
 
