@@ -71,6 +71,7 @@ class SurveyController extends Controller
     public function sendWhatsAppMessage($survey, $type, $message, $step, $idReceived, $messageReceived, $action, $client_phone, $survey_type)
     {
         info('6. Entra a sendWhatsAppMessage.');
+
         $recipient_phone = '';
         if ($survey) {
             $recipient_phone = $survey->client_cellphone ?? $survey->phone_number;
@@ -658,7 +659,7 @@ class SurveyController extends Controller
                 ]
             ];
 
-            $this->sendWhatsAppMessage($survey, "template", $template, 1, "", "", "", $client_phone);
+            $this->sendWhatsAppMessage($survey, "template", $template, 1, "", "", "", $client_phone, "encuesta");
         }     
     }
 
