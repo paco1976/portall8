@@ -33,11 +33,11 @@
 				<div class="row">
 					<div class="col-md-12">
             @if($survey && $responses)
-                @foreach($responses as $response)
-                    @if(!empty($response['response']))
+                @foreach($responses as $interno)
+                    @if(!empty($interno['response']))
                         <div class="survey-result mb-5">
-                            <h5 class="text-5">{{ $response['question_text'] }}</h5>
-                            <p>{{ $response['response'] }}</p>
+                            <h5 class="text-5">{!! json_encode($interno['question_text']) !!}</h5>
+                            <p>{!! json_encode($interno['response']) !!}</p>
                         </div>
                     @endif
                 @endforeach
