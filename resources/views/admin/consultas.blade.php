@@ -103,7 +103,12 @@
 							<td>{{$interactionhead->name}} {{$interactionhead->last_name}}</td>	
 							<td>{{$interactionhead->subjet->name}}</td>
 							<td>{{$interactionhead->email}}</td>
-							<td>{{$interactionhead->mobile}}</td>
+							<td>{{$interactionhead->mobile}}
+								<a target="_blank"
+									href=" https://wa.me/54{{ $interactionhead->mobile }}?text=Hola!%20Te%20contacto%20desde%20el%20portal%20de%20oficios%20para%20hacerte%20una%20encuesta!"
+									class="">
+									<i class="fab fa-whatsapp text-success"></i></a>
+							</td>
                             <td><h6>{{$interactionhead->date}}</h6></td>
 							<td class="actions">
 									@if($interactionhead->message_not_read > 0)
